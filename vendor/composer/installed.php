@@ -3,7 +3,7 @@
         'name' => 'dav-neuland/mailinglist-moderation',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'bca93e1a58ce495a2db8846dba5edbdc586c694b',
+        'reference' => '8c4675fcc402370baf12c4787def1e80cf18fd82',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'dav-neuland/mailinglist-moderation' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'bca93e1a58ce495a2db8846dba5edbdc586c694b',
+            'reference' => '8c4675fcc402370baf12c4787def1e80cf18fd82',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

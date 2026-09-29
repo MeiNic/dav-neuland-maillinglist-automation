@@ -26,23 +26,7 @@ foreach ( array( '/vendor/autoload.php', '/vendor-prefixed/autoload.php' ) as $a
 	}
 }
 
-/**
- * Maps Dav_Mlm_Foo_Bar to includes/class-foo-bar.php (WordPress classic
- * plugin convention; our own code is not PSR-4, only the vendored
- * dependencies namespaced above are).
- */
-spl_autoload_register(
-	function ( string $class ): void {
-		if ( strpos( $class, 'Dav_Mlm_' ) !== 0 ) {
-			return;
-		}
-		$relative = substr( $class, strlen( 'Dav_Mlm_' ) );
-		$file     = DAV_MLM_PLUGIN_DIR . '/includes/class-' . strtolower( str_replace( '_', '-', $relative ) ) . '.php';
-		if ( file_exists( $file ) ) {
-			require_once $file;
-		}
-	}
-);
+require_once DAV_MLM_PLUGIN_DIR . '/includes/autoload.php';
 
 add_action(
 	'admin_menu',
