@@ -110,9 +110,13 @@ Outer message (from `Mailinglisten-Manager <no.reply@oneandone.com>`):
      reuse an upstream verdict — we must verify DKIM ourselves.
 
 Confirmed manually: the confirm link works as a **plain unauthenticated
-GET**, no cookies/session needed. *Still to verify with `curl`* (not a
-browser) that the bare GET approves without JS / a form POST, and to
-record a success marker in the response body (§10 step 3).
+GET**, no cookies/session needed. Verified with `curl -sv` (issue #8,
+2026-09-29): the bare GET approves without JS / a form POST. Always
+`HTTP 200`, no redirects. Success marker: `<title>Der Vorgang war
+erfolgreich.</title>`. A reused/expired token and a broken token both
+return the *same* generic `<title>Fehler</title>` page — IONOS does not
+distinguish "already confirmed" from "invalid"; the approver must treat
+any non-success body as one "confirm failed" outcome (see §10 step 3).
 
 ### 4a. DKIM feasibility on the nested message (tested 2026-09-28)
 
@@ -502,12 +506,13 @@ PHP 8.3 via Nix.
 2. **Offline parser tests**: feed each fixture through
    `class-message-parser.php` (no IMAP) and assert list address,
    confirm URL (incl. soft-wrapped QP), `Absender:`, nested `From:`.
-3. **Confirm-link behaviour** (with a fresh post; the sample's token
-   is probably used/expired): `curl -sv '<url>'` — confirm the bare
-   GET approves (no JS/POST needed), note status code, redirects, and a
-   stable success marker in the body; also curl it a second time and
-   with a broken token to record the "already confirmed"/"invalid"
-   responses. Put the markers into `class-approver.php`.
+3. **Confirm-link behaviour** — done (issue #8, 2026-09-29): bare
+   `curl -sv` GET approves, always `HTTP 200`, no redirects. Success
+   marker `<title>Der Vorgang war erfolgreich.</title>`. Reused token
+   and broken token both return an identical generic
+   `<title>Fehler</title>` page (not distinguishable). `class-approver.php`
+   should check the body for the success marker and treat anything else
+   as a single "confirm failed" outcome.
 4. **DKIM tests** with injectable clock (signatures expire, e.g.
    Gmail `x=` = +7 days) and a stubbed DNS resolver returning the
    recorded key (so tests stay stable after key rotation): pass as-is,
