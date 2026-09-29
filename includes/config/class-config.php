@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-final class Dav_Mlm_Config implements Dav_Mlm_Log_Config {
+final class Dav_Mlm_Config implements Dav_Mlm_Log_Config, Dav_Mlm_Mailbox_Config {
 
 	private string $imap_host;
 	private int $imap_port;
