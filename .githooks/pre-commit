@@ -1,0 +1,35 @@
+#!/bin/sh
+# Safety net: refuse to commit a raw, unredacted .eml capture.
+# One-time setup per clone: git config core.hooksPath .githooks
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+staged=$(git diff --cached --name-only --diff-filter=ACM -- '*.eml') || true
+[ -z "$staged" ] && exit 0
+
+php_bin=""
+for candidate in php8.3-cli php8.3 php; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+        php_bin="$candidate"
+        break
+    fi
+done
+if [ -z "$php_bin" ]; then
+    echo "pre-commit: no PHP interpreter found — skipping the .eml redaction check." >&2
+    echo "pre-commit: run 'nix-shell -p php83' (or install PHP 8.3+) to have this enforced." >&2
+    exit 0
+fi
+
+status=0
+echo "$staged" | while IFS= read -r f; do
+    [ -z "$f" ] && continue
+    if ! git show ":$f" | "$php_bin" "$repo_root/tools/check-eml-staged.php" "$f"; then
+        echo "1" > "$repo_root/.git/.pre-commit-eml-failed"
+    fi
+done
+
+if [ -f "$repo_root/.git/.pre-commit-eml-failed" ]; then
+    rm -f "$repo_root/.git/.pre-commit-eml-failed"
+    status=1
+fi
+exit $status
