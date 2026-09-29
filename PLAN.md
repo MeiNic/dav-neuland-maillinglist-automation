@@ -340,24 +340,42 @@ anything in `Manual` is handled by a human in the IONOS Control-Center
 
 ## 6. Directory layout (this repo → deployed as the plugin folder)
 
+Our own classes are grouped into `includes/<concern>/` subfolders (not
+PSR-4 — still the classic `Dav_Mlm_Foo_Bar` → `class-foo-bar.php` naming;
+`includes/autoload.php` finds a file by name via a one-time recursive
+scan, so which subfolder a class lives in never needs to be hardcoded
+anywhere else). `includes/.htaccess`'s `Require all denied` applies to
+every subfolder too — Apache inherits it, no per-subfolder copy needed.
+
 ```
 dav-mailinglist-moderation/
   dav-mailinglist-moderation.php   # plugin bootstrap, registers admin menu
   uninstall.php                    # deletes dav_mlm_* options/transients
   includes/
-    class-config.php               # reads/validates wp-config constants, defaults
-    class-admin-settings.php       # settings page, status panel, sanitization
-    class-list-repository.php      # CRUD over the dav_mlm_lists option
-    class-mailbox.php              # ext-imap wrapper (search, fetch FT_PEEK, move, folders)
-    class-message-parser.php       # wraps ZBateson: list address / confirm URL / Absender / nested raw+From
-    class-notification-verifier.php# outer Authentication-Results + From check
-    class-dkim-verifier.php        # nested DKIM verify incl. QP→8bit reconstruction, injectable clock
-    class-approver.php             # URL allowlist + confirm GET + success check
-    class-rejector.php             # loop guards, rate limit, template, wp_mail via SMTP
-    class-state.php                # attempts counter, done-list, status option
-    class-logger.php               # file logger (+ error_log fallback)
-    class-alerter.php              # digest + failure alerts
-    class-cron-runner.php          # orchestrates one run (used by bin/cron-runner.php)
+    autoload.php                   # Dav_Mlm_Foo_Bar -> includes/**/class-foo-bar.php
+    config/
+      class-config.php             # reads/validates wp-config constants, defaults
+      class-config-exception.php   # thrown when a required constant is missing
+      class-constant-reader.php    # generic "required, or error" / "optional, with a default" lookups
+    logging/
+      class-logger.php             # file logger (+ error_log fallback)
+      class-log-config.php         # the slice of config the logger needs (interface)
+      class-log-masker.php         # masks the confirm-link token, sensitive context keys
+      class-log-rotator.php        # daily file naming + retention pruning
+    admin/
+      class-admin-settings.php     # settings page, status panel, sanitization
+      class-list-repository.php    # CRUD over the dav_mlm_lists option
+    mail/
+      class-mailbox.php            # ext-imap wrapper (search, fetch FT_PEEK, move, folders)
+      class-message-parser.php     # wraps ZBateson: list address / confirm URL / Absender / nested raw+From
+      class-notification-verifier.php # outer Authentication-Results + From check
+      class-dkim-verifier.php      # nested DKIM verify incl. QP→8bit reconstruction, injectable clock
+      class-approver.php           # URL allowlist + confirm GET + success check
+      class-rejector.php           # loop guards, rate limit, template, wp_mail via SMTP
+    runtime/
+      class-state.php              # attempts counter, done-list, status option
+      class-alerter.php            # digest + failure alerts
+      class-cron-runner.php        # orchestrates one run (used by bin/cron-runner.php)
   bin/
     cron-runner.php                # CLI entrypoint: SAPI guard, bootstrap, parse flags, run
     .htaccess                      # Require all denied
