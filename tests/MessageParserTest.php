@@ -130,6 +130,27 @@ final class MessageParserTest extends TestCase {
 		$this->assert_failure( Dav_Mlm_Parse_Result::MULTIPLE_FROM, $raw );
 	}
 
+	public function test_differently_cased_duplicate_nested_from_headers_fail(): void {
+		$raw = $this->replace_once( $this->sample(), "Return-Path: <sender@example.com>\r\n", "from: Other <other@example.org>\r\nReturn-Path: <sender@example.com>\r\n" );
+
+		$this->assert_failure( Dav_Mlm_Parse_Result::MULTIPLE_FROM, $raw );
+	}
+
+	public function test_lookalike_from_header_name_is_not_a_from_header(): void {
+		$raw = $this->replace_once( $this->sample(), 'From: Test Sender <sender@example.com>', 'Fr_om: Test Sender <sender@example.com>' );
+
+		$this->assert_failure( Dav_Mlm_Parse_Result::NO_FROM, $raw );
+	}
+
+	public function test_differently_cased_loop_guard_headers_are_found(): void {
+		$raw = $this->replace_once( $this->sample(), "Content-Language: de-DE, en-US\r\n", "Content-Language: de-DE, en-US\r\nauto-submitted: auto-generated\r\nPRECEDENCE: bulk\r\n" );
+
+		$notification = $this->parse( $raw )->notification();
+
+		self::assertSame( 'auto-generated', $notification->nested_auto_submitted );
+		self::assertSame( 'bulk', $notification->nested_precedence );
+	}
+
 	public function test_group_syntax_in_nested_from_fails(): void {
 		$raw = $this->replace_once( $this->sample(), 'From: Test Sender <sender@example.com>', 'From: Team: sender@example.com;' );
 

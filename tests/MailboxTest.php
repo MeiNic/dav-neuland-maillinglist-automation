@@ -75,6 +75,14 @@ final class MailboxTest extends TestCase {
 		self::assertSame( 'INBOX.Moderation.Error', ( new Dav_Mlm_Mailbox( $this->config( 'ssl', 'INBOX.Moderation' ) ) )->folder_path( 'Error', '.' ) );
 	}
 
+	public function test_folder_name_from_listing_strips_the_servers_own_reference(): void {
+		$mailbox = new Dav_Mlm_Mailbox( $this->config() );
+
+		self::assertSame( 'INBOX.Moderation.Approved', $mailbox->folder_name_from_listing( '{imap.example.com:993/imap/ssl}INBOX.Moderation.Approved' ) );
+		self::assertSame( 'Moderation/Manual', $mailbox->folder_name_from_listing( '{imap.example.com:993/imap/ssl/validate-cert}Moderation/Manual' ) );
+		self::assertSame( 'INBOX', $mailbox->folder_name_from_listing( 'INBOX' ) );
+	}
+
 	public function test_operations_before_connect_fail_cleanly(): void {
 		$this->expectException( Dav_Mlm_Mailbox_Exception::class );
 

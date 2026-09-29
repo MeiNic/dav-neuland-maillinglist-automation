@@ -121,6 +121,58 @@ final class NotificationVerifierTest extends TestCase {
 		$this->assert_fails( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, $raw );
 	}
 
+	public function test_topmost_header_is_picked_regardless_of_name_case(): void {
+		$raw = str_replace(
+			self::GENUINE_HEADER,
+			"authentication-results: kundenserver.de; dkim=fail header.i=no.reply@oneandone.com\r\n" . str_replace( 'Authentication-Results', 'AUTHENTICATION-RESULTS', self::GENUINE_HEADER ),
+			$this->sample()
+		);
+
+		$this->assert_fails( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, $raw );
+	}
+
+	public function test_lookalike_header_names_are_not_authentication_results(): void {
+		foreach ( array( 'Authentication_Results', 'Authentication-Results-Extra', 'X-Authentication-Results' ) as $name ) {
+			$forged = "$name: kundenserver.de; dkim=pass header.i=no.reply@oneandone.com\r\n";
+			$raw    = str_replace( self::GENUINE_HEADER, $forged, $this->sample() );
+
+			$this->assert_fails( Dav_Mlm_Verification_Result::NO_AUTHENTICATION_RESULTS, $raw );
+		}
+	}
+
+	public function test_semicolons_inside_quoted_values_cannot_fake_a_pass(): void {
+		$raw = $this->with_topmost_auth_results( 'Authentication-Results: kundenserver.de; dkim=fail header.i="; dkim=pass header.i=oneandone.com;"' );
+
+		$this->assert_fails( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, $raw );
+	}
+
+	public function test_semicolons_inside_comments_cannot_fake_a_pass(): void {
+		$raw = $this->with_topmost_auth_results( 'Authentication-Results: kundenserver.de; dkim=fail (x; dkim=pass header.i=oneandone.com;) header.i=evil.example' );
+
+		$this->assert_fails( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, $raw );
+	}
+
+	public function test_unterminated_quote_or_comment_fails_closed(): void {
+		$this->assert_fails( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, $this->with_topmost_auth_results( 'Authentication-Results: kundenserver.de; dkim=pass header.i="no.reply@oneandone.com' ) );
+		$this->assert_fails( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, $this->with_topmost_auth_results( 'Authentication-Results: kundenserver.de; dkim=pass header.i=no.reply@oneandone.com (open' ) );
+	}
+
+	public function test_quoted_property_values_are_still_accepted(): void {
+		self::assertTrue( $this->verify( $this->with_topmost_auth_results( 'Authentication-Results: kundenserver.de; dkim=pass header.i="no.reply@oneandone.com"' ) )->is_genuine() );
+	}
+
+	public function test_lookalike_from_header_name_does_not_count(): void {
+		$raw = str_replace( 'From: Mailinglisten-Manager <no.reply@oneandone.com>', 'Fr_om: Mailinglisten-Manager <no.reply@oneandone.com>', $this->sample() );
+
+		$this->assert_fails( Dav_Mlm_Verification_Result::WRONG_FROM, $raw );
+	}
+
+	public function test_differently_cased_duplicate_from_headers_fail(): void {
+		$raw = str_replace( 'From: Mailinglisten-Manager <no.reply@oneandone.com>', "from: evil@attacker.example\r\nFrom: Mailinglisten-Manager <no.reply@oneandone.com>", $this->sample() );
+
+		$this->assert_fails( Dav_Mlm_Verification_Result::WRONG_FROM, $raw );
+	}
+
 	public function test_missing_authentication_results_fails(): void {
 		$raw = str_replace( self::GENUINE_HEADER, '', $this->sample() );
 

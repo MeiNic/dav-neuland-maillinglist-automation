@@ -63,11 +63,11 @@ final class Dav_Mlm_Message_Parser {
 			$absender,
 			$nested_raw,
 			$this->single_from_address( $nested ),
-			$this->header_value( $nested, 'Subject' ),
-			$this->address_value( $this->header_value( $nested, 'Return-Path' ) ),
-			$this->header_value( $nested, 'Auto-Submitted' ),
-			$this->header_value( $nested, 'Precedence' ),
-			$this->header_value( $nested, 'List-Id' )
+			Dav_Mlm_Header_Lookup::first_value( $nested, 'Subject' ),
+			$this->address_value( Dav_Mlm_Header_Lookup::first_value( $nested, 'Return-Path' ) ),
+			Dav_Mlm_Header_Lookup::first_value( $nested, 'Auto-Submitted' ),
+			Dav_Mlm_Header_Lookup::first_value( $nested, 'Precedence' ),
+			Dav_Mlm_Header_Lookup::first_value( $nested, 'List-Id' )
 		);
 	}
 
@@ -76,7 +76,7 @@ final class Dav_Mlm_Message_Parser {
 	 */
 	private function list_address( IMessage $message ): string {
 		// The library already unfolds the (two-line) subject header.
-		$subject = (string) $message->getHeaderValue( 'Subject' );
+		$subject = (string) Dav_Mlm_Header_Lookup::first_value( $message, 'Subject' );
 
 		if ( 1 !== preg_match( '/\[([^\]]+)\]\s*$/', $subject, $matches ) ) {
 			throw new Dav_Mlm_Parse_Failure( Dav_Mlm_Parse_Result::NO_LIST_ADDRESS, 'Subject has no trailing [list address].' );
@@ -120,11 +120,12 @@ final class Dav_Mlm_Message_Parser {
 	 * @throws Dav_Mlm_Parse_Failure
 	 */
 	private function single_from_address( IMessage $nested ): string {
-		if ( count( $nested->getAllHeadersByName( 'From' ) ) > 1 ) {
+		$from_headers = Dav_Mlm_Header_Lookup::all( $nested, 'From' );
+		if ( count( $from_headers ) > 1 ) {
 			throw new Dav_Mlm_Parse_Failure( Dav_Mlm_Parse_Result::MULTIPLE_FROM, 'The post has more than one From header.' );
 		}
 
-		$header = $nested->getHeader( 'From' );
+		$header = $from_headers[0] ?? null;
 		if ( ! $header instanceof AddressHeader ) {
 			throw new Dav_Mlm_Parse_Failure( Dav_Mlm_Parse_Result::NO_FROM, 'The post has no From header.' );
 		}
@@ -166,12 +167,6 @@ final class Dav_Mlm_Message_Parser {
 		}
 
 		return $email;
-	}
-
-	private function header_value( IMessage $message, string $name ): ?string {
-		$value = $message->getHeaderValue( $name );
-
-		return null === $value || '' === trim( $value ) ? null : trim( $value );
 	}
 
 	/**

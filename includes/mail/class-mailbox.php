@@ -43,7 +43,8 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		imap_timeout( IMAP_WRITETIMEOUT, self::WRITE_TIMEOUT_SECONDS );
 		imap_timeout( IMAP_CLOSETIMEOUT, self::CLOSE_TIMEOUT_SECONDS );
 
-		$stream = imap_open(
+		// imap_open() raises an E_WARNING on failure; the reason is reported via the exception instead.
+		$stream = @imap_open(
 			$this->server_reference() . 'INBOX',
 			$this->config->imap_user(),
 			$this->config->imap_pass(),
@@ -66,13 +67,14 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		$reference = $this->server_reference();
 		$delimiter = $this->hierarchy_delimiter();
 
-		$existing = array();
-		$listed   = imap_getmailboxes( $stream, $reference, '*' );
+		$listed = imap_getmailboxes( $stream, $reference, '*' );
 		if ( false === $listed ) {
 			throw new Dav_Mlm_Mailbox_Exception( 'IMAP folder listing failed: ' . $this->last_error() );
 		}
+
+		$existing = array();
 		foreach ( $listed as $mailbox ) {
-			$existing[ substr( $mailbox->name, strlen( $reference ) ) ] = true;
+			$existing[ $this->folder_name_from_listing( $mailbox->name ) ] = true;
 		}
 
 		$wanted = array( $this->config->folder_prefix() );
@@ -81,11 +83,11 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		}
 
 		foreach ( $wanted as $path ) {
-			if ( isset( $existing[ $path ] ) ) {
+			$encoded = imap_utf7_encode( $path );
+			if ( isset( $existing[ $encoded ] ) ) {
 				continue;
 			}
 
-			$encoded = imap_utf7_encode( $path );
 			if ( ! imap_createmailbox( $stream, $reference . $encoded ) ) {
 				throw new Dav_Mlm_Mailbox_Exception( sprintf( 'Could not create IMAP folder "%s": %s', $path, $this->last_error() ) );
 			}
@@ -97,7 +99,7 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		$sender = str_replace( array( '\\', '"' ), '', $this->config->notify_from() );
 
 		imap_errors(); // Start from a clean error stack, so a stale error isn't mistaken for a failed search.
-		$found = imap_search( $this->require_stream(), 'FROM "' . $sender . '"', SE_UID );
+		$found = imap_search( $this->require_stream(), 'FROM "' . $sender . '" UNDELETED', SE_UID );
 
 		if ( false === $found ) {
 			// ext-imap returns false both for "no match" and for an error;
@@ -200,13 +202,28 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		return $this->config->folder_prefix() . $delimiter . $folder;
 	}
 
+	/**
+	 * `{host:993/imap/ssl}INBOX.Moderation` → `INBOX.Moderation`. The server
+	 * reference in a listing is the server's own canonical form (typically
+	 * without our /validate-cert flag), so it can't be stripped by length.
+	 */
+	public function folder_name_from_listing( string $listed_name ): string {
+		$end = strpos( $listed_name, '}' );
+
+		return false === $end ? $listed_name : substr( $listed_name, $end + 1 );
+	}
+
 	private function hierarchy_delimiter(): string {
 		if ( null !== $this->delimiter ) {
 			return $this->delimiter;
 		}
 
 		$inbox = imap_getmailboxes( $this->require_stream(), $this->server_reference(), 'INBOX' );
-		$found = is_array( $inbox ) && isset( $inbox[0]->delimiter ) ? (string) $inbox[0]->delimiter : '';
+		if ( false === $inbox ) {
+			throw new Dav_Mlm_Mailbox_Exception( 'IMAP could not determine the folder hierarchy delimiter: ' . $this->last_error() );
+		}
+
+		$found = isset( $inbox[0]->delimiter ) ? (string) $inbox[0]->delimiter : '';
 
 		$this->delimiter = '' !== $found ? $found : self::FALLBACK_DELIMITER;
 

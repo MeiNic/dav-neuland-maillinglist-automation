@@ -42,7 +42,7 @@ final class Dav_Mlm_Notification_Verifier {
 		try {
 			$message = $this->mime_parser->parse( $raw, true );
 
-			$authentication_results = $message->getHeader( 'Authentication-Results' );
+			$authentication_results = Dav_Mlm_Header_Lookup::first( $message, 'Authentication-Results' );
 			if ( null === $authentication_results ) {
 				return Dav_Mlm_Verification_Result::failure( Dav_Mlm_Verification_Result::NO_AUTHENTICATION_RESULTS, 'No Authentication-Results header.' );
 			}
@@ -63,11 +63,12 @@ final class Dav_Mlm_Notification_Verifier {
 	 *                             `authserv-id [version] ; resinfo ; resinfo ...`).
 	 */
 	private function check_authentication_results( string $header_value ): Dav_Mlm_Verification_Result {
-		$segments = explode( ';', $this->without_comments( $header_value ) );
+		$segments = $this->segments( $header_value );
+		if ( null === $segments ) {
+			return Dav_Mlm_Verification_Result::failure( Dav_Mlm_Verification_Result::NO_TRUSTED_DKIM_PASS, 'Topmost Authentication-Results has an unterminated quote or comment.' );
+		}
 
-		$authserv_tokens = preg_split( '/\s+/', trim( (string) array_shift( $segments ) ), -1, PREG_SPLIT_NO_EMPTY );
-		$authserv_id     = strtolower( (string) ( $authserv_tokens[0] ?? '' ) );
-
+		$authserv_id = strtolower( (string) ( array_shift( $segments )[0] ?? '' ) );
 		if ( $authserv_id !== $this->trusted_authserv ) {
 			return Dav_Mlm_Verification_Result::failure(
 				Dav_Mlm_Verification_Result::UNTRUSTED_AUTHSERV,
@@ -75,8 +76,8 @@ final class Dav_Mlm_Notification_Verifier {
 			);
 		}
 
-		foreach ( $segments as $segment ) {
-			if ( $this->is_trusted_dkim_pass( $segment ) ) {
+		foreach ( $segments as $tokens ) {
+			if ( $this->is_trusted_dkim_pass( $tokens ) ) {
 				return Dav_Mlm_Verification_Result::genuine();
 			}
 		}
@@ -88,23 +89,26 @@ final class Dav_Mlm_Notification_Verifier {
 	}
 
 	/**
-	 * One `method=result property=value ...` entry. Every identity it names
-	 * (`header.i`, `header.d`) must be in oneandone.com, and it must name
-	 * at least one.
+	 * One `method=result property=value ...` entry, already split into
+	 * tokens. Every identity it names (`header.i`, `header.d`) must be in
+	 * oneandone.com, and it must name at least one. Only the compact form
+	 * IONOS emits (`dkim=pass`, no spaces around `=`) is recognised;
+	 * anything else fails closed.
+	 *
+	 * @param list<string> $tokens
 	 */
-	private function is_trusted_dkim_pass( string $segment ): bool {
-		$tokens = preg_split( '/\s+/', trim( $segment ), -1, PREG_SPLIT_NO_EMPTY );
+	private function is_trusted_dkim_pass( array $tokens ): bool {
 		if ( empty( $tokens ) || 'dkim=pass' !== strtolower( $tokens[0] ) ) {
 			return false;
 		}
 
 		$domains = array();
 		foreach ( array_slice( $tokens, 1 ) as $token ) {
-			if ( 1 !== preg_match( '/^header\.(i|d)=(.*)$/i', $token, $matches ) ) {
+			if ( 1 !== preg_match( '/^header\.(i|d)=(.*)$/is', $token, $matches ) ) {
 				continue;
 			}
 
-			$value = strtolower( trim( $matches[2], '"' ) );
+			$value = strtolower( $matches[2] );
 			if ( 'i' === strtolower( $matches[1] ) && false !== strrpos( $value, '@' ) ) {
 				$value = substr( $value, (int) strrpos( $value, '@' ) + 1 ); // header.i is an address; only its domain counts.
 			}
@@ -127,11 +131,12 @@ final class Dav_Mlm_Notification_Verifier {
 	private function check_from( IMessage $message ): Dav_Mlm_Verification_Result {
 		$wrong = static fn ( string $detail ) => Dav_Mlm_Verification_Result::failure( Dav_Mlm_Verification_Result::WRONG_FROM, $detail );
 
-		if ( count( $message->getAllHeadersByName( 'From' ) ) > 1 ) {
+		$from_headers = Dav_Mlm_Header_Lookup::all( $message, 'From' );
+		if ( count( $from_headers ) > 1 ) {
 			return $wrong( 'More than one From header.' );
 		}
 
-		$header = $message->getHeader( 'From' );
+		$header = $from_headers[0] ?? null;
 		if ( ! $header instanceof AddressHeader || count( $header->getGroups() ) > 0 || 1 !== count( $header->getAddresses() ) ) {
 			return $wrong( 'The From header is not exactly one plain address.' );
 		}
@@ -145,14 +150,78 @@ final class Dav_Mlm_Notification_Verifier {
 	}
 
 	/**
-	 * Drops RFC 5322 comments (which may nest), e.g. `(x=y; foo)`, so a
-	 * comment can neither hide nor fake a result.
+	 * Splits an Authentication-Results value into `;`-separated segments of
+	 * whitespace-separated tokens. Quoted strings become part of one token
+	 * (quotes removed, so a `;` or space inside them separates nothing) and
+	 * RFC 5322 comments — which may nest — are dropped, so neither can
+	 * hide a result or fake one.
+	 *
+	 * @return list<list<string>>|null Null when a quote or comment is left open.
 	 */
-	private function without_comments( string $value ): string {
-		do {
-			$value = (string) preg_replace( '/\([^()]*\)/', ' ', $value, -1, $count );
-		} while ( $count > 0 );
+	private function segments( string $value ): ?array {
+		$segments = array();
+		$tokens   = array();
+		$token    = '';
+		$in_token = false;
+		$quoted   = false;
+		$depth    = 0;
+		$length   = strlen( $value );
 
-		return $value;
+		for ( $i = 0; $i < $length; $i++ ) {
+			$char = $value[ $i ];
+
+			if ( $quoted ) {
+				if ( '\\' === $char && $i + 1 < $length ) {
+					$token .= $value[ ++$i ];
+				} elseif ( '"' === $char ) {
+					$quoted = false;
+				} else {
+					$token .= $char;
+				}
+			} elseif ( $depth > 0 ) {
+				if ( '\\' === $char ) {
+					++$i;
+				} elseif ( '(' === $char ) {
+					++$depth;
+				} elseif ( ')' === $char ) {
+					--$depth;
+				}
+			} elseif ( '"' === $char ) {
+				$quoted   = true;
+				$in_token = true;
+			} elseif ( '(' === $char ) {
+				$depth = 1;
+				$this->flush_token( $tokens, $token, $in_token );
+			} elseif ( ';' === $char ) {
+				$this->flush_token( $tokens, $token, $in_token );
+				$segments[] = $tokens;
+				$tokens     = array();
+			} elseif ( ctype_space( $char ) ) {
+				$this->flush_token( $tokens, $token, $in_token );
+			} else {
+				$token   .= $char;
+				$in_token = true;
+			}
+		}
+
+		if ( $quoted || $depth > 0 ) {
+			return null;
+		}
+
+		$this->flush_token( $tokens, $token, $in_token );
+		$segments[] = $tokens;
+
+		return $segments;
+	}
+
+	/**
+	 * @param list<string> $tokens
+	 */
+	private function flush_token( array &$tokens, string &$token, bool &$in_token ): void {
+		if ( $in_token ) {
+			$tokens[] = $token;
+		}
+		$token    = '';
+		$in_token = false;
 	}
 }
