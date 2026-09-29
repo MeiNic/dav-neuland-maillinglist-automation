@@ -1,0 +1,96 @@
+Return-Path: <>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.helo=mout-bounce.kundenserver.de; dmarc=none header.from=oneandone.com;
+ iprev=pass policy.iprev=203.0.113.10
+Received: from mout-bounce.kundenserver.de ([203.0.113.10]) by
+ mx.kundenserver.de (mxeue002 [203.0.113.11]) with ESMTPS (Nemesis) id
+ 1EXAMPLE1REDACTED-00B2ck for <moderator@dav-neuland.de>; Sun, 16 Aug 2026
+ 15:26:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1786886776; x=1787491576; i=no.reply@oneandone.com;
+	bh=EXAMPLEREDACTEDREDACTEDREDACTEDREDACTEDREDACTEDREDACTED=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=EXAMPLEDKIMSIGNATUREREDACTEDNOTAVALIDSIGNATUREFORTHISFIXTURE
+	 EXAMPLEDKIMSIGNATUREREDACTEDNOTAVALIDSIGNATUREFORTHISFIXTUREab==
+X-UI-Sender-Class: 00000000-0000-0000-0000-000000000000
+Received: from [127.0.0.1] ([127.0.0.1]) by
+ systemmailsubmission-service-1and1-live-example (via HTTP); Sun,
+ 16 Aug 2026 13:26:16 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-example-0000000000000@systemmailsubmission-service-1and1-live-example>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: moderator@dav-neuland.de
+Subject: Freigabe einer neuen E-Mail an die Mailingliste
+ [test.mailingliste@dav-neuland.de]
+Content-Type: multipart/mixed;
+ boundary="----=_Part_EXAMPLE1.0000000000000"
+Date: Sun, 16 Aug 2026 13:26:16 +0000 (UTC)
+Auto-Submitted: auto-generated
+X-Spam-Flag: NO
+Envelope-To: <moderator@dav-neuland.de>
+
+------=_Part_EXAMPLE1.0000000000000
+Content-Type: multipart/alternative;
+ boundary="----=_Part_EXAMPLE2.0000000000000"
+
+------=_Part_EXAMPLE2.0000000000000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Eine E-Mail an die Mailingliste test.mailingliste@dav-neuland.de ben=C3=B6t=
+igt eine Freigabe
+durch Sie als Moderator:
+
+    Mailingliste: test.mailingliste@dav-neuland.de
+    Moderator: moderator@dav-neuland.de
+    Absender: sender@example.com
+
+Sie k=C3=B6nnen die E-Mail in der Mailinglisten-Verwaltung in Ihrem 1&1 Con=
+trol-Center freigeben oder indem Sie auf den folgenden Link klicken:
+
+    https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de=
+/Mail/Confirm?lang=3Dde&id=3DV02%3AEXAMPLE%3AREDACTEDREDACTEDREDACTEDREDACT=
+ED%3AREDACTEDREDACTEDREDACTEDREDACTEDREDACTED
+------=_Part_EXAMPLE2.0000000000000--
+
+------=_Part_EXAMPLE1.0000000000000
+Content-Type: message/rfc822
+
+Received: from mail-wm1-fEXAMPLE.google.com ([203.0.113.20]) by
+ mx.kundenserver.de (mxeue003 [203.0.113.11]) with ESMTPS (Nemesis) id
+ 1EXAMPLE2REDACTED-001f8f for <test.mailingliste@dav-neuland.de>; Sun, 16
+ Aug 2026 15:26:16 +0200
+Received: by mail-wm1-fEXAMPLE.google.com with SMTP id
+ 0000000000000.0.0000000000000 for
+ <test.mailingliste@dav-neuland.de>; Sun, 16 Aug 2026 06:26:16 -0700 (PDT)
+Received: from [192.0.2.1] ([203.0.113.20]) by smtp.gmail.com with
+ ESMTPSA id 0000000000000sm00000000000.0.2026.08.16.06.26.14 for
+ <test.mailingliste@dav-neuland.de> (version=TLS1_3
+ cipher=TLS_AES_128_GCM_SHA256 bits=128/128); Sun, 16 Aug 2026 06:26:15
+ -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20251104; t=1786886776; x=1787491576; darn=dav-neuland.de;
+ h=content-transfer-encoding:content-type:subject:content-language
+ :from:to:user-agent:mime-version:date:message-id:from:to:cc:subject
+ :date:message-id:reply-to:content-type;
+ bh=EXAMPLEREDACTEDREDACTEDREDACTEDREDACTEDREDACTEDREDACTED=;
+ b=EXAMPLEDKIMSIGNATUREREDACTEDNOTAVALIDSIGNATUREFORTHISFIXTUREEXAMPLE
+ DKIMSIGNATUREREDACTEDNOTAVALIDSIGNATUREFORTHISFIXTUREEXAMPLEDKIMabcd==
+MIME-Version: 1.0
+Message-ID: <00000000-0000-0000-0000-000000000000@example.com>
+From: Test Sender <sender@example.com>
+To: test.mailingliste@dav-neuland.de
+Subject: Test-Mail
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Return-Path: <sender@example.com>
+Date: Sun, 16 Aug 2026 15:26:14 +0200
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE, en-US
+
+Kurzer Test f=C3=BCr die Mailingliste
+
+------=_Part_EXAMPLE1.0000000000000--

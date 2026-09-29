@@ -1,0 +1,2 @@
+# Raw RFC 822 messages use CRLF line endings; keep them byte-exact.
+*.eml -text
