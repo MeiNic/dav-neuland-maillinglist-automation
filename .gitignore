@@ -1,0 +1,6 @@
+# Downloaded build tool, not committed (fetched on demand by `composer run strauss`).
+/tools/strauss.phar
+
+# PHPUnit runtime artefacts.
+/.phpunit.cache/
+/.phpunit.result.cache

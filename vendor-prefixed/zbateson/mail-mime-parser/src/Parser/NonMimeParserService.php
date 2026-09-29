@@ -1,0 +1,123 @@
+<?php
+/**
+ * This file is part of the ZBateson\MailMimeParser project.
+ *
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ *
+ * Modified by dav-neuland on 29-September-2026 using {@see https://github.com/BrianHenryIE/strauss}.
+ */
+
+namespace DavMlm\Vendor\ZBateson\MailMimeParser\Parser;
+
+use Psr\Log\LogLevel;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Part\UUEncodedPartHeaderContainerFactory;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Proxy\ParserMimePartProxy;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Proxy\ParserNonMimeMessageProxy;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Proxy\ParserNonMimeMessageProxyFactory;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Proxy\ParserPartProxy;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Proxy\ParserUUEncodedPartProxy;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Parser\Proxy\ParserUUEncodedPartProxyFactory;
+
+/**
+ * Parses content for non-mime messages and uu-encoded child parts.
+ *
+ * @author Zaahid Bateson
+ */
+class NonMimeParserService extends AbstractParserService
+{
+    public function __construct(
+        ParserNonMimeMessageProxyFactory $parserNonMimeMessageProxyFactory,
+        ParserUUEncodedPartProxyFactory $parserUuEncodedPartProxyFactory,
+        PartBuilderFactory $partBuilderFactory,
+        protected readonly UUEncodedPartHeaderContainerFactory $partHeaderContainerFactory,
+        protected readonly int $maxMessagePartCount = 10000
+    ) {
+        parent::__construct($parserNonMimeMessageProxyFactory, $parserUuEncodedPartProxyFactory, $partBuilderFactory);
+    }
+
+    /**
+     * Always returns true, and should therefore be the last parser reached by
+     * a ParserManager.
+     */
+    public function canParse(PartBuilder $part) : bool
+    {
+        return true;
+    }
+
+    /**
+     * Creates a UUEncodedPartHeaderContainer attached to a PartBuilder, and
+     * calls $this->parserManager->createParserProxyFor().
+     *
+     * It also sets the PartBuilder's stream part start pos and content start
+     * pos to that of $parent->getNextParStart() (since a 'begin' line is read
+     * prior to another child being created, see parseNextPart()).
+     */
+    private function createPart(ParserNonMimeMessageProxy $parent) : ParserPartProxy
+    {
+        $hc = $this->partHeaderContainerFactory->newInstance($parent->getNextPartMode(), $parent->getNextPartFilename());
+        $pb = $this->partBuilderFactory->newChildPartBuilder($hc, $parent);
+        $proxy = $this->parserManager->createParserProxyFor($pb);
+        $pb->setStreamPartStartPos($parent->getNextPartStart());
+        $pb->setStreamContentStartPos($parent->getNextPartStart());
+        return $proxy;
+    }
+
+    /**
+     * Reads content from the passed ParserPartProxy's stream till a uu-encoded
+     * 'begin' line is found, setting $proxy->setStreamPartContentAndEndPos() to
+     * the last byte read before the begin line.
+     *
+     * @param ParserNonMimeMessageProxy|ParserUUEncodedPartProxy $proxy
+     */
+    private function parseNextPart(ParserNonMimeMessageProxy|ParserUUEncodedPartProxy $proxy) : static
+    {
+        $handle = $proxy->getMessageResourceHandle();
+        while (!\feof($handle)) {
+            $start = \ftell($handle);
+            $line = \trim(MessageParserService::readLine($handle));
+            if (\preg_match('/^begin ([0-7]{3}) (.*)$/', $line, $matches)) {
+                $proxy->setNextPartStart($start);
+                $proxy->setNextPartMode((int) $matches[1]);
+                $proxy->setNextPartFilename($matches[2]);
+                return $this;
+            }
+            $proxy->setStreamPartAndContentEndPos(\ftell($handle));
+        }
+        return $this;
+    }
+
+    public function parseContent(ParserPartProxy $proxy) : static
+    {
+        \assert($proxy instanceof ParserNonMimeMessageProxy || $proxy instanceof ParserUUEncodedPartProxy);
+        if ($proxy->getNextPartStart() !== null) {
+            return $this;
+        }
+        $pos = \ftell($proxy->getMessageResourceHandle());
+        if ($proxy->getStreamContentStartPos() === null) {
+            $proxy->setStreamContentStartPos($pos);
+        }
+        $proxy->setStreamPartAndContentEndPos($pos);
+        $this->parseNextPart($proxy);
+        return $this;
+    }
+
+    public function parseNextChild(ParserMimePartProxy $proxy) : ?ParserPartProxy
+    {
+        \assert($proxy instanceof ParserNonMimeMessageProxy);
+        $handle = $proxy->getMessageResourceHandle();
+        if ($proxy->getNextPartStart() === null || \feof($handle)) {
+            return null;
+        }
+        if ($proxy->getPartCount() >= $this->maxMessagePartCount) {
+            $proxy->addError(
+                'Maximum message part count of ' . $this->maxMessagePartCount . ' reached',
+                LogLevel::ERROR
+            );
+            return null;
+        }
+        $child = $this->createPart($proxy);
+        $proxy->clearNextPart();
+        $proxy->incrementPartCount();
+        return $child;
+    }
+}

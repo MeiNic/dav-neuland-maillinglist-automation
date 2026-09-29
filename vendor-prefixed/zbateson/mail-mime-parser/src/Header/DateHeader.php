@@ -1,0 +1,69 @@
+<?php
+/**
+ * This file is part of the ZBateson\MailMimeParser project.
+ *
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ *
+ * Modified by dav-neuland on 29-September-2026 using {@see https://github.com/BrianHenryIE/strauss}.
+ */
+
+namespace DavMlm\Vendor\ZBateson\MailMimeParser\Header;
+
+use DateTime;
+use DateTimeImmutable;
+use Psr\Log\LoggerInterface;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Header\Consumer\DateConsumerService;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Header\Part\DatePart;
+
+/**
+ * Reads a DatePart value header in either RFC 2822 or RFC 822 format.
+ *
+ * @author Zaahid Bateson
+ */
+class DateHeader extends AbstractHeader
+{
+    public function __construct(
+        string $name,
+        string $value,
+        ?LoggerInterface $logger = null,
+        ?DateConsumerService $consumerService = null,
+        ?int $maxTokenCount = null
+    ) {
+        parent::__construct(
+            self::resolveService($logger, LoggerInterface::class),
+            self::resolveService($consumerService, DateConsumerService::class),
+            $name,
+            $value,
+            $maxTokenCount
+        );
+    }
+
+    /**
+     * Convenience method returning the part's DateTime object, or null if the
+     * date could not be parsed.
+     *
+     * @return ?DateTime The parsed DateTime object.
+     */
+    public function getDateTime() : ?DateTime
+    {
+        if (!empty($this->parts) && $this->parts[0] instanceof DatePart) {
+            return $this->parts[0]->getDateTime();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a DateTimeImmutable for the part's DateTime object, or null if
+     * the date could not be parsed.
+     *
+     * @return ?DateTimeImmutable The parsed DateTimeImmutable object.
+     */
+    public function getDateTimeImmutable() : ?DateTimeImmutable
+    {
+        $dateTime = $this->getDateTime();
+        if ($dateTime !== null) {
+            return DateTimeImmutable::createFromMutable($dateTime);
+        }
+        return null;
+    }
+}

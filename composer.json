@@ -1,0 +1,52 @@
+{
+    "name": "dav-neuland/mailinglist-moderation",
+    "description": "Automates moderation of IONOS Mailinglisten-Manager approval emails for dav-neuland.de mailing lists.",
+    "license": "MIT",
+    "type": "wordpress-plugin",
+    "config": {
+        "platform": {
+            "php": "8.3"
+        },
+        "sort-packages": true
+    },
+    "require": {
+        "php": ">=8.3",
+        "ext-imap": "*",
+        "ext-openssl": "*",
+        "zbateson/mail-mime-parser": "^4.0",
+        "phpmailer/dkimvalidator": "^0.3.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "scripts": {
+        "strauss": [
+            "test -f tools/strauss.phar || curl -fsSL -o tools/strauss.phar https://github.com/BrianHenryIE/strauss/releases/download/0.19.5/strauss.phar",
+            "@php tools/strauss.phar"
+        ]
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "vendor-prefixed",
+            "namespace_prefix": "DavMlm\\Vendor\\",
+            "classmap_prefix": "DavMlm_Vendor_",
+            "constant_prefix": "DAV_MLM_VENDOR_",
+            "packages": [
+                "zbateson/mail-mime-parser",
+                "phpmailer/dkimvalidator"
+            ],
+            "exclude_from_copy": {
+                "packages": [
+                    "phpunit/phpunit",
+                    "psr/log",
+                    "psr/container",
+                    "psr/http-message",
+                    "psr/http-factory",
+                    "psr/cache",
+                    "psr/simple-cache"
+                ]
+            },
+            "delete_vendor_files": true
+        }
+    }
+}

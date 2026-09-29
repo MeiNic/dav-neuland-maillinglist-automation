@@ -1,0 +1,40 @@
+<?php
+/**
+ * This file is part of the ZBateson\MailMimeParser project.
+ *
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ *
+ * Modified by dav-neuland on 29-September-2026 using {@see https://github.com/BrianHenryIE/strauss}.
+ */
+
+namespace DavMlm\Vendor\ZBateson\MailMimeParser\Header;
+
+use Psr\Log\LoggerInterface;
+use DavMlm\Vendor\ZBateson\MailMimeParser\Header\Consumer\SubjectConsumerService;
+
+/**
+ * Reads a subject header.
+ *
+ * The subject header is unique in that it doesn't include comments or quoted
+ * parts.
+ *
+ * @author Zaahid Bateson
+ */
+class SubjectHeader extends AbstractHeader
+{
+    public function __construct(
+        string $name,
+        string $value,
+        ?LoggerInterface $logger = null,
+        ?SubjectConsumerService $consumerService = null,
+        ?int $maxTokenCount = null
+    ) {
+        parent::__construct(
+            self::resolveService($logger, LoggerInterface::class),
+            self::resolveService($consumerService, SubjectConsumerService::class),
+            $name,
+            $value,
+            $maxTokenCount
+        );
+    }
+}

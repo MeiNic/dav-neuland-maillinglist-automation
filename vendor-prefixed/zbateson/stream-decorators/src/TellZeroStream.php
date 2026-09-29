@@ -1,0 +1,34 @@
+<?php
+/**
+ * This file is part of the ZBateson\StreamDecorators project.
+ *
+ * @license http://opensource.org/licenses/bsd-license.php BSD
+ *
+ * Modified by dav-neuland on 29-September-2026 using {@see https://github.com/BrianHenryIE/strauss}.
+ */
+
+namespace DavMlm\Vendor\ZBateson\StreamDecorators;
+
+use Psr\Http\Message\StreamInterface;
+use DavMlm\Vendor\GuzzleHttp\Psr7\StreamDecoratorTrait;
+
+/**
+ * Calling tell() always returns 0.  Used by DecoratedCachingStream so a
+ * CachingStream can use a BufferedStream, because BufferedStream throws an
+ * exception in tell().
+ */
+class TellZeroStream implements StreamInterface
+{
+    use StreamDecoratorTrait;
+
+    /**
+     * @var StreamInterface
+     * @phpstan-ignore-next-line
+     */
+    private readonly StreamInterface $stream;
+
+    public function tell() : int
+    {
+        return 0;
+    }
+}
