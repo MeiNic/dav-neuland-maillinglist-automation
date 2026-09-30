@@ -366,21 +366,40 @@ dav-mailinglist-moderation/
       class-log-config.php         # the slice of config the logger needs (interface)
       class-log-masker.php         # masks the confirm-link token, sensitive context keys
       class-log-rotator.php        # daily file naming + retention pruning
-    admin/
+    admin/                          # not yet built
       class-admin-settings.php     # settings page, status panel, sanitization
       class-list-repository.php    # CRUD over the dav_mlm_lists option
     mail/
-      class-mailbox.php            # ext-imap wrapper (search, fetch FT_PEEK, move, folders)
-      class-message-parser.php     # wraps ZBateson: list address / confirm URL / Absender / nested raw+From
-      class-notification-verifier.php # outer Authentication-Results + From check
-      class-dkim-verifier.php      # nested DKIM verify incl. QP→8bit reconstruction, injectable clock
-      class-approver.php           # URL allowlist + confirm GET + success check
-      class-rejector.php           # loop guards, rate limit, template, wp_mail via SMTP
+      mailbox/
+        class-mailbox.php          # ext-imap wrapper (search, fetch FT_PEEK, move, folders)
+        class-mailbox-interface.php # the slice of ext-imap the rest of the code depends on
+        class-mailbox-config.php   # host/port/credentials value object
+        class-mailbox-exception.php # thrown on a connect/search/fetch/move failure
+      parsing/
+        class-header-lookup.php    # exact (non-fuzzy) header name lookup
+        class-message-parser.php   # wraps ZBateson: list address / confirm URL / Absender / nested raw+From
+        class-parsed-notification.php # value object returned by the parser on success
+        class-parse-result.php     # success/failure outcome of parse()
+        class-parse-failure.php    # thrown internally, caught and turned into a Parse_Result
+      verification/
+        class-notification-verifier.php # outer Authentication-Results + From check
+        class-verification-result.php # outcome of the notification verifier
+        class-dkim-verifier.php    # nested DKIM verify incl. QP→8bit reconstruction, injectable clock
+        class-dkim-result.php      # outcome of the DKIM verifier
+      approval/
+        class-approver.php         # URL allowlist + confirm GET + success check
+        class-approve-result.php   # outcome of the approver
+      rejection/                    # not yet built
+        class-rejector.php         # loop guards, rate limit, template, wp_mail via SMTP
     runtime/
-      class-state.php              # attempts counter, done-list, status option
-      class-alerter.php            # digest + failure alerts
-      class-cron-runner.php        # orchestrates one run (used by bin/cron-runner.php)
-  bin/
+      class-option-store.php       # get_option()/update_option() wrapper, always autoload=false
+      class-attempts-store.php     # per-message failure counter (option dav_mlm_attempts)
+      class-done-list.php          # bounded list of already-actioned Message-IDs (idempotency)
+      class-run-status.php         # last run / last success / counts / errors (admin status panel)
+      class-rate-limiter.php       # per-sender rejection-mail rate limit (transients)
+      class-alerter.php            # digest + failure alerts (not yet built)
+      class-cron-runner.php        # orchestrates one run, used by bin/cron-runner.php (not yet built)
+  bin/                              # not yet built
     cron-runner.php                # CLI entrypoint: SAPI guard, bootstrap, parse flags, run
     .htaccess                      # Require all denied
   vendor/                          # committed, namespace-prefixed (see §9); + .htaccess deny
