@@ -24,6 +24,7 @@ final class Dav_Mlm_Parsed_Notification {
 		public readonly ?string $nested_return_path,
 		public readonly ?string $nested_auto_submitted,
 		public readonly ?string $nested_precedence,
-		public readonly ?string $nested_list_id
+		public readonly ?string $nested_list_id,
+		public readonly ?string $nested_list_unsubscribe
 	) {}
 }

@@ -84,6 +84,95 @@ if ( ! function_exists( 'is_wp_error' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_email' ) ) {
+	/**
+	 * @return string|false The address on success (matching real WP's
+	 *                       is_email()), or false.
+	 */
+	function is_email( string $email ) {
+		$valid = filter_var( $email, FILTER_VALIDATE_EMAIL );
+
+		return false === $valid ? false : $email;
+	}
+}
+
+/**
+ * Stands in for the handful of PHPMailer properties/methods the
+ * `phpmailer_init` hook touches (PLAN.md §5b step 4j). Not a real
+ * PHPMailer — WordPress core normally supplies that class, which isn't
+ * loaded in this test environment.
+ */
+if ( ! class_exists( 'Dav_Mlm_Test_Fake_Phpmailer' ) ) {
+	final class Dav_Mlm_Test_Fake_Phpmailer {
+		public bool $smtp_enabled = false;
+		public $Host;
+		public $Port;
+		public $SMTPAuth;
+		public $Username;
+		public $Password;
+		public $SMTPSecure;
+
+		public function isSMTP(): void {
+			$this->smtp_enabled = true;
+		}
+	}
+}
+
+if ( ! function_exists( 'add_action' ) ) {
+	function add_action( string $hook, callable $callback, int $priority = 10, int $accepted_args = 1 ): bool {
+		$GLOBALS['dav_mlm_test_actions'][ $hook ][] = $callback;
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'remove_action' ) ) {
+	function remove_action( string $hook, callable $callback, int $priority = 10 ): bool {
+		foreach ( $GLOBALS['dav_mlm_test_actions'][ $hook ] ?? array() as $i => $registered ) {
+			if ( $registered === $callback ) {
+				unset( $GLOBALS['dav_mlm_test_actions'][ $hook ][ $i ] );
+			}
+		}
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'do_action' ) ) {
+	function do_action( string $hook, ...$args ): void {
+		foreach ( $GLOBALS['dav_mlm_test_actions'][ $hook ] ?? array() as $callback ) {
+			$callback( ...$args );
+		}
+	}
+}
+
+/**
+ * Stands in for wp_mail(): records the call (including the fake
+ * PHPMailer instance passed through `phpmailer_init`, so tests can assert
+ * on what the SMTP hook configured) and returns whatever
+ * dav_mlm_test_set_wp_mail_result() was told to, defaulting to true.
+ */
+if ( ! function_exists( 'wp_mail' ) ) {
+	function wp_mail( $to, string $subject, string $message, $headers = '', $attachments = array() ): bool {
+		$mailer = new Dav_Mlm_Test_Fake_Phpmailer();
+		do_action( 'phpmailer_init', $mailer );
+
+		$GLOBALS['dav_mlm_test_wp_mail_calls'][] = array(
+			'to'      => $to,
+			'subject' => $subject,
+			'message' => $message,
+			'headers' => $headers,
+			'mailer'  => $mailer,
+		);
+
+		return $GLOBALS['dav_mlm_test_wp_mail_result'] ?? true;
+	}
+}
+
+function dav_mlm_test_set_wp_mail_result( bool $result ): void {
+	$GLOBALS['dav_mlm_test_wp_mail_result'] = $result;
+}
+
 /**
  * Stands in for wp_safe_remote_get(): returns whatever
  * dav_mlm_test_set_http_response() was told to return, or a WP_Error if
@@ -137,4 +226,7 @@ function dav_mlm_test_reset_wp_state(): void {
 	$GLOBALS['dav_mlm_test_update_option_autoload'] = array();
 	$GLOBALS['dav_mlm_test_http_response']          = null;
 	$GLOBALS['dav_mlm_test_http_requests']          = array();
+	$GLOBALS['dav_mlm_test_actions']                = array();
+	$GLOBALS['dav_mlm_test_wp_mail_calls']          = array();
+	$GLOBALS['dav_mlm_test_wp_mail_result']         = null;
 }

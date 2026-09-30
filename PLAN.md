@@ -389,8 +389,9 @@ dav-mailinglist-moderation/
       approval/
         class-approver.php         # URL allowlist + confirm GET + success check
         class-approve-result.php   # outcome of the approver
-      rejection/                    # not yet built
+      rejection/
         class-rejector.php         # loop guards, rate limit, template, wp_mail via SMTP
+        class-reject-result.php    # outcome of the rejector
     runtime/
       class-option-store.php       # get_option()/update_option() wrapper, always autoload=false
       class-attempts-store.php     # per-message failure counter (option dav_mlm_attempts)

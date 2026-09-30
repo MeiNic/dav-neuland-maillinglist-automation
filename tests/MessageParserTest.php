@@ -36,6 +36,7 @@ final class MessageParserTest extends TestCase {
 		self::assertNull( $notification->nested_auto_submitted );
 		self::assertNull( $notification->nested_precedence );
 		self::assertNull( $notification->nested_list_id );
+		self::assertNull( $notification->nested_list_unsubscribe );
 	}
 
 	public function test_confirm_url_is_unwrapped_and_the_id_token_stays_percent_encoded(): void {
@@ -74,7 +75,7 @@ final class MessageParserTest extends TestCase {
 		$raw = $this->replace_once(
 			$this->sample(),
 			"Content-Language: de-DE, en-US\r\n",
-			"Content-Language: de-DE, en-US\r\nAuto-Submitted: auto-generated\r\nPrecedence: bulk\r\nList-Id: <news.example.org>\r\n"
+			"Content-Language: de-DE, en-US\r\nAuto-Submitted: auto-generated\r\nPrecedence: bulk\r\nList-Id: <news.example.org>\r\nList-Unsubscribe: <mailto:leave@news.example.org>\r\n"
 		);
 
 		$notification = $this->parse( $raw )->notification();
@@ -83,6 +84,8 @@ final class MessageParserTest extends TestCase {
 		self::assertSame( 'bulk', $notification->nested_precedence );
 		self::assertNotNull( $notification->nested_list_id );
 		self::assertStringContainsString( 'news.example.org', $notification->nested_list_id );
+		self::assertNotNull( $notification->nested_list_unsubscribe );
+		self::assertStringContainsString( 'leave@news.example.org', $notification->nested_list_unsubscribe );
 	}
 
 	public function test_missing_absender_line_is_not_a_failure(): void {

@@ -67,7 +67,8 @@ final class Dav_Mlm_Message_Parser {
 			$this->address_value( Dav_Mlm_Header_Lookup::first_value( $nested, 'Return-Path' ) ),
 			Dav_Mlm_Header_Lookup::first_value( $nested, 'Auto-Submitted' ),
 			Dav_Mlm_Header_Lookup::first_value( $nested, 'Precedence' ),
-			Dav_Mlm_Header_Lookup::first_value( $nested, 'List-Id' )
+			Dav_Mlm_Header_Lookup::first_value( $nested, 'List-Id' ),
+			Dav_Mlm_Header_Lookup::first_value( $nested, 'List-Unsubscribe' )
 		);
 	}
 
