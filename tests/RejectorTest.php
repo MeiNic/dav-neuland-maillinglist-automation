@@ -119,6 +119,14 @@ final class RejectorTest extends TestCase {
 		self::assertSame( 'Re: ' . str_repeat( 'x', 200 ) . ' an test.mailingliste@dav-neuland.de', $call['subject'] );
 	}
 
+	public function test_truncation_never_splits_a_multibyte_character(): void {
+		$this->reject( $this->notification( array( 'nested_subject' => str_repeat( 'x', 199 ) . str_repeat( 'ü', 10 ) ) ) );
+
+		$call = $GLOBALS['dav_mlm_test_wp_mail_calls'][0];
+		self::assertTrue( mb_check_encoding( $call['subject'], 'UTF-8' ) );
+		self::assertStringContainsString( str_repeat( 'x', 199 ) . 'ü an ', $call['subject'] );
+	}
+
 	public function test_headers_include_from_auto_submitted_and_optional_reply_to(): void {
 		$this->reject( $this->notification(), array(), 'vorstand@dav-neuland.de' );
 
@@ -150,6 +158,29 @@ final class RejectorTest extends TestCase {
 		self::assertSame( self::SMTP_ENC, $mailer->SMTPSecure );
 
 		self::assertSame( array(), $GLOBALS['dav_mlm_test_actions']['phpmailer_init'] ?? array(), 'The phpmailer_init hook must not stay registered after the call.' );
+	}
+
+	public function test_the_smtp_hook_runs_after_every_other_phpmailer_init_handler(): void {
+		// Another plugin's SMTP handler must not be able to override ours.
+		$other = static function ( $phpmailer ): void {
+			$phpmailer->Host = 'smtp.other-plugin.example';
+		};
+		add_action( 'phpmailer_init', $other, 999 );
+
+		$this->reject( $this->notification() );
+
+		$call = $GLOBALS['dav_mlm_test_wp_mail_calls'][0];
+		self::assertSame( self::SMTP_HOST, $call['mailer']->Host );
+		self::assertContains( PHP_INT_MAX, $call['phpmailer_init_priorities'] );
+		self::assertCount( 1, $GLOBALS['dav_mlm_test_actions']['phpmailer_init'], 'Only the other plugin\'s handler may remain registered.' );
+	}
+
+	public function test_a_transient_failure_carries_the_smtp_error_message(): void {
+		dav_mlm_test_set_wp_mail_result( false );
+
+		$result = $this->reject( $this->notification() );
+
+		self::assertStringContainsString( 'SMTP Error: Could not authenticate.', $result->detail() );
 	}
 
 	// -- wp_mail() failure is transient ------------------------------------------

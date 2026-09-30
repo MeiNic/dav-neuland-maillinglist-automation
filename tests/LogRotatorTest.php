@@ -47,6 +47,20 @@ final class LogRotatorTest extends TestCase {
 		self::assertCount( 2, $deleted );
 	}
 
+	public function test_prune_does_not_depend_on_the_time_of_day(): void {
+		// Early and late on the same day must give the same result; the
+		// boundary file is exactly at the cutoff either way.
+		foreach ( array( '2026-09-29 00:00:01', '2026-09-29 23:59:59' ) as $time ) {
+			$boundary = $this->touch_log_file( '2026-08-30' );
+			$old      = $this->touch_log_file( '2026-08-29' );
+
+			$this->rotator->prune( $this->temp_dir, 30, new DateTimeImmutable( $time ) );
+
+			self::assertFileExists( $boundary, "at $time" );
+			self::assertFileDoesNotExist( $old, "at $time" );
+		}
+	}
+
 	public function test_prune_ignores_files_not_matching_the_naming_pattern(): void {
 		$unrelated = $this->temp_dir . '/cron.log';
 		file_put_contents( $unrelated, 'irrelevant' );

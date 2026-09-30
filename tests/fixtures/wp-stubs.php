@@ -118,9 +118,17 @@ if ( ! class_exists( 'Dav_Mlm_Test_Fake_Phpmailer' ) ) {
 	}
 }
 
+/**
+ * Actions are kept with their priority, like WordPress: remove_action()
+ * only removes a callback registered at the same priority, and
+ * do_action() runs lower priorities first.
+ */
 if ( ! function_exists( 'add_action' ) ) {
 	function add_action( string $hook, callable $callback, int $priority = 10, int $accepted_args = 1 ): bool {
-		$GLOBALS['dav_mlm_test_actions'][ $hook ][] = $callback;
+		$GLOBALS['dav_mlm_test_actions'][ $hook ][] = array(
+			'callback' => $callback,
+			'priority' => $priority,
+		);
 
 		return true;
 	}
@@ -129,7 +137,7 @@ if ( ! function_exists( 'add_action' ) ) {
 if ( ! function_exists( 'remove_action' ) ) {
 	function remove_action( string $hook, callable $callback, int $priority = 10 ): bool {
 		foreach ( $GLOBALS['dav_mlm_test_actions'][ $hook ] ?? array() as $i => $registered ) {
-			if ( $registered === $callback ) {
+			if ( $registered['callback'] === $callback && $registered['priority'] === $priority ) {
 				unset( $GLOBALS['dav_mlm_test_actions'][ $hook ][ $i ] );
 			}
 		}
@@ -140,8 +148,11 @@ if ( ! function_exists( 'remove_action' ) ) {
 
 if ( ! function_exists( 'do_action' ) ) {
 	function do_action( string $hook, ...$args ): void {
-		foreach ( $GLOBALS['dav_mlm_test_actions'][ $hook ] ?? array() as $callback ) {
-			$callback( ...$args );
+		$registered = $GLOBALS['dav_mlm_test_actions'][ $hook ] ?? array();
+		usort( $registered, static fn ( array $a, array $b ): int => $a['priority'] <=> $b['priority'] );
+
+		foreach ( $registered as $action ) {
+			$action['callback']( ...$args );
 		}
 	}
 }
@@ -149,8 +160,11 @@ if ( ! function_exists( 'do_action' ) ) {
 /**
  * Stands in for wp_mail(): records the call (including the fake
  * PHPMailer instance passed through `phpmailer_init`, so tests can assert
- * on what the SMTP hook configured) and returns whatever
- * dav_mlm_test_set_wp_mail_result() was told to, defaulting to true.
+ * on what the SMTP hook configured, and the priorities `phpmailer_init`
+ * callbacks were registered at) and returns the next queued result
+ * (dav_mlm_test_queue_wp_mail_results()), else whatever
+ * dav_mlm_test_set_wp_mail_result() was told to, defaulting to true. On
+ * false it fires `wp_mail_failed` with a WP_Error, as WordPress does.
  */
 if ( ! function_exists( 'wp_mail' ) ) {
 	function wp_mail( $to, string $subject, string $message, $headers = '', $attachments = array() ): bool {
@@ -158,19 +172,36 @@ if ( ! function_exists( 'wp_mail' ) ) {
 		do_action( 'phpmailer_init', $mailer );
 
 		$GLOBALS['dav_mlm_test_wp_mail_calls'][] = array(
-			'to'      => $to,
-			'subject' => $subject,
-			'message' => $message,
-			'headers' => $headers,
-			'mailer'  => $mailer,
+			'to'                        => $to,
+			'subject'                   => $subject,
+			'message'                   => $message,
+			'headers'                   => $headers,
+			'mailer'                    => $mailer,
+			'phpmailer_init_priorities' => array_column( $GLOBALS['dav_mlm_test_actions']['phpmailer_init'] ?? array(), 'priority' ),
 		);
 
-		return $GLOBALS['dav_mlm_test_wp_mail_result'] ?? true;
+		$result = array() !== ( $GLOBALS['dav_mlm_test_wp_mail_results'] ?? array() )
+			? array_shift( $GLOBALS['dav_mlm_test_wp_mail_results'] )
+			: ( $GLOBALS['dav_mlm_test_wp_mail_result'] ?? true );
+
+		if ( ! $result ) {
+			do_action( 'wp_mail_failed', new WP_Error( 'wp_mail_failed', 'SMTP Error: Could not authenticate.' ) );
+		}
+
+		return $result;
 	}
 }
 
 function dav_mlm_test_set_wp_mail_result( bool $result ): void {
 	$GLOBALS['dav_mlm_test_wp_mail_result'] = $result;
+}
+
+/**
+ * Results for the next wp_mail() calls, in order; once used up, the
+ * dav_mlm_test_set_wp_mail_result() value applies again.
+ */
+function dav_mlm_test_queue_wp_mail_results( bool ...$results ): void {
+	$GLOBALS['dav_mlm_test_wp_mail_results'] = $results;
 }
 
 /**
@@ -229,4 +260,5 @@ function dav_mlm_test_reset_wp_state(): void {
 	$GLOBALS['dav_mlm_test_actions']                = array();
 	$GLOBALS['dav_mlm_test_wp_mail_calls']          = array();
 	$GLOBALS['dav_mlm_test_wp_mail_result']         = null;
+	$GLOBALS['dav_mlm_test_wp_mail_results']        = array();
 }

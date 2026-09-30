@@ -78,7 +78,8 @@ final class Dav_Mlm_Rejector {
 		$placeholders = array(
 			'{{sender}}'           => $this->sanitize_placeholder( $notification->nested_from ),
 			'{{list}}'             => $this->sanitize_placeholder( $notification->list_address ),
-			'{{original_subject}}' => substr( $this->sanitize_placeholder( $notification->nested_subject ?? '' ), 0, 200 ),
+			// mb_substr: a byte cut could split an umlaut into invalid UTF-8.
+			'{{original_subject}}' => mb_substr( $this->sanitize_placeholder( $notification->nested_subject ?? '' ), 0, 200, 'UTF-8' ),
 		);
 
 		$subject = strtr( $subject_template, $placeholders );
@@ -92,7 +93,9 @@ final class Dav_Mlm_Rejector {
 		$headers[] = 'Auto-Submitted: auto-replied'; // RFC 3834: marks this as an automatic response.
 
 		if ( ! $this->mailer->send( $sender, $subject, $body, $headers ) ) {
-			return Dav_Mlm_Reject_Result::transient_failure( 'wp_mail() returned false.' );
+			$error = $this->mailer->last_error();
+
+			return Dav_Mlm_Reject_Result::transient_failure( 'wp_mail() returned false' . ( null === $error ? '.' : ': ' . $error ) );
 		}
 
 		$this->rate_limiter->register_sent( $sender );

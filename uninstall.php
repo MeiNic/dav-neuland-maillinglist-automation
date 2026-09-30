@@ -11,7 +11,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 global $wpdb;
 
-foreach ( array( 'dav_mlm_lists', 'dav_mlm_status', 'dav_mlm_attempts', 'dav_mlm_done' ) as $option ) {
+foreach ( array( 'dav_mlm_lists', 'dav_mlm_status', 'dav_mlm_attempts', 'dav_mlm_done', 'dav_mlm_alerter_state' ) as $option ) {
 	delete_option( $option );
 }
 

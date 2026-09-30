@@ -19,7 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Dav_Mlm_Approver {
 
-	private const SUCCESS_MARKER = 'Der Vorgang war erfolgreich.';
+	// The page <title>, not just the sentence, so the same words appearing
+	// elsewhere on an error page can't count as success.
+	private const SUCCESS_MARKER_PATTERN = '#<title>\s*Der Vorgang war erfolgreich\.\s*</title>#i';
 
 	private const PATH_PATTERN = '#^/MailingList/([^/]+)/Mail/Confirm$#i';
 
@@ -49,7 +51,7 @@ final class Dav_Mlm_Approver {
 		$status_code = (int) wp_remote_retrieve_response_code( $response );
 		$body        = (string) wp_remote_retrieve_body( $response );
 
-		if ( 200 === $status_code && false !== strpos( $body, self::SUCCESS_MARKER ) ) {
+		if ( 200 === $status_code && 1 === preg_match( self::SUCCESS_MARKER_PATTERN, $body ) ) {
 			return Dav_Mlm_Approve_Result::success();
 		}
 
@@ -68,7 +70,9 @@ final class Dav_Mlm_Approver {
 	 * Scheme `https`, host == the configured confirm host, path ==
 	 * `/MailingList/<list-address>/Mail/Confirm` (the list-address segment
 	 * compared case-insensitively after rawurldecode, so both the literal
-	 * `@` and `%40` forms are accepted), query has exactly `lang` and `id`.
+	 * `@` and `%40` forms are accepted), query has exactly `lang` and `id`,
+	 * and no user/password, explicit port, or fragment — none of which the
+	 * real IONOS link has, so any of them means someone altered it.
 	 */
 	public function is_allowlisted( string $confirm_url, string $list_address ): bool {
 		$parts = parse_url( $confirm_url );
@@ -81,6 +85,10 @@ final class Dav_Mlm_Approver {
 		}
 
 		if ( strtolower( $parts['host'] ) !== $this->confirm_host ) {
+			return false;
+		}
+
+		if ( isset( $parts['user'] ) || isset( $parts['pass'] ) || isset( $parts['port'] ) || isset( $parts['fragment'] ) ) {
 			return false;
 		}
 

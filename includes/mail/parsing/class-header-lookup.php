@@ -10,7 +10,11 @@
  *
  * Here a header matches only if its name equals the requested one,
  * case-insensitively (RFC 5322), and results keep message order, i.e.
- * the topmost header comes first.
+ * the topmost header comes first. The one leniency is whitespace before
+ * the colon (`From : ...`): the library keeps it as part of the name, but
+ * DKIM relaxed canonicalisation (and Dav_Mlm_Dkim_Verifier) treat such a
+ * line as a From header — so it must count here too, or a forged From
+ * could be the only one this lookup sees while DKIM verifies another.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,7 +32,7 @@ final class Dav_Mlm_Header_Lookup {
 	public static function all( IMimePart $part, string $name ): array {
 		$matches = array();
 		foreach ( $part->getAllHeaders() as $header ) {
-			if ( 0 === strcasecmp( $header->getName(), $name ) ) {
+			if ( 0 === strcasecmp( rtrim( $header->getName(), " \t" ), $name ) ) {
 				$matches[] = $header;
 			}
 		}

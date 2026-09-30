@@ -54,7 +54,9 @@ final class Dav_Mlm_Message_Parser {
 			throw new Dav_Mlm_Parse_Failure( Dav_Mlm_Parse_Result::NO_NESTED_MESSAGE, 'No message/rfc822 part.' );
 		}
 
-		$nested_raw = $nested_part->getContentStream()->getContents();
+		// Binary stream: undoes the part's transfer encoding but never
+		// converts a charset, so the DKIM verifier gets the original bytes.
+		$nested_raw = $nested_part->getBinaryContentStream()->getContents();
 		$nested     = $this->mime_parser->parse( $nested_raw, true );
 
 		return new Dav_Mlm_Parsed_Notification(

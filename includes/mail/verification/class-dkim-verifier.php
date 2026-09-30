@@ -20,7 +20,10 @@
  * *and* whose `d=` is aligned with the caller-supplied From address
  * (DMARC-relaxed alignment: equal, or From is a subdomain of `d=`).
  * A merely-valid-but-unaligned signature does not count — see
- * is_aligned(). Verification is tried on the raw bytes as-is first; if
+ * is_aligned(). The message must also have exactly one From header, and
+ * its address must be the caller-supplied one — see from_header_problem().
+ * Signatures with a body length limit (`l=`) or rsa-sha1 never pass.
+ * Verification is tried on the raw bytes as-is first; if
  * that fails and the message is single-part with
  * `Content-Transfer-Encoding: quoted-printable` or `base64`, it is retried
  * once against a reconstruction (decode body, normalise to CRLF, put the
@@ -35,7 +38,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Dav_Mlm_Dkim_Verifier {
 
-	private const SUPPORTED_DIGESTS = array( 'sha1', 'sha256' );
+	// rsa-sha1 is deliberately absent: RFC 8301 forbids treating it as valid.
+	private const SUPPORTED_DIGESTS = array( 'sha256' );
 
 	/** @var callable(string $domain, string $selector): (list<string>|false) */
 	private $dns_lookup;
@@ -66,6 +70,16 @@ final class Dav_Mlm_Dkim_Verifier {
 			return Dav_Mlm_Dkim_Result::failure( Dav_Mlm_Dkim_Result::FAIL, 'The From address has no domain: ' . $from_address );
 		}
 
+		// Headers are identical on both paths (reconstruction only rewrites
+		// the CTE header and body), so this is checked once, up front.
+		$split = $this->split_message( $raw );
+		if ( null !== $split ) {
+			$from_problem = $this->from_header_problem( $split['headers'], $from_address );
+			if ( null !== $from_problem ) {
+				return Dav_Mlm_Dkim_Result::failure( Dav_Mlm_Dkim_Result::FAIL, $from_problem );
+			}
+		}
+
 		$result = $this->attempt( $raw, $from_domain, $now, Dav_Mlm_Dkim_Result::PATH_AS_IS );
 		if ( $result->is_pass()
 			|| Dav_Mlm_Dkim_Result::NO_SIGNATURE === $result->failure_reason()
@@ -89,7 +103,9 @@ final class Dav_Mlm_Dkim_Verifier {
 	 * first aligned pass, or the most informative failure otherwise: a DNS
 	 * error takes priority over a plain failure (it's the transient one),
 	 * and "no signature at all" is reported as such rather than as a
-	 * generic failure.
+	 * generic failure. Unaligned signatures are rejected before any DNS
+	 * lookup, so a DNS error always concerns a signature that could have
+	 * passed — never one that couldn't have mattered anyway.
 	 */
 	private function attempt( string $raw, string $from_domain, DateTimeImmutable $now, string $path ): Dav_Mlm_Dkim_Result {
 		$split = $this->split_message( $raw );
@@ -104,12 +120,13 @@ final class Dav_Mlm_Dkim_Verifier {
 
 		$evaluations = array();
 		foreach ( $signatures as $signature ) {
-			$evaluations[] = $this->evaluate_signature( $split['headers'], $split['body'], $signature, $now );
+			$evaluations[] = $this->evaluate_signature( $split['headers'], $split['body'], $signature, $from_domain, $now );
 		}
 
+		// evaluate_signature() only ever passes an aligned signature.
 		foreach ( $evaluations as $evaluation ) {
-			if ( 'pass' === $evaluation['status'] && null !== $evaluation['domain'] && $this->is_aligned( $evaluation['domain'], $from_domain ) ) {
-				return Dav_Mlm_Dkim_Result::pass( $path, $evaluation['domain'] );
+			if ( 'pass' === $evaluation['status'] ) {
+				return Dav_Mlm_Dkim_Result::pass( $path, (string) $evaluation['domain'] );
 			}
 		}
 
@@ -132,7 +149,7 @@ final class Dav_Mlm_Dkim_Verifier {
 	 * @param array{name: string, raw: string, value: string}       $signature
 	 * @return array{status: string, domain: string|null, reason: string}
 	 */
-	private function evaluate_signature( array $headers, string $body, array $signature, DateTimeImmutable $now ): array {
+	private function evaluate_signature( array $headers, string $body, array $signature, string $from_domain, DateTimeImmutable $now ): array {
 		$tags = $this->parse_tag_list( $signature['value'], ';' );
 		if ( null === $tags ) {
 			return array( 'status' => 'fail', 'domain' => null, 'reason' => 'Malformed DKIM-Signature header.' );
@@ -148,6 +165,12 @@ final class Dav_Mlm_Dkim_Verifier {
 
 		if ( '1' !== $tags['v'] ) {
 			return array( 'status' => 'fail', 'domain' => $domain, 'reason' => 'Unsupported DKIM version: ' . $tags['v'] );
+		}
+
+		// Checked before any hashing or DNS: an unaligned signature can't
+		// make the result a pass, however valid it is.
+		if ( ! $this->is_aligned( $domain, $from_domain ) ) {
+			return array( 'status' => 'fail', 'domain' => $domain, 'reason' => 'Not aligned with the From domain ' . $from_domain . '.' );
 		}
 
 		if ( isset( $tags['x'] ) && '' !== $tags['x'] && ctype_digit( $tags['x'] ) && (int) $tags['x'] < $now->getTimestamp() ) {
@@ -172,10 +195,13 @@ final class Dav_Mlm_Dkim_Verifier {
 		}
 		$digest = $alg_parts[1];
 
-		$canonical_body = $this->canonicalize_body( $body, $body_style );
-		if ( isset( $tags['l'] ) && '' !== $tags['l'] && ctype_digit( $tags['l'] ) ) {
-			$canonical_body = substr( $canonical_body, 0, (int) $tags['l'] );
+		// With l=, anything appended after the signed length is unsigned, so
+		// a replayed post from an allowed sender could carry arbitrary text.
+		if ( isset( $tags['l'] ) ) {
+			return array( 'status' => 'fail', 'domain' => $domain, 'reason' => 'Body length limit (l=) is not accepted.' );
 		}
+
+		$canonical_body = $this->canonicalize_body( $body, $body_style );
 
 		if ( ! hash_equals( $tags['bh'], base64_encode( hash( $digest, $canonical_body, true ) ) ) ) {
 			return array( 'status' => 'fail', 'domain' => $domain, 'reason' => 'Body hash mismatch.' );
@@ -192,8 +218,11 @@ final class Dav_Mlm_Dkim_Verifier {
 				// Blank out the `b=` value before hashing, in both the raw
 				// (for "simple") and unfolded (for "relaxed") forms — same
 				// bytes otherwise, original folding/whitespace untouched.
-				'raw'   => preg_replace( '/b=(.*?)(;|$)/s', 'b=$2', $signature['raw'], 1 ),
-				'value' => preg_replace( '/b=(.*?)(;|$)/s', 'b=$2', $signature['value'], 1 ),
+				// Anchored to a tag start, so a `b=` inside another tag's
+				// value (e.g. `z=...Grab=20it`) is never the one blanked.
+				// (`raw` is exactly `name:value`, see finish_header().)
+				'raw'   => $signature['name'] . ':' . $this->blank_signature_value( $signature['value'] ),
+				'value' => $this->blank_signature_value( $signature['value'] ),
 			),
 			$header_style
 		);
@@ -214,6 +243,16 @@ final class Dav_Mlm_Dkim_Verifier {
 		}
 
 		return array( 'status' => 'fail', 'domain' => $domain, 'reason' => 'Signature did not verify against the published key(s).' );
+	}
+
+	/**
+	 * `...; b=abc\r\n def; ...` → `...; b=; ...` on a DKIM-Signature
+	 * header's value: removes the `b=` tag's value (up to the next `;` or
+	 * the end), keeping everything else — including the whitespace around
+	 * the tag name — byte for byte.
+	 */
+	private function blank_signature_value( string $value ): string {
+		return (string) preg_replace( '/((?:^|;)\s*b\s*=)[^;]*/', '$1', $value, 1 );
 	}
 
 	private function verify_against_key( string $record, string $digest, string $signature_b64, string $signed_data ): bool {
@@ -308,6 +347,54 @@ final class Dav_Mlm_Dkim_Verifier {
 		$signing_domain = strtolower( $signing_domain );
 
 		return $signing_domain === $from_domain || str_ends_with( $from_domain, '.' . $signing_domain );
+	}
+
+	/**
+	 * Ties the signature check to the From address the caller will act on.
+	 * The caller's address comes from Dav_Mlm_Message_Parser, which reads
+	 * headers with a different parser than this class; if the two disagreed
+	 * on which line is "the" From (e.g. `From :` with a space, which relaxed
+	 * canonicalisation still verifies, or a From hidden past the library's
+	 * header-count limit), an attacker could prepend a forged From above a
+	 * genuinely signed one. So, in this class's own view of the headers:
+	 * exactly one From, and its address equals $from_address.
+	 *
+	 * @param list<array{name: string, raw: string, value: string}> $headers
+	 * @return string|null Why the From header is unacceptable, or null if it's fine.
+	 */
+	private function from_header_problem( array $headers, string $from_address ): ?string {
+		$from_headers = $this->named_headers( $headers, 'From' );
+		if ( 1 !== count( $from_headers ) ) {
+			return sprintf( 'Expected exactly one From header, found %d.', count( $from_headers ) );
+		}
+
+		$address = $this->header_address( $from_headers[0]['value'] );
+		if ( null === $address || 0 !== strcasecmp( $address, trim( $from_address ) ) ) {
+			return sprintf( 'The From header does not carry the expected address %s.', $from_address );
+		}
+
+		return null;
+	}
+
+	/**
+	 * The bare address of a single-mailbox header value: the `<...>` part if
+	 * there is one, else the value minus any `(comment)`. Anything with more
+	 * than one angle bracket pair is ambiguous and yields null (fail closed).
+	 */
+	private function header_address( string $value ): ?string {
+		$value = trim( (string) preg_replace( '/\r\n[ \t]+/', ' ', $value ) );
+
+		if ( substr_count( $value, '<' ) > 1 || substr_count( $value, '>' ) > 1 ) {
+			return null;
+		}
+
+		if ( 1 === preg_match( '/<([^<>]*)>/', $value, $matches ) ) {
+			$address = trim( $matches[1] );
+		} else {
+			$address = trim( (string) preg_replace( '/\([^()]*\)/', '', $value ) );
+		}
+
+		return '' === $address ? null : $address;
 	}
 
 	private function domain_of( string $address ): ?string {
@@ -464,20 +551,27 @@ final class Dav_Mlm_Dkim_Verifier {
 		return $name . ': ' . $value;
 	}
 
+	/**
+	 * RFC 6376 §3.4.3 / §3.4.4. Both drop trailing empty lines and end a
+	 * non-empty body with exactly one CRLF; they differ for an empty body
+	 * ("simple" → CRLF, "relaxed" → nothing) and in that "relaxed" also
+	 * collapses whitespace runs and drops whitespace at every line end —
+	 * including the last line when the body doesn't end in CRLF.
+	 */
 	private function canonicalize_body( string $body, string $style ): string {
 		$body = str_replace( array( "\r\n", "\r" ), array( "\n", "\n" ), $body );
 		$body = str_replace( "\n", "\r\n", $body );
 
-		if ( '' === $body ) {
-			return "\r\n";
-		}
-
 		if ( 'relaxed' === $style ) {
 			$body = (string) preg_replace( '/[ \t]+/', ' ', $body );
-			$body = (string) preg_replace( '/ (\r\n)/', '$1', $body );
+			$body = (string) preg_replace( '/ (?=\r\n|\z)/', '', $body );
 		}
 
 		$body = (string) preg_replace( '/(\r\n)+\z/', '', $body );
+
+		if ( '' === $body ) {
+			return 'relaxed' === $style ? '' : "\r\n";
+		}
 
 		return $body . "\r\n";
 	}

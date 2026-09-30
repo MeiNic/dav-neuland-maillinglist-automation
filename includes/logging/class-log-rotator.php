@@ -25,13 +25,14 @@ final class Dav_Mlm_Log_Rotator {
 	 * @return string[] Paths of the files that were deleted.
 	 */
 	public function prune( string $dir, int $retention_days, DateTimeImmutable $now ): array {
-		$cutoff  = $now->modify( "-{$retention_days} days" );
+		// Whole days only: file dates are midnight, so the cutoff is too.
+		$cutoff  = $now->setTime( 0, 0 )->modify( "-{$retention_days} days" );
 		$deleted = array();
 
 		$paths = glob( rtrim( $dir, '/\\' ) . '/' . self::FILE_PREFIX . '*' . self::FILE_SUFFIX );
 
 		foreach ( false !== $paths ? $paths : array() as $path ) {
-			$date = $this->date_from_filename( $path );
+			$date = $this->date_from_filename( $path, $now->getTimezone() );
 
 			if ( null !== $date && $date < $cutoff && @unlink( $path ) ) {
 				$deleted[] = $path;
@@ -41,14 +42,16 @@ final class Dav_Mlm_Log_Rotator {
 		return $deleted;
 	}
 
-	private function date_from_filename( string $path ): ?DateTimeImmutable {
+	private function date_from_filename( string $path, DateTimeZone $now_timezone ): ?DateTimeImmutable {
 		$pattern = '/^' . preg_quote( self::FILE_PREFIX, '/' ) . '(\d{4}-\d{2}-\d{2})' . preg_quote( self::FILE_SUFFIX, '/' ) . '$/';
 
 		if ( ! preg_match( $pattern, basename( $path ), $matches ) ) {
 			return null;
 		}
 
-		$date = DateTimeImmutable::createFromFormat( 'Y-m-d', $matches[1] );
+		// `!` resets the unparsed fields (time of day) to zero instead of
+		// filling them in from the wall clock.
+		$date = DateTimeImmutable::createFromFormat( '!Y-m-d', $matches[1], $now_timezone );
 
 		return false !== $date ? $date : null;
 	}

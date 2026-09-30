@@ -68,6 +68,28 @@ final class LoggerTest extends TestCase {
 		self::assertStringNotContainsString( 'SUPERSECRET', $contents );
 	}
 
+	public function test_context_with_invalid_utf8_is_still_written(): void {
+		$logger = $this->make_logger();
+
+		$logger->info( 'rejected', array( 'subject' => "Gr\xFC\xDFe", 'list' => 'test.mailingliste@dav-neuland.de' ) );
+
+		$contents = $this->read_log_file();
+		self::assertStringContainsString( 'test.mailingliste@dav-neuland.de', $contents );
+		self::assertStringContainsString( '"subject":"Gr', $contents );
+	}
+
+	public function test_without_an_injected_clock_each_line_gets_the_current_time(): void {
+		$logger = new Dav_Mlm_Logger( $this->fake_config( $this->temp_dir ) );
+
+		$before = new DateTimeImmutable();
+		$logger->info( 'live clock' );
+
+		$path = $this->temp_dir . '/dav-mlm-' . $before->format( 'Y-m-d' ) . '.log';
+		self::assertFileExists( $path );
+		self::assertSame( 1, preg_match( '/^\[(\S+)\] \[INFO\] live clock$/m', (string) file_get_contents( $path ), $matches ) );
+		self::assertGreaterThanOrEqual( $before->getTimestamp(), ( new DateTimeImmutable( $matches[1] ) )->getTimestamp() );
+	}
+
 	public function test_prune_old_logs_delegates_to_the_rotator(): void {
 		$old_file = $this->temp_dir . '/dav-mlm-2020-01-01.log';
 		file_put_contents( $old_file, "stale\n" );

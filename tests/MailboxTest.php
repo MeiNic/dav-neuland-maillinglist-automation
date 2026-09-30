@@ -75,6 +75,17 @@ final class MailboxTest extends TestCase {
 		self::assertSame( 'INBOX.Moderation.Error', ( new Dav_Mlm_Mailbox( $this->config( 'ssl', 'INBOX.Moderation' ) ) )->folder_path( 'Error', '.' ) );
 	}
 
+	public function test_a_utf8_folder_name_is_encoded_as_modified_utf7(): void {
+		if ( ! function_exists( 'imap_utf8_to_mutf7' ) ) {
+			self::markTestSkipped( 'ext-imap is not loaded.' );
+		}
+
+		$mailbox = new Dav_Mlm_Mailbox( $this->config() );
+
+		self::assertSame( 'Moderation/Approved', $mailbox->encode_folder_name( 'Moderation/Approved' ) );
+		self::assertSame( 'Pr&APw-fung/Approved', $mailbox->encode_folder_name( 'Prüfung/Approved' ) );
+	}
+
 	public function test_folder_name_from_listing_strips_the_servers_own_reference(): void {
 		$mailbox = new Dav_Mlm_Mailbox( $this->config() );
 

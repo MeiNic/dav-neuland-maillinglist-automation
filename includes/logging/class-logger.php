@@ -27,8 +27,13 @@ final class Dav_Mlm_Logger {
 	private bool $verbose;
 	private Dav_Mlm_Log_Masker $masker;
 	private Dav_Mlm_Log_Rotator $rotator;
-	private DateTimeImmutable $now;
+	private ?DateTimeImmutable $fixed_now;
 
+	/**
+	 * @param DateTimeImmutable|null $now A fixed clock for tests; null (the
+	 *        default) reads the real time on every write, so each line of a
+	 *        long run carries its own timestamp.
+	 */
 	public function __construct(
 		Dav_Mlm_Log_Config $config,
 		bool $verbose = false,
@@ -36,11 +41,11 @@ final class Dav_Mlm_Logger {
 		?Dav_Mlm_Log_Rotator $rotator = null,
 		?DateTimeImmutable $now = null
 	) {
-		$this->config  = $config;
-		$this->verbose = $verbose;
-		$this->masker  = $masker ?? new Dav_Mlm_Log_Masker();
-		$this->rotator = $rotator ?? new Dav_Mlm_Log_Rotator();
-		$this->now     = $now ?? new DateTimeImmutable();
+		$this->config    = $config;
+		$this->verbose   = $verbose;
+		$this->masker    = $masker ?? new Dav_Mlm_Log_Masker();
+		$this->rotator   = $rotator ?? new Dav_Mlm_Log_Rotator();
+		$this->fixed_now = $now;
 	}
 
 	/**
@@ -80,15 +85,20 @@ final class Dav_Mlm_Logger {
 	 * @return string[] Paths of the files that were deleted.
 	 */
 	public function prune_old_logs(): array {
-		return $this->rotator->prune( $this->config->data_dir(), $this->config->log_retention_days(), $this->now );
+		return $this->rotator->prune( $this->config->data_dir(), $this->config->log_retention_days(), $this->now() );
+	}
+
+	private function now(): DateTimeImmutable {
+		return $this->fixed_now ?? new DateTimeImmutable();
 	}
 
 	/**
 	 * @param array<string, mixed> $context
 	 */
 	private function write( string $level, string $message, array $context ): void {
-		$line = $this->format_line( $level, $message, $context );
-		$file = $this->rotator->current_file_path( $this->config->data_dir(), $this->now );
+		$now  = $this->now();
+		$line = $this->format_line( $level, $message, $context, $now );
+		$file = $this->rotator->current_file_path( $this->config->data_dir(), $now );
 
 		if ( ! $this->append( $file, $line ) ) {
 			error_log( '[dav-mlm] ' . $line );
@@ -108,10 +118,10 @@ final class Dav_Mlm_Logger {
 	/**
 	 * @param array<string, mixed> $context
 	 */
-	private function format_line( string $level, string $message, array $context ): string {
+	private function format_line( string $level, string $message, array $context, DateTimeImmutable $now ): string {
 		$line = sprintf(
 			'[%s] [%s] %s',
-			$this->now->format( DateTimeInterface::ATOM ),
+			$now->format( DateTimeInterface::ATOM ),
 			strtoupper( $level ),
 			$this->masker->mask_message( $message )
 		);
@@ -119,7 +129,9 @@ final class Dav_Mlm_Logger {
 		$masked_context = $this->masker->mask_context( $context );
 
 		if ( array() !== $masked_context ) {
-			$line .= ' ' . (string) json_encode( $masked_context, JSON_UNESCAPED_SLASHES );
+			// Header values from mail can be invalid UTF-8; without these
+			// flags json_encode() returns false and the whole context is lost.
+			$line .= ' ' . (string) json_encode( $masked_context, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR );
 		}
 
 		return $line . PHP_EOL;

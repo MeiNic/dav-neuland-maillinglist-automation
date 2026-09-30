@@ -12,6 +12,8 @@ final class AlerterTest extends TestCase {
 	private const MAIL_FROM      = 'noreply@dav-neuland.de';
 	private const MAIL_FROM_NAME = 'DAV Neuland Mailinglisten';
 
+	private ?string $previous_error_log = null;
+
 	protected function setUp(): void {
 		dav_mlm_test_reset_wp_state();
 	}
@@ -156,6 +158,75 @@ final class AlerterTest extends TestCase {
 
 		self::assertSame( Dav_Mlm_Alerter::SENT_FAILURE_ALERT, $result );
 		self::assertCount( 3, $GLOBALS['dav_mlm_test_wp_mail_calls'] );
+	}
+
+	// -- delivery failures ---------------------------------------------------------
+
+	public function test_when_smtp_fails_the_default_transport_is_tried(): void {
+		dav_mlm_test_queue_wp_mail_results( false, true );
+
+		$result = $this->alerter( 3 )->handle_run_outcome( false, 3, 'IMAP login failed.' );
+
+		self::assertSame( Dav_Mlm_Alerter::SENT_FAILURE_ALERT, $result );
+		self::assertCount( 2, $GLOBALS['dav_mlm_test_wp_mail_calls'] );
+		self::assertTrue( $GLOBALS['dav_mlm_test_wp_mail_calls'][0]['mailer']->smtp_enabled );
+		self::assertFalse( $GLOBALS['dav_mlm_test_wp_mail_calls'][1]['mailer']->smtp_enabled, 'The fallback must not use our SMTP settings.' );
+	}
+
+	public function test_an_undelivered_failure_alert_does_not_start_the_throttle(): void {
+		$alerter = $this->alerter( 3 );
+
+		$error_log = $this->silence_error_log();
+		try {
+			dav_mlm_test_set_wp_mail_result( false );
+			$first = $alerter->handle_run_outcome( false, 3, '', $this->now( 1_000_000_000 ) );
+			self::assertStringContainsString( 'Could not send alert', (string) file_get_contents( $error_log ) );
+		} finally {
+			$this->restore_error_log();
+		}
+
+		dav_mlm_test_set_wp_mail_result( true );
+		$second = $alerter->handle_run_outcome( false, 4, '', $this->now( 1_000_000_000 + 300 ) );
+
+		self::assertNull( $first );
+		self::assertSame( Dav_Mlm_Alerter::SENT_FAILURE_ALERT, $second );
+	}
+
+	public function test_an_undelivered_recovered_mail_is_retried_on_the_next_success(): void {
+		$alerter = $this->alerter( 3 );
+		$alerter->handle_run_outcome( false, 3 );
+
+		$this->silence_error_log();
+		try {
+			dav_mlm_test_set_wp_mail_result( false );
+			$first = $alerter->handle_run_outcome( true, 0 );
+		} finally {
+			$this->restore_error_log();
+		}
+
+		dav_mlm_test_set_wp_mail_result( true );
+		$second = $alerter->handle_run_outcome( true, 0 );
+
+		self::assertNull( $first );
+		self::assertSame( Dav_Mlm_Alerter::SENT_RECOVERED, $second );
+	}
+
+	/**
+	 * Points error_log() at a temp file for the duration of a test, so the
+	 * expected "could not send" line doesn't clutter PHPUnit's output.
+	 */
+	private function silence_error_log(): string {
+		$path                     = (string) tempnam( sys_get_temp_dir(), 'dav-mlm-alerter-' );
+		$previous                 = ini_set( 'error_log', $path );
+		$this->previous_error_log = false !== $previous ? $previous : '';
+
+		return $path;
+	}
+
+	private function restore_error_log(): void {
+		$path = (string) ini_get( 'error_log' );
+		ini_set( 'error_log', (string) $this->previous_error_log );
+		@unlink( $path );
 	}
 
 	public function test_throttle_state_persists_across_alerter_instances(): void {

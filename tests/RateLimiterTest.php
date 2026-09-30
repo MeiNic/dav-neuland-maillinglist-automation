@@ -54,6 +54,29 @@ final class RateLimiterTest extends TestCase {
 		self::assertSame( 2, $limiter->register_sent( '  someone@example.com  ' ) );
 	}
 
+	public function test_the_window_is_fixed_from_the_first_mail_not_extended_by_later_ones(): void {
+		$limiter = new Dav_Mlm_Rate_Limiter();
+		$start   = ( new DateTimeImmutable() )->setTimestamp( 1_000_000_000 );
+
+		for ( $i = 0; $i < Dav_Mlm_Rate_Limiter::MAX_PER_SENDER_PER_DAY; $i++ ) {
+			// Spread across the day: 3h, 8h, ... 23h after $start (the last one 20h after the first).
+			$limiter->register_sent( 'someone@example.com', $start->modify( '+' . ( $i * 5 + 3 ) . ' hours' ) );
+		}
+
+		self::assertTrue( $limiter->has_exceeded( 'someone@example.com', $start->modify( '+23 hours 59 minutes' ) ) );
+		self::assertFalse( $limiter->has_exceeded( 'someone@example.com', $start->modify( '+27 hours' ) ) );
+	}
+
+	public function test_a_new_window_starts_counting_from_one(): void {
+		$limiter = new Dav_Mlm_Rate_Limiter();
+		$start   = ( new DateTimeImmutable() )->setTimestamp( 1_000_000_000 );
+
+		$limiter->register_sent( 'someone@example.com', $start );
+		$limiter->register_sent( 'someone@example.com', $start->modify( '+1 hour' ) );
+
+		self::assertSame( 1, $limiter->register_sent( 'someone@example.com', $start->modify( '+25 hours' ) ) );
+	}
+
 	public function test_the_transient_key_never_contains_the_raw_email_address(): void {
 		( new Dav_Mlm_Rate_Limiter() )->register_sent( 'someone@example.com' );
 

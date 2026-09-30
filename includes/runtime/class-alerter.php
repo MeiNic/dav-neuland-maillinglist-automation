@@ -102,10 +102,13 @@ final class Dav_Mlm_Alerter {
 				return null;
 			}
 
-			$this->send(
+			$sent = $this->send(
 				'DAV Mailinglisten-Moderation: wieder normal',
 				"Der Cronjob läuft seit dem letzten Lauf wieder ohne Fehler.\n"
 			);
+			if ( ! $sent ) {
+				return null; // State kept: the next successful run tries again.
+			}
 			$this->save_state( array( 'last_failure_alert_sent_at' => null ) );
 
 			return self::SENT_RECOVERED;
@@ -125,16 +128,47 @@ final class Dav_Mlm_Alerter {
 			$body .= "\nLetzter Fehler:\n" . $detail . "\n";
 		}
 
-		$this->send( 'DAV Mailinglisten-Moderation: Cronjob schlägt fehl', $body );
+		// Only a delivered alert starts the 24h throttle; otherwise the next
+		// failing run tries again instead of staying silent for a day.
+		if ( ! $this->send( 'DAV Mailinglisten-Moderation: Cronjob schlägt fehl', $body ) ) {
+			return null;
+		}
 		$this->save_state( array( 'last_failure_alert_sent_at' => $now->getTimestamp() ) );
 
 		return self::SENT_FAILURE_ALERT;
 	}
 
+	/**
+	 * Tries the noreply@ mailbox's SMTP first, then WordPress's default
+	 * transport: SMTP shares the IMAP password by default, so a rotated
+	 * password — the most likely reason runs start failing — breaks SMTP
+	 * too, and the alert about it would otherwise never leave. If both
+	 * fail, the error goes to error_log(), which the crontab entry
+	 * redirects into cron.log.
+	 */
 	private function send( string $subject, string $body ): bool {
 		$headers = array( sprintf( 'From: %s <%s>', $this->mail_from_name, $this->mail_from ) );
 
-		return $this->mailer->send( $this->alert_email, $subject, $body, $headers );
+		if ( $this->mailer->send( $this->alert_email, $subject, $body, $headers ) ) {
+			return true;
+		}
+		$smtp_error = $this->mailer->last_error();
+
+		if ( $this->mailer->send_via_default_transport( $this->alert_email, $subject, $body, $headers ) ) {
+			return true;
+		}
+
+		error_log(
+			sprintf(
+				'[dav-mlm] Could not send alert "%s" to %s (SMTP: %s; default transport: %s).',
+				$subject,
+				$this->alert_email,
+				$smtp_error ?? 'no error message',
+				$this->mailer->last_error() ?? 'no error message'
+			)
+		);
+
+		return false;
 	}
 
 	/**

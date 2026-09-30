@@ -39,7 +39,9 @@ final class DkimVerifierTest extends TestCase {
 			$expires_at,
 			$overrides['header_canon'] ?? 'relaxed',
 			$overrides['body_canon'] ?? 'relaxed',
-			$overrides['digest'] ?? 'sha256'
+			$overrides['digest'] ?? 'sha256',
+			$overrides['body_length'] ?? null,
+			$overrides['extra_tags'] ?? ''
 		);
 
 		return $signed + array(
@@ -165,12 +167,172 @@ final class DkimVerifierTest extends TestCase {
 		self::assertSame( Dav_Mlm_Dkim_Result::FAIL, $result->failure_reason() );
 	}
 
-	public function test_a_valid_signature_with_a_non_aligned_domain_fails(): void {
-		$message  = $this->signed_message(); // signed for d=example.com
+	public function test_a_forged_from_above_a_signed_from_with_a_space_before_the_colon_fails(): void {
+		// Relaxed canonicalisation ignores the space in `From :`, so the
+		// signature on alice's own From stays valid; a parser that doesn't
+		// count `From :` as From would only see the forged one on top.
+		$message = $this->signed_message();
+		[$headers, $body] = explode( "\r\n\r\n", $message['raw'], 2 );
+		$headers = str_replace( 'From: ' . self::FROM, 'From : ' . self::FROM, $headers );
+		$raw     = "From: boss@example.com\r\n" . $headers . "\r\n\r\n" . $body;
+
 		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
 
-		// The nested From is a different, unrelated domain: a valid
-		// signature from example.com says nothing about attacker.example.
+		$result = $verifier->verify( $raw, 'boss@example.com', $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertFalse( $result->is_pass() );
+		self::assertSame( Dav_Mlm_Dkim_Result::FAIL, $result->failure_reason() );
+		self::assertStringContainsString( 'exactly one From header', $result->detail() );
+	}
+
+	public function test_a_from_address_other_than_the_signed_one_fails(): void {
+		// Covers the case where the caller's parser saw a different From
+		// line than this verifier does (e.g. the signed one hidden past the
+		// parser's header-count limit): only the signed address may pass.
+		$message  = $this->signed_message();
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], 'boss@example.com', $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertFalse( $result->is_pass() );
+		self::assertSame( Dav_Mlm_Dkim_Result::FAIL, $result->failure_reason() );
+		self::assertStringContainsString( 'boss@example.com', $result->detail() );
+	}
+
+	public function test_a_from_with_a_display_name_passes(): void {
+		$message  = $this->signed_message(
+			array(
+				'headers' => array(
+					array( 'From', '"Alice Example" <' . strtoupper( self::FROM ) . '>' ),
+					array( 'Subject', 'Test post' ),
+				),
+				'signed_header_names' => array( 'From', 'Subject' ),
+			)
+		);
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertTrue( $result->is_pass(), $result->detail() );
+	}
+
+	public function test_a_signature_with_a_body_length_limit_fails(): void {
+		$message = $this->signed_message( array( 'body_length' => 13 ) ); // exactly "Hello list.\r\n"
+		$raw     = $message['raw'] . "Appended by someone else.\r\n";
+
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $raw, self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertFalse( $result->is_pass() );
+		self::assertStringContainsString( 'l=', $result->detail() );
+	}
+
+	public function test_an_rsa_sha1_signature_fails(): void {
+		$message  = $this->signed_message( array( 'digest' => 'sha1' ) );
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertFalse( $result->is_pass() );
+		self::assertStringContainsString( 'Unsupported signature algorithm', $result->detail() );
+	}
+
+	public function test_a_b_equals_inside_another_tag_value_is_not_blanked(): void {
+		// `i=bob=list@...` contains "b=" before the real b= tag.
+		$message  = $this->signed_message( array( 'extra_tags' => 'i=bob=list@' . self::DOMAIN ) );
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertTrue( $result->is_pass(), $result->detail() );
+	}
+
+	public function test_a_b_equals_inside_another_tag_value_is_not_blanked_with_simple_canonicalisation(): void {
+		$message  = $this->signed_message(
+			array(
+				'extra_tags'   => 'i=bob=list@' . self::DOMAIN,
+				'header_canon' => 'simple',
+			)
+		);
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertTrue( $result->is_pass(), $result->detail() );
+	}
+
+	public function test_relaxed_body_trailing_whitespace_without_a_final_crlf_is_ignored(): void {
+		$message  = $this->signed_message( array( 'body' => "Hello list.\r\nBye.  \t" ) );
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertTrue( $result->is_pass(), $result->detail() );
+	}
+
+	/**
+	 * @return iterable<string, array{0: string, 1: string}>
+	 */
+	public static function empty_bodies(): iterable {
+		yield 'relaxed, empty' => array( 'relaxed', '' );
+		yield 'relaxed, blank lines only' => array( 'relaxed', "\r\n  \r\n" );
+		yield 'simple, empty' => array( 'simple', '' );
+		yield 'simple, blank lines only' => array( 'simple', "\r\n\r\n" );
+	}
+
+	/**
+	 * @dataProvider empty_bodies
+	 */
+	public function test_an_empty_body_verifies( string $body_canon, string $body ): void {
+		$message  = $this->signed_message(
+			array(
+				'body'       => $body,
+				'body_canon' => $body_canon,
+			)
+		);
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
+		$result = $verifier->verify( $message['raw'], self::FROM, $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertTrue( $result->is_pass(), $result->detail() );
+	}
+
+	public function test_an_unaligned_signature_never_triggers_a_dns_lookup(): void {
+		// A DNS failure for a signature that couldn't pass anyway must not
+		// be reported as DNS_ERROR (which the runner retries as transient).
+		$message = $this->signed_message(
+			array(
+				'headers'             => array( array( 'From', 'someone@attacker.example' ) ),
+				'signed_header_names' => array( 'From' ),
+			)
+		);
+		$lookups  = 0;
+		$verifier = new Dav_Mlm_Dkim_Verifier(
+			static function () use ( &$lookups ): bool {
+				++$lookups;
+				return false;
+			}
+		);
+
+		$result = $verifier->verify( $message['raw'], 'someone@attacker.example', $this->now( $message['signed_at'] + 10 ) );
+
+		self::assertSame( Dav_Mlm_Dkim_Result::FAIL, $result->failure_reason() );
+		self::assertSame( 0, $lookups );
+	}
+
+	public function test_a_valid_signature_with_a_non_aligned_domain_fails(): void {
+		// Signed for d=example.com, but the From is a different, unrelated
+		// domain: a valid signature from example.com says nothing about
+		// attacker.example.
+		$message  = $this->signed_message(
+			array(
+				'headers'             => array( array( 'From', 'someone@attacker.example' ) ),
+				'signed_header_names' => array( 'From' ),
+			)
+		);
+		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
+
 		$result = $verifier->verify( $message['raw'], 'someone@attacker.example', $this->now( $message['signed_at'] + 10 ) );
 
 		self::assertFalse( $result->is_pass() );
@@ -178,7 +340,12 @@ final class DkimVerifierTest extends TestCase {
 	}
 
 	public function test_a_subdomain_of_the_signing_domain_is_aligned(): void {
-		$message  = $this->signed_message();
+		$message  = $this->signed_message(
+			array(
+				'headers'             => array( array( 'From', 'alice@mail.' . self::DOMAIN ) ),
+				'signed_header_names' => array( 'From' ),
+			)
+		);
 		$verifier = new Dav_Mlm_Dkim_Verifier( $this->dns_lookup_for( $message['key_record'] ) );
 
 		$result = $verifier->verify( $message['raw'], 'alice@mail.' . self::DOMAIN, $this->now( $message['signed_at'] + 10 ) );

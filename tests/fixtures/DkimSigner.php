@@ -29,15 +29,20 @@ final class Dav_Mlm_Test_Dkim_Signer {
 		int $expires_at,
 		string $header_canon = 'relaxed',
 		string $body_canon = 'relaxed',
-		string $digest = 'sha256'
+		string $digest = 'sha256',
+		?int $body_length = null,
+		string $extra_tags = ''
 	): array {
 		[$private_key, $public_key_body] = self::generate_keypair();
 
 		$canonical_body = self::canonicalize_body( $body, $body_canon );
+		if ( null !== $body_length ) {
+			$canonical_body = substr( $canonical_body, 0, $body_length );
+		}
 		$bh = base64_encode( hash( $digest, $canonical_body, true ) );
 
 		$tags = sprintf(
-			'v=1; a=rsa-%s; c=%s/%s; d=%s; s=%s; h=%s; bh=%s; t=%d; x=%d; b=',
+			'v=1; a=rsa-%s; c=%s/%s; d=%s; s=%s; h=%s; bh=%s; t=%d; x=%d; %s%sb=',
 			$digest,
 			$header_canon,
 			$body_canon,
@@ -46,7 +51,9 @@ final class Dav_Mlm_Test_Dkim_Signer {
 			implode( ':', $signed_header_names ),
 			$bh,
 			$signed_at,
-			$expires_at
+			$expires_at,
+			null === $body_length ? '' : "l=$body_length; ",
+			'' === $extra_tags ? '' : "$extra_tags; "
 		);
 
 		$canonical_lines = array();
@@ -134,21 +141,26 @@ final class Dav_Mlm_Test_Dkim_Signer {
 		return strtolower( $name ) . ': ' . trim( (string) preg_replace( '/\s+/', ' ', $value ) );
 	}
 
+	/**
+	 * RFC 6376 §3.4.3 / §3.4.4, done line by line (unlike the verifier's
+	 * regex version): relaxed trims every line's trailing whitespace —
+	 * the last line's too — and an empty relaxed body is the empty string.
+	 */
 	private static function canonicalize_body( string $body, string $style ): string {
-		$body = str_replace( array( "\r\n", "\r" ), array( "\n", "\n" ), $body );
-		$body = str_replace( "\n", "\r\n", $body );
-
-		if ( '' === $body ) {
-			return "\r\n";
-		}
+		$lines = explode( "\n", str_replace( array( "\r\n", "\r" ), "\n", $body ) );
 
 		if ( 'relaxed' === $style ) {
-			$body = (string) preg_replace( '/[ \t]+/', ' ', $body );
-			$body = (string) preg_replace( '/ (\r\n)/', '$1', $body );
+			$lines = array_map( static fn ( string $line ): string => rtrim( (string) preg_replace( '/[ \t]+/', ' ', $line ), ' ' ), $lines );
 		}
 
-		$body = (string) preg_replace( '/(\r\n)+\z/', '', $body );
+		while ( array() !== $lines && '' === end( $lines ) ) {
+			array_pop( $lines );
+		}
 
-		return $body . "\r\n";
+		if ( array() === $lines ) {
+			return 'relaxed' === $style ? '' : "\r\n";
+		}
+
+		return implode( "\r\n", $lines ) . "\r\n";
 	}
 }

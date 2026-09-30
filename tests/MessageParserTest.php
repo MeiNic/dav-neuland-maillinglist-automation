@@ -139,6 +139,15 @@ final class MessageParserTest extends TestCase {
 		$this->assert_failure( Dav_Mlm_Parse_Result::MULTIPLE_FROM, $raw );
 	}
 
+	public function test_a_space_before_the_colon_still_counts_as_a_from_header(): void {
+		// DKIM relaxed canonicalisation treats `From :` as From, so hiding the
+		// signed From that way must not leave a forged one as the only From.
+		$raw = $this->replace_once( $this->sample(), 'From: Test Sender <sender@example.com>', 'From : Test Sender <sender@example.com>' );
+		$raw = $this->replace_once( $raw, "Return-Path: <sender@example.com>\r\n", "From: Other <other@example.org>\r\nReturn-Path: <sender@example.com>\r\n" );
+
+		$this->assert_failure( Dav_Mlm_Parse_Result::MULTIPLE_FROM, $raw );
+	}
+
 	public function test_lookalike_from_header_name_is_not_a_from_header(): void {
 		$raw = $this->replace_once( $this->sample(), 'From: Test Sender <sender@example.com>', 'Fr_om: Test Sender <sender@example.com>' );
 

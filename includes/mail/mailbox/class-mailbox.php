@@ -83,7 +83,7 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		}
 
 		foreach ( $wanted as $path ) {
-			$encoded = imap_utf7_encode( $path );
+			$encoded = $this->encode_folder_name( $path );
 			if ( isset( $existing[ $encoded ] ) ) {
 				continue;
 			}
@@ -137,7 +137,7 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 			throw new Dav_Mlm_Mailbox_Exception( sprintf( 'Unknown target folder "%s".', $folder ) );
 		}
 
-		$path = imap_utf7_encode( $this->folder_path( $folder, $this->hierarchy_delimiter() ) );
+		$path = $this->encode_folder_name( $this->folder_path( $folder, $this->hierarchy_delimiter() ) );
 
 		if ( ! imap_mail_move( $this->require_stream(), (string) $uid, $path, CP_UID ) ) {
 			throw new Dav_Mlm_Mailbox_Exception( sprintf( 'IMAP move of UID %d to "%s" failed: %s', $uid, $folder, $this->last_error() ) );
@@ -211,6 +211,20 @@ final class Dav_Mlm_Mailbox implements Dav_Mlm_Mailbox_Interface {
 		$end = strpos( $listed_name, '}' );
 
 		return false === $end ? $listed_name : substr( $listed_name, $end + 1 );
+	}
+
+	/**
+	 * UTF-8 folder name → IMAP modified UTF-7 (RFC 3501 §5.1.3), the form
+	 * the server lists and expects. imap_utf7_encode() is not a substitute:
+	 * it expects ISO-8859-1 input and mangles a UTF-8 prefix like `Prüfung`.
+	 */
+	public function encode_folder_name( string $utf8_name ): string {
+		$encoded = imap_utf8_to_mutf7( $utf8_name );
+		if ( false === $encoded ) {
+			throw new Dav_Mlm_Mailbox_Exception( sprintf( 'Folder name "%s" is not valid UTF-8.', $utf8_name ) );
+		}
+
+		return $encoded;
 	}
 
 	private function hierarchy_delimiter(): string {

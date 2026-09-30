@@ -47,6 +47,9 @@ final class ApproverTest extends TestCase {
 		yield 'missing id parameter' => array( 'https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de/Mail/Confirm?lang=de', self::LIST );
 		yield 'userinfo host-spoofing trick' => array( 'https://ml.kundenserver.de@evil.example/MailingList/test.mailingliste@dav-neuland.de/Mail/Confirm?lang=de&id=x', self::LIST );
 		yield 'wrong path' => array( 'https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de/Mail/Reject?lang=de&id=x', self::LIST );
+		yield 'userinfo before the right host' => array( 'https://user:pass@ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de/Mail/Confirm?lang=de&id=x', self::LIST );
+		yield 'explicit port' => array( 'https://ml.kundenserver.de:8443/MailingList/test.mailingliste@dav-neuland.de/Mail/Confirm?lang=de&id=x', self::LIST );
+		yield 'fragment' => array( 'https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de/Mail/Confirm?lang=de&id=x#frag', self::LIST );
 		yield 'unparseable url' => array( 'https:///MailingList/test.mailingliste@dav-neuland.de/Mail/Confirm?lang=de&id=x', self::LIST );
 	}
 
@@ -82,7 +85,7 @@ final class ApproverTest extends TestCase {
 		dav_mlm_test_set_http_response(
 			array(
 				'response' => array( 'code' => 200 ),
-				'body'     => 'Der Vorgang war erfolgreich.',
+				'body'     => '<title>Der Vorgang war erfolgreich.</title>',
 			)
 		);
 
@@ -104,6 +107,20 @@ final class ApproverTest extends TestCase {
 			array(
 				'response' => array( 'code' => 200 ),
 				'body'     => '<title>Fehler</title>',
+			)
+		);
+
+		$result = $this->approver()->approve( self::VALID_URL, self::LIST );
+
+		self::assertFalse( $result->is_success() );
+		self::assertSame( Dav_Mlm_Approve_Result::NOT_CONFIRMED, $result->failure_reason() );
+	}
+
+	public function test_the_success_sentence_outside_the_title_is_not_success(): void {
+		dav_mlm_test_set_http_response(
+			array(
+				'response' => array( 'code' => 200 ),
+				'body'     => '<title>Fehler</title><p>Der Vorgang war erfolgreich.</p>',
 			)
 		);
 

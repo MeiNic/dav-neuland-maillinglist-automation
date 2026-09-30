@@ -15,13 +15,19 @@ final class Dav_Mlm_Log_Masker {
 	private const MASK = '***';
 
 	/**
-	 * Keys whose value is always fully replaced, wherever they appear in
-	 * a context array. Deliberately narrow — e.g. a bare "id" is NOT
-	 * listed here, because list ids and Message-IDs are meant to be
-	 * logged (PLAN.md line 229) and "id" alone can't tell those apart
+	 * A context key is sensitive when one of its words (split on `_`, `-`,
+	 * `.`, ...) is listed here — so `smtp_pass` and `confirm_token` are,
+	 * but `passed_path` or `bypass` are not. Deliberately narrow — e.g. a
+	 * bare "id" is NOT listed, because list ids and Message-IDs are meant
+	 * to be logged (PLAN.md line 229) and "id" alone can't tell those apart
 	 * from a confirm token.
 	 */
-	private const SENSITIVE_CONTEXT_KEYS = array( 'token', 'confirm_token', 'confirm_id', 'pass', 'password' );
+	private const SENSITIVE_KEY_WORDS = array( 'token', 'pass', 'password', 'passwd', 'secret' );
+
+	/**
+	 * Whole keys that are sensitive although none of their words is.
+	 */
+	private const SENSITIVE_KEYS = array( 'confirm_id' );
 
 	/**
 	 * Masks a `?id=...` / `&id=...` (or `token=...`) query parameter
@@ -43,13 +49,13 @@ final class Dav_Mlm_Log_Masker {
 		$masked = array();
 
 		foreach ( $context as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$masked[ $key ] = $this->mask_context( $value );
+			if ( is_string( $key ) && $this->is_sensitive_key( $key ) ) {
+				$masked[ $key ] = self::MASK;
 				continue;
 			}
 
-			if ( is_string( $key ) && $this->is_sensitive_key( $key ) ) {
-				$masked[ $key ] = self::MASK;
+			if ( is_array( $value ) ) {
+				$masked[ $key ] = $this->mask_context( $value );
 				continue;
 			}
 
@@ -62,12 +68,12 @@ final class Dav_Mlm_Log_Masker {
 	private function is_sensitive_key( string $key ): bool {
 		$key = strtolower( $key );
 
-		foreach ( self::SENSITIVE_CONTEXT_KEYS as $needle ) {
-			if ( str_contains( $key, $needle ) ) {
-				return true;
-			}
+		if ( in_array( $key, self::SENSITIVE_KEYS, true ) ) {
+			return true;
 		}
 
-		return false;
+		$words = preg_split( '/[^a-z0-9]+/', $key, -1, PREG_SPLIT_NO_EMPTY );
+
+		return array() !== array_intersect( false !== $words ? $words : array(), self::SENSITIVE_KEY_WORDS );
 	}
 }

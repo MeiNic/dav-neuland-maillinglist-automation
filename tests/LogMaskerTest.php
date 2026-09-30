@@ -61,6 +61,30 @@ final class LogMaskerTest extends TestCase {
 		self::assertSame( '<abc@dav-neuland.de>', $masked['message_id'] );
 	}
 
+	public function test_mask_context_matches_whole_words_of_the_key_only(): void {
+		$masked = $this->masker->mask_context(
+			array(
+				'smtp_pass'     => 'secret1',
+				'imap-password' => 'secret2',
+				'confirm_id'    => 'secret3',
+				'passed_path'   => 'reconstructed',
+				'bypass'        => 'no',
+			)
+		);
+
+		self::assertSame( '***', $masked['smtp_pass'] );
+		self::assertSame( '***', $masked['imap-password'] );
+		self::assertSame( '***', $masked['confirm_id'] );
+		self::assertSame( 'reconstructed', $masked['passed_path'] );
+		self::assertSame( 'no', $masked['bypass'] );
+	}
+
+	public function test_mask_context_masks_an_array_under_a_sensitive_key_outright(): void {
+		$masked = $this->masker->mask_context( array( 'password' => array( 'a' => 'secret' ) ) );
+
+		self::assertSame( '***', $masked['password'] );
+	}
+
 	public function test_mask_context_masks_confirm_urls_embedded_in_string_values(): void {
 		$masked = $this->masker->mask_context(
 			array( 'confirm_url' => 'https://ml.kundenserver.de/MailingList/x/Mail/Confirm?lang=de&id=SECRET' )
