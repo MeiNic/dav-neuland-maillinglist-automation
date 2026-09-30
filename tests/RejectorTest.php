@@ -27,11 +27,7 @@ final class RejectorTest extends TestCase {
 		return new Dav_Mlm_Rejector(
 			self::MAIL_FROM,
 			self::MAIL_FROM_NAME,
-			self::SMTP_HOST,
-			self::SMTP_PORT,
-			self::SMTP_ENC,
-			self::SMTP_USER,
-			self::SMTP_PASS
+			new Dav_Mlm_Smtp_Mailer( self::SMTP_HOST, self::SMTP_PORT, self::SMTP_ENC, self::SMTP_USER, self::SMTP_PASS )
 		);
 	}
 

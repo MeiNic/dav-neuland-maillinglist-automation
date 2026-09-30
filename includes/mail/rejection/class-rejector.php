@@ -25,31 +25,19 @@ final class Dav_Mlm_Rejector {
 
 	private string $mail_from;
 	private string $mail_from_name;
-	private string $smtp_host;
-	private int $smtp_port;
-	private string $smtp_encryption;
-	private string $smtp_user;
-	private string $smtp_pass;
+	private Dav_Mlm_Smtp_Mailer $mailer;
 	private Dav_Mlm_Rate_Limiter $rate_limiter;
 
 	public function __construct(
 		string $mail_from,
 		string $mail_from_name,
-		string $smtp_host,
-		int $smtp_port,
-		string $smtp_encryption,
-		string $smtp_user,
-		string $smtp_pass,
+		Dav_Mlm_Smtp_Mailer $mailer,
 		?Dav_Mlm_Rate_Limiter $rate_limiter = null
 	) {
-		$this->mail_from       = strtolower( trim( $mail_from ) );
-		$this->mail_from_name  = $mail_from_name;
-		$this->smtp_host       = $smtp_host;
-		$this->smtp_port       = $smtp_port;
-		$this->smtp_encryption = $smtp_encryption;
-		$this->smtp_user       = $smtp_user;
-		$this->smtp_pass       = $smtp_pass;
-		$this->rate_limiter    = $rate_limiter ?? new Dav_Mlm_Rate_Limiter();
+		$this->mail_from      = strtolower( trim( $mail_from ) );
+		$this->mail_from_name = $mail_from_name;
+		$this->mailer         = $mailer;
+		$this->rate_limiter   = $rate_limiter ?? new Dav_Mlm_Rate_Limiter();
 	}
 
 	/**
@@ -103,7 +91,7 @@ final class Dav_Mlm_Rejector {
 		}
 		$headers[] = 'Auto-Submitted: auto-replied'; // RFC 3834: marks this as an automatic response.
 
-		if ( ! $this->send_via_smtp( $sender, $subject, $body, $headers ) ) {
+		if ( ! $this->mailer->send( $sender, $subject, $body, $headers ) ) {
 			return Dav_Mlm_Reject_Result::transient_failure( 'wp_mail() returned false.' );
 		}
 
@@ -158,30 +146,5 @@ final class Dav_Mlm_Rejector {
 	 */
 	private function sanitize_placeholder( string $value ): string {
 		return (string) preg_replace( '/[\x00-\x1F\x7F]+/', '', $value );
-	}
-
-	/**
-	 * @param list<string> $headers
-	 */
-	private function send_via_smtp( string $to, string $subject, string $body, array $headers ): bool {
-		$configure_smtp = function ( $phpmailer ): void {
-			$phpmailer->isSMTP();
-			$phpmailer->Host       = $this->smtp_host;
-			$phpmailer->Port       = $this->smtp_port;
-			$phpmailer->SMTPAuth   = true;
-			$phpmailer->Username   = $this->smtp_user;
-			$phpmailer->Password   = $this->smtp_pass;
-			$phpmailer->SMTPSecure = $this->smtp_encryption;
-		};
-
-		// Scoped to just this call: wp_mail() is also used elsewhere in
-		// WordPress (other plugins, core), which must keep using whatever
-		// the site's normal mail transport is.
-		add_action( 'phpmailer_init', $configure_smtp );
-		try {
-			return (bool) wp_mail( $to, $subject, $body, $headers );
-		} finally {
-			remove_action( 'phpmailer_init', $configure_smtp );
-		}
 	}
 }

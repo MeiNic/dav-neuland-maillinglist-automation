@@ -392,13 +392,15 @@ dav-mailinglist-moderation/
       rejection/
         class-rejector.php         # loop guards, rate limit, template, wp_mail via SMTP
         class-reject-result.php    # outcome of the rejector
+      sending/
+        class-smtp-mailer.php      # phpmailer_init-scoped wp_mail() via the noreply@ mailbox's SMTP; shared by the rejector and the alerter
     runtime/
       class-option-store.php       # get_option()/update_option() wrapper, always autoload=false
       class-attempts-store.php     # per-message failure counter (option dav_mlm_attempts)
       class-done-list.php          # bounded list of already-actioned Message-IDs (idempotency)
       class-run-status.php         # last run / last success / counts / errors (admin status panel)
       class-rate-limiter.php       # per-sender rejection-mail rate limit (transients)
-      class-alerter.php            # digest + failure alerts (not yet built)
+      class-alerter.php            # digest + throttled failure/recovered alerts (option dav_mlm_alerter_state)
       class-cron-runner.php        # orchestrates one run, used by bin/cron-runner.php (not yet built)
   bin/                              # not yet built
     cron-runner.php                # CLI entrypoint: SAPI guard, bootstrap, parse flags, run
