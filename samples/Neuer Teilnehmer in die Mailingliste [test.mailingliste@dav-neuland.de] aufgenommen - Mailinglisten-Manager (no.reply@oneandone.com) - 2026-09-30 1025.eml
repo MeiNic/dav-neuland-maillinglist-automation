@@ -1,0 +1,53 @@
+Return-Path: <>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.helo=mout-bounce.kundenserver.de; dmarc=none header.from=oneandone.com;
+ iprev=pass policy.iprev=212.227.15.22
+Received: from mout-bounce.kundenserver.de ([203.0.113.1]) by
+ mx.kundenserver.de (mxeue001 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1MjA2v-1wXHgC3OHl-00lyCK for <nico.meissner@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:25:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1790756705; x=1791361505; i=no.reply@oneandone.com;
+	bh=c5kK5lWbkHUXar4gcdWupwr8qj5TMGecz4JF60uqAXM=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=xfI0Zs0q62it4JmgdNS15Q7pPCGseuOz4oR/jmLgJxqXD/QEhiQDjGLE3MBh3b3/
+	 GLgnJREyE0BKcrQrfzpRO3PvBcSSwVlDWqQRKo9KIyhjusNlwrlaOhdYICdupHK+R
+	 D9698RZYzppsfGNmzdn5su58jXp6Vg/cQ/E/5KOUKX2o+UfaN2V5M8D32Np1wLtiv
+	 Hkm6kT0Bzl7nvkMFQ64D0TmkUjiKifitlalt3NexiM51KHkzsX8jDIk8C5hBCHskl
+	 +25Sx1Ciwat03BxbNM80lH3eIueJu7gQbOUOLO8swOrq0bJ7+6kUYB9XFJqMC9Sna
+	 HhBlCGvmA0ZRvecOcA==
+Received: from [203.0.113.3] ([203.0.113.3]) by
+ systemmailsubmission-service-1and1-live-7f8596fc95-gjh4m (via HTTP); Wed,
+ 30 Sep 2026 08:25:05 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-59994b15-f8ed-41ed-93c7-5cf22843c806-1790756705686@systemmailsubmission-service-1and1-live-7f8596fc95-gjh4m>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: nico.meissner@dav-neuland.de
+Subject: Neuer Teilnehmer in die Mailingliste
+ [test.mailingliste@dav-neuland.de] aufgenommen
+Content-Type: multipart/mixed;
+ boundary="----=_Part_2429657_981768508.1790756705686"
+Date: Wed, 30 Sep 2026 08:25:05 +0000 (UTC)
+Auto-Submitted: auto-generated
+Envelope-To: <redacted@example.invalid>
+
+
+------=_Part_2429657_981768508.1790756705686
+Content-Type: multipart/alternative;
+ boundary="----=_Part_2429658_872483125.1790756705686"
+
+------=_Part_2429658_872483125.1790756705686
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Der folgende Teilnehmer hat die Mailingliste erfolgreich abonniert:
+
+    Mailingliste: test.mailingliste@dav-neuland.de
+    Teilnehmer: instagram@dav-neuland.de
+------=_Part_2429658_872483125.1790756705686--
+
+------=_Part_2429657_981768508.1790756705686--
+

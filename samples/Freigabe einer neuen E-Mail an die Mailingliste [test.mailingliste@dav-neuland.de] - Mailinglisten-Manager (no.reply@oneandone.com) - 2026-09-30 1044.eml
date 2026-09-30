@@ -1,0 +1,2642 @@
+Return-Path: <>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.helo=mout-bounce.kundenserver.de; dmarc=none header.from=oneandone.com;
+ iprev=pass policy.iprev=212.227.15.58
+Received: from mout-bounce.kundenserver.de ([203.0.113.1]) by
+ mx.kundenserver.de (mxeue101 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1MZRJY-1xFfex3dKQ-00Ru0N for <nico.meissner@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:44:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1790757841; x=1791362641; i=no.reply@oneandone.com;
+	bh=Fqfjis4bzLCLn5qB0EKu3xA2h4aZjKlrmIkgAaG9/7Q=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=1CodQQ/QJDxLQSwhdpUxQf27IXEkX9T2gZqbUU5zUpA3KTpknS/TBM3Ds6dHWLIk
+	 xBDTTvBxj0AHTprMpQ7XO4TxVdn/vAvCwHwpBGeWbUD1SZsKawvlM7Q4WIkFFktii
+	 Tm6Y99rCBKJe2m/zIWVLFUd6m7rJ8VA8uBzPf0B6rMoFSNcTXw/uLFy8ZYRngFYgs
+	 lnctA4b9J88hu8al53vWvqqKestkKP9CIRWBeFQZ7bbropNepA+yPKszsrlwJeeqj
+	 YlFaNPoLAV8Q2NyuZV8ToBwrpIJ1t2I0yBrzVW9mumwzt+f1kGydiBplXltb0z4si
+	 j/TFIalpd8+XXc2vQg==
+Received: from [203.0.113.3] ([203.0.113.3]) by
+ systemmailsubmission-service-1and1-live-7f8596fc95-t8zk5 (via HTTP); Wed,
+ 30 Sep 2026 08:44:01 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-664e8eb4-d2d6-4d9d-b71d-00f63c6f0994-1790757841705@systemmailsubmission-service-1and1-live-7f8596fc95-t8zk5>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: nico.meissner@dav-neuland.de
+Subject: Freigabe einer neuen E-Mail an die Mailingliste
+ [test.mailingliste@dav-neuland.de]
+Content-Type: multipart/mixed;
+ boundary="----=_Part_2434110_861800691.1790757841705"
+Date: Wed, 30 Sep 2026 08:44:01 +0000 (UTC)
+Auto-Submitted: auto-generated
+Envelope-To: <redacted@example.invalid>
+
+
+------=_Part_2434110_861800691.1790757841705
+Content-Type: multipart/alternative;
+ boundary="----=_Part_2434111_688257253.1790757841705"
+
+------=_Part_2434111_688257253.1790757841705
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Eine E-Mail an die Mailingliste test.mailingliste@dav-neuland.de ben=C3=
+=B6tigt eine Freigabe
+durch Sie als Moderator:
+
+    Mailingliste: test.mailingliste@dav-neuland.de
+    Moderator: nico.meissner@dav-neuland.de
+    Absender: redacted-member@example.invalid
+
+Sie k=C3=B6nnen die E-Mail in der Mailinglisten-Verwaltung in Ihrem=20
+1&1 Control-Center freigeben oder indem Sie auf den folgenden Link klicken:
+
+    https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de=
+/Mail/Confirm?lang=3Dde&id=3DEXAMPLE_TOKEN_REDACTED_DO_NOT_USE
+------=_Part_2434111_688257253.1790757841705--
+
+------=_Part_2434110_861800691.1790757841705
+Content-Type: message/rfc822
+
+Received: from posthost-extern2.hs-worms.de ([203.0.113.10]) by
+ mx.kundenserver.de (mxeue001 [198.51.100.11]) with ESMTPS (Nemesis) id
+ 1MouXG-1wMb4J1tOQ-00afZj for <test.mailingliste@dav-neuland.de>; Wed, 30
+ Sep 2026 10:44:01 +0200
+Received: from proxmox-gate.hs-worms.de (unknown
+ [IPv6:2001:4c80:81:a000:250:56ff:fe88:bbdb]) by
+ posthost-extern2.hs-worms.de (Postfix) with ESMTP id 322596005B for
+ <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026 10:44:01 +0200 (CEST)
+Received: from proxmox-gate.hs-worms.de (localhost.localdomain [127.0.0.1])
+ by proxmox-gate.hs-worms.de (Proxmox) with ESMTP id 25A032C68B4 for
+ <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026 10:44:01 +0200 (CEST)
+Received: from smtp-extern.hs-worms.de (smtp-extern.hs-worms.de
+ [IPv6:2001:4c80:81:a000::5]) by proxmox-gate.hs-worms.de (Proxmox) with
+ ESMTPS id 5269B2C6569 for <test.mailingliste@dav-neuland.de>; Wed, 30 Sep
+ 2026 10:44:00 +0200 (CEST)
+Received: from [192.0.2.158] (Client-181-158.EduRoam.HS-Worms.DE
+ [192.0.2.158]) by smtp-extern.hs-worms.de (Postfix) with ESMTPSA id
+ 49DAF1A0185 for <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:44:00 +0200 (CEST)
+MIME-Version: 1.0
+Message-ID: <redacted-msgid-1@example.invalid>
+From: Redacted Member <redacted-member@example.invalid>
+To: test.mailingliste@dav-neuland.de
+Subject: Re: HTML-Email
+Content-Type: multipart/alternative;
+ boundary=------------SRZf3ty41tjEJ5hhXxT0Tj70
+Date: Wed, 30 Sep 2026 10:43:57 +0200
+User-Agent: Mozilla Thunderbird
+References: <redacted-msgid-4@example.invalid>
+ <redacted-msgid-2@example.invalid>
+Content-Language: de-DE, en-US
+In-Reply-To: <redacted-msgid-2@example.invalid>
+
+--------------SRZf3ty41tjEJ5hhXxT0Tj70
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+
+
+Am 30.09.26 um 10:42 schrieb Redacted Member:
+>
+> html and no dkim record
+>
+> Am 23.09.26 um 19:44 schrieb DAV Neuland:
+>> Neul=C3=A4nder Aktuell 3 / 2026
+>>
+>> Sollte der Newsletter nicht korrekt dargestellt werden, _Im Browser=20
+>> =C3=B6ffnen_=20
+>> <https://ekb82.r.sp1-brevo.net/mk/mr/sh/SMJz09SDriOHTzfVzsKib6mpT9qq/Y5=
+W18Rd2MsoE>
+>>
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeFuBm0Et3OQpiaP46B0S/=
+ebu5XL4Jz58Q>=20
+>> 	=C2=AD
+>>
+>> =09
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeG13E93qEYaJoPho4Tai/=
+_6Jb0UUCo_Xz>=20
+>> 	=C2=AD
+>>
+>> =09
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeG7ugHsnPijnuF0Y2mAy/=
+666WG0G7qt8J>=20
+>>
+>>
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGEm8QhkastI04JI14lE/=
+ZQo4nAIo4kxA>=20
+>>
+>>
+>>
+>>   *Liebe Neul=C3=A4nderinnen, liebe Neul=C3=A4nder!*
+>>
+>> der Herbst bringt wieder viele sch=C3=B6ne Termine und Aktivit=C3=A4ten=
+ mit=20
+>> sich! Freut euch auf spannende Berggeschichten, unsere Bergmesse,=20
+>> Neuigkeiten aus Jugend und Familie sowie die kommenden=20
+>> Veranstaltungen unserer Sektion. Viel Spa=C3=9F beim Lesen und Dabeisei=
+n!
+>>
+>> =C2=AD
+>>
+>>
+>>   *Vortrag: =E2=80=9EOben =E2=80=93 Meine sch=C3=B6nsten Mehrtagestoure=
+n=E2=80=9C*
+>>
+>> =C2=AD
+>>
+>>
+>> Am *22. Oktober 2026 um 19:00 Uhr* (Einlass ab 18:00 Uhr) nimmt euch=20
+>> *Michael Fritsch* in der Stadthalle mit auf seine sch=C3=B6nsten 2- bis=
+=20
+>> 5-Tages-Touren durch die Alpen (Stubaier, Lechtaler, Allg=C3=A4u,=20
+>> Berchtesgadener, Karwendel, Verwall, Bayerische Voralpen). Freut euch=
+=20
+>> auf spannende Geschichten und spektakul=C3=A4re Bilder =E2=80=93 erg=C3=
+=A4nzt durch=20
+>> Eindr=C3=BCcke von MTB-Transalps und Mehrtages-Skitouren.
+>>
+>>
+>> F=C3=BCr Getr=C3=A4nke vor Ort ist gesorgt.
+>>
+>> =C2=AD
+>>
+>> =C2=AD
+>>
+>>
+>>       *Bergmesse auf der Neulandh=C3=BCtte*
+>>
+>> =C2=AD
+>>
+>> Am *11. Oktober 2026* feiern wir wieder gemeinsam unsere=20
+>> traditionelle *Bergmesse auf der Neulandh=C3=BCtte*. Wir freuen uns auf=
+=20
+>> einen sch=C3=B6nen gemeinsamen Tag und hoffen auf bestes Herbstwetter.
+>>
+>> Alle Infos zur *Anreise und zur H=C3=BCtte*=C2=A0findet ihr auf unserer=
+=20
+>> Homepage=20
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGLdaZWhm32m5tc1zNLU/=
+gs5afJTv8FJQ>.=20
+>>
+>>
+>> Sollte die Bergmesse aufgrund von *Schlechtwetter nicht stattfinden=20
+>> k=C3=B6nnen*, informieren wir euch kurzfristig ebenfalls auf der Homepa=
+ge.
+>>
+>>
+>> Wer den *Fahrdienst der Sektion* nutzen m=C3=B6chte, meldet sich bitte =
+bis=20
+>> *4. Oktober bei Lena Fritsch (Tel. 08856 908908)*.
+>>
+>> =C3=9Cber *Kuchenspenden* f=C3=BCr unser Buffet freuen wir uns ebenfall=
+s =E2=80=93=20
+>> kurze R=C3=BCckmeldung bitte an *Redacted Officer*.
+>>
+>> =C2=AD
+>>
+>> =C2=AD
+>> E-Mail an Helga <mailto:redacted-officer-1@example.invalid?subject=3DBergmess=
+e>
+>> =C2=AD
+>>
+>> =C2=AD
+>>
+>>
+>>   *Jugendaustausch in Frankreich*
+>>
+>> =C2=AD
+>>
+>> Im August 2026 fand erstmalig ein Jugendaustausch statt. Es ging zum=20
+>> Radfahrverein V=C3=A9loxyg=C3=A8ne in Saint-R=C3=A9my-l=C3=A8s-Chevreus=
+e (Region=20
+>> =C3=8Ele-de-France). Eindr=C3=BCcke vom Austausch erhaltet ihr hier
+>>
+>> =C2=AD
+>> Berichte Jugendaustausch=20
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGSV2iLexDCGBiulxfvk/=
+UsBy3Tt9BKgg>=20
+>>
+>> =C2=AD
+>>
+>> =C2=AD
+>>
+>> =09
+>>
+>>
+>>   Jugendangebot Bergsteigen
+>>
+>> =C2=AD
+>>
+>> Du hast Lust auf *alpines Klettern oder Skibergsteigen im Winter*?=20
+>> Dann ist unser Jugendangebot Bergsteigen genau das Richtige! Bei=20
+>> Interesse oder Fragen meldet euch gerne bei *Redacted Officer.*
+>>
+>> =C2=AD
+>>
+>> =C2=AD
+>> E-Mail an Marcus=20
+>> <mailto:redacted-officer-2@example.invalid?subject=3DJugendangebot%20Bergstei=
+gen>=20
+>>
+>> =C2=AD
+>>
+>>
+>>     Angebot f=C3=BCr Jugend & Familie - sei dabei
+>>
+>> Um keinen Termin zu verpassen, melde dich gerne bei den=20
+>> Gruppenleitern und tragt euch ein in unsere Mailinglisten "Jugend und=
+=20
+>> Familie".
+>>
+>> =C2=AD
+>> Mailingliste=20
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGZMUrAc8NLkHYDVvyW0/=
+7rLGMYhPnaFg>=20
+>>
+>> =C2=AD
+>>
+>>
+>>       Herbst- und Wintertermine im Ressort Jugend/ Familie
+>>
+>> 17.-18.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Herbstza=
+uber im Karwendel (Jugend)
+>>
+>> 24.-25.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Familien=
+wochenende auf der Neulandh=C3=BCtte
+>>
+>> 12.-13.12.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Advent a=
+uf der Neulandh=C3=BCtte (Jugend)
+>>
+>> 13.12.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0Punschtour auf die Neulandh=C3=BCtte (alle=20
+>> Neul=C3=A4nder)
+>>
+>> 30.-31.01.2027 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Winterwo=
+chenende auf der Seewaldh=C3=BCtte=20
+>> (Jugend)
+>>
+>> 30.-31.01.2027 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Familien=
+wochenende auf der Neulandh=C3=BCtte
+>>
+>> =C2=AD
+>>
+>>
+>>   Lust auf Mitmachen?
+>>
+>> =C2=AD
+>>
+>> Du m=C3=B6chtest dich *aktiv bei den Kinder- und Familienangeboten*=20
+>> einbringen oder sogar ein Kletterangebot mitgestalten bzw. leiten?=20
+>> Dann melde dich gerne bei *Redacted Officer*.
+>>
+>> Der DAV bietet daf=C3=BCr *vielf=C3=A4ltige Ausbildungsm=C3=B6glichkeit=
+en* und=20
+>> unterst=C3=BCtzt euch bei der Aus=C3=BCbung eines gef=C3=B6rderten Ehre=
+namts. Wir=20
+>> freuen uns =C3=BCber jede Unterst=C3=BCtzung!
+>>
+>> =C2=AD
+>>
+>> =C2=AD
+>> E-Mail an Marlene=20
+>> <mailto:redacted-officer-3@example.invalid?subject=3DIch%20m%C3%B6chte%20mit=
+machen>=20
+>>
+>> =C2=AD
+>>
+>>
+>>     Termine der Sektion
+>>
+>> 24.09.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Stammtisch =
+der Sektion im Caf=C3=A9 Extra
+>>
+>> 10.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Markt der M=
+=C3=B6glichkeiten auf dem Stadtplatz
+>>
+>> 11.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Bergmesse a=
+uf der Neulandh=C3=BCtte
+>>
+>> 22.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Vortrag von=
+ Michael Fritsch in der Stadthalle
+>>
+>> 28.11.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Weihnachtsm=
+arkt in Penzberg
+>>
+>>
+>>         *DAV Sektion Neuland*
+>>
+>> Grube 51b
+>>
+>> 82377 Penzberg
+>>
+>> info@dav-neuland.de <mailto:info@dav-neuland.de>
+>>
+>> =09
+>>
+>> Impressum=20
+>> <https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGgDwzzZJXVENNWFuH6G/=
+fJwHG5veeBJP>
+>>
+>> _Newsletter abbestellen_=20
+>> <mailto:info@dav-neuland.de?subject=3DAbmeldung%20Newsletter&body=3DIch=
+%20m%C3%B6chte%20den%20Newsletter%20des%20DAV%20Neuland%20nicht%20l%C3%A4n=
+ger%20erhalten.%20Bitte%20tragt%20mich%20aus%20der%20Verteilerliste%20aus.=
+>
+>>
+>> Klicken Sie hier=20
+>> <https://ekb82.r.sp1-brevo.net/mk/un/v2/sh/SMJz09a0vkbXq59BlcUVjtfwirSy=
+/3ARfk5eoChRS>,=20
+>> wenn Sie sich von unserem Newsletter abmelden m=C3=B6chten.
+>> Mailin=20
+>> <https://ekb82.r.sp1-brevo.net/tracking/?utm_campaign=3Df773c847c77ca13=
+6cfa772755f364ce6&utm_medium=3Demail&utm_source=3Dlogo_mailin>=20
+>>
+
+Redacted Member
+Student Angewante Informatik - dual B.Sc.
+Studentisches Mitglied im Fachbereichsrat & Senat
+
+--------------SRZf3ty41tjEJ5hhXxT0Tj70
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-=
+8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class=3D"moz-cite-prefix">Am 30.09.26 um 10:42 schrieb Nico
+      Redacted:<br>
+    </div>
+    <blockquote type=3D"cite"
+      cite=3D"mid:redacted-msgid-2@example.invalid">
+      <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUT=
+F-8">
+      <p>html and no dkim record</p>
+      <div class=3D"moz-cite-prefix">Am 23.09.26 um 19:44 schrieb DAV
+        Neuland:<br>
+      </div>
+      <blockquote type=3D"cite"
+cite=3D"mid:redacted-msgid-4@example.invalid">
+        <meta http-equiv=3D"Content-Type"
+          content=3D"text/html; charset=3DUTF-8">
+        <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+        <meta name=3D"format-detection" content=3D"telephone=3Dno">
+        <meta name=3D"viewport"
+          content=3D"width=3Ddevice-width, initial-scale=3D1.0">
+        <title>Neul=C3=A4nder Aktuell 3 / 2026</title>
+        <style type=3D"text/css" emogrify=3D"no">@scope {  }</style>
+        <style type=3D"text/css" emogrify=3D"no">@scope {  }</style>
+        <style type=3D"text/css" emogrify=3D"no">@scope {  }</style><!--[i=
+f !mso]><!-->
+        <style type=3D"text/css" emogrify=3D"no">@scope {  }</style><!--<!=
+[endif]-->
+        <style type=3D"text/css">@scope {  }</style>
+        <style type=3D"text/css">@scope {  }</style><!--[if mso]><xml> <o:=
+OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch=
+> </o:OfficeDocumentSettings> </xml><![endif]-->
+        <!--[if mso]> <img width=3D"1" height=3D"1" src=3D"https://ekb82.r=
+.sp1-brevo.net/mk/op/sh/SMJz09hnzmooCAcrXMeIsgZ3yZ56/Mno_Gabgpieg" /> <![e=
+ndif]-->
+        <!--[if !mso]> <!----> <img style=3D"display:none"
+src=3D"https://ekb82.r.sp1-brevo.net/mk/op/sh/SMJz09hnzmooCAcrXMeIsgZ3yZ56=
+/Mno_Gabgpieg"
+          moz-do-not-send=3D"true">
+        <!-- <![endif]-->
+        <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"
+          role=3D"presentation" class=3D"nl2go-body-table" width=3D"100%"
+          style=3D"background-color: #f6f6f2; width: 100%">
+          <tbody>
+            <tr>
+              <td>
+                <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"
+                  role=3D"presentation" width=3D"100%" align=3D"center"
+                  class=3D"r0-o" style=3D"table-layout: fixed; width: 100%=
+">
+                  <tbody>
+                    <tr>
+                      <td valign=3D"top" class=3D"r1-i"
+                        style=3D"background-color: transparent">
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"600"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r3-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" align=3D"center"
+                                          class=3D"r0-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:center;padding-right:30px;paddin=
+g-left:30px"
+                                                align=3D"center"
+class=3D"r6-i nl2go-default-textstyle">
+                                                <div>
+                                                  <p style=3D"margin:0"><s=
+pan
+style=3D"font-size:12px;">Sollte der Newsletter nicht korrekt dargestellt
+                                                      werden, </span><a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/mr/sh/SMJz09SDriOHTzfVzsKib6mpT9q=
+q/Y5W18Rd2MsoE"
+style=3D"color:#73c9db;text-decoration:underline" moz-do-not-send=3D"true"=
+><span
+style=3D"color:#858588;font-size:12px;"><u>Im Browser =C3=B6ffnen</u></spa=
+n></a></p>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"
+                  role=3D"presentation" width=3D"600" align=3D"center"
+                  class=3D"r0-o" style=3D"table-layout: fixed; width: 600p=
+x">
+                  <tbody>
+                    <tr>
+                      <td valign=3D"top" class=3D"r7-i"
+                        style=3D"background-color: #f6f6f2">
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r9-i"
+style=3D"padding-top: 32px; padding-right: 16px; padding-left: 16px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"middle" class=3D"r10-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"568" align=3D"right"
+                                          class=3D"r12-o"
+style=3D"table-layout: fixed; width: 568px">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r11-c"
+                                                        align=3D"right"
+style=3D"display: inline-block;">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"568"
+                                                          align=3D"right"
+                                                          class=3D"r12-o"
+style=3D"table-layout: fixed; width: 568px">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+                                                          class=3D"r13-i"
+style=3D"padding-left: 510px">
+                                                          <table
+                                                          width=3D"100%"
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation">
+                                                          <tbody>
+                                                          <tr>
+                                                          <th width=3D"21"
+style=3D"font-weight: normal" class=3D"r14-c mobshow resp-table">
+                                                          <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r15-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"font-size: 0px; line-height: 0px; padding-top: 5px; padding-botto=
+m: 5px"
+                                                          class=3D"r3-i"><=
+a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeFuBm0Et3OQpiaP46=
+B0S/ebu5XL4Jz58Q"
+target=3D"_blank" style=3D"color:#73c9db;text-decoration:underline"
+sib_link_id=3D"0" templating=3D"n" moz-do-not-send=3D"true"><img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/Zdo__7wd_9dg.png?u=3D7xwQLFBt=
+niwQn1M8NSyOZhs8wfHWz3Q"
+                                                          width=3D"16"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%;" sib_img_id=3D"0"
+moz-do-not-send=3D"true"></a></td>
+                                                          <td
+style=3D"font-size: 0px; line-height: 1px;" width=3D"5"
+class=3D"nl2go-responsive-hide">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                          </table>
+                                                          </th>
+                                                          <th width=3D"21"
+style=3D"font-weight: normal" class=3D"r14-c mobshow resp-table">
+                                                          <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r15-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"font-size: 0px; line-height: 0px; padding-top: 5px; padding-botto=
+m: 5px"
+                                                          class=3D"r3-i"><=
+a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeG13E93qEYaJoPho4=
+Tai/_6Jb0UUCo_Xz"
+target=3D"_blank" style=3D"color:#73c9db;text-decoration:underline"
+sib_link_id=3D"1" templating=3D"n" moz-do-not-send=3D"true"><img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/cvHaedQm0Q-l.png?u=3D7xwQLFBt=
+niwQn8DaWHvZjrMEly1VHdg"
+                                                          width=3D"16"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%;" sib_img_id=3D"1"
+moz-do-not-send=3D"true"></a></td>
+                                                          <td
+style=3D"font-size: 0px; line-height: 1px;" width=3D"5"
+class=3D"nl2go-responsive-hide">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                          </table>
+                                                          </th>
+                                                          <th width=3D"16"
+style=3D"font-weight: normal" class=3D"r14-c mobshow resp-table">
+                                                          <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r16-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"font-size: 0px; line-height: 0px; padding-top: 5px; padding-botto=
+m: 5px"
+                                                          class=3D"r3-i"><=
+a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeG7ugHsnPijnuF0Y2=
+mAy/666WG0G7qt8J"
+target=3D"_blank" style=3D"color:#73c9db;text-decoration:underline"
+sib_link_id=3D"2" templating=3D"n" moz-do-not-send=3D"true"><img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/JH41nkRMCk7o.png?u=3D7xwQLFBt=
+niwQnF52f6sku0qKbGlTaDw"
+                                                          width=3D"16"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%;" sib_img_id=3D"2"
+moz-do-not-send=3D"true"></a></td>
+                                                          </tr>
+                                                          </tbody>
+                                                          </table>
+                                                          </th>
+                                                          </tr>
+                                                          </tbody>
+                                                          </table>
+                                                          </td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"
+                  role=3D"presentation" width=3D"100%" align=3D"center"
+                  class=3D"r17-o" style=3D"table-layout: fixed; width: 100=
+%">
+                  <tbody>
+                    <tr>
+                      <td valign=3D"top" class=3D"r18-i"
+                        style=3D"background-color: #4ea72e">
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"600"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 600px">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r19-i"
+style=3D"padding-top: 20px; padding-bottom: 20px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"302"
+                                                          class=3D"r0-o"
+style=3D"table-layout: fixed; width: 302px">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"font-size: 0px; line-height: 0px"><a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGEm8QhkastI04JI1=
+4lE/ZQo4nAIo4kxA"
+target=3D"_blank" style=3D"color:#73c9db;text-decoration:underline"
+sib_link_id=3D"3" templating=3D"n" moz-do-not-send=3D"true"><img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/sQ3q52uLc4qH.png?u=3D7xwQLFBt=
+niwQnLwUnvpw4AKQQZVRsoC"
+                                                          width=3D"302"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%;" sib_img_id=3D"3"
+moz-do-not-send=3D"true"></a></td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"
+                  role=3D"presentation" width=3D"600" align=3D"center"
+                  class=3D"r0-o" style=3D"table-layout: fixed; width: 600p=
+x">
+                  <tbody>
+                    <tr>
+                      <td valign=3D"top" class=3D"r7-i"
+                        style=3D"background-color: #f6f6f2">
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r21-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r22-i"
+style=3D"padding-top: 40px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"middle" class=3D"r23-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r24-i"
+style=3D"padding-left: 12px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r0-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:left;line-height:1.2"
+                                                          align=3D"left"
+                                                          valign=3D"top"
+class=3D"r25-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <h1
+class=3D"default-heading1"
+style=3D"margin:0;color:#009641;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:18px;word-break:break-word"><span
+style=3D"font-family:Tahoma;font-size:18px;"><strong>Liebe Neul=C3=A4nderi=
+nnen,
+                                                          liebe
+                                                          Neul=C3=A4nder!<=
+/strong></span></h1>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r27-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:justify;padding-top:24px"
+align=3D"justify" valign=3D"top" class=3D"r28-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <p
+style=3D"margin:0">der Herbst bringt wieder viele sch=C3=B6ne Termine und
+                                                          Aktivit=C3=A4ten
+                                                          mit sich!
+                                                          Freut euch auf
+                                                          spannende
+                                                          Berggeschichten,
+                                                          unsere
+                                                          Bergmesse,
+                                                          Neuigkeiten
+                                                          aus Jugend und
+                                                          Familie sowie
+                                                          die kommenden
+Veranstaltungen unserer Sektion. Viel Spa=C3=9F beim Lesen und Dabeisein!<=
+/p>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r29-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r30-c"
+                                                        align=3D"center"
+style=3D"font-size: 0px; line-height: 0px; padding-top: 15px; padding-bott=
+om: 15px; valign: top"><img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/BBWTI_xczd8f.jpeg?u=3D7xwQLFB=
+tniwQnSnwwkn7EJoWFsFQBOS"
+                                                          width=3D"570"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%;" sib_img_id=3D"4"
+moz-do-not-send=3D"true"></td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r21-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r29-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r31-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r32-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r33-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:center;line-height:1"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r34-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <h1
+class=3D"default-heading1" id=3D"isPasted"
+style=3D"margin:0;color:#009641;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:18px;word-break:break-word"><strong>Vortrag:
+                                                          =E2=80=9EOben =
+=E2=80=93 Meine
+                                                          sch=C3=B6nsten
+                                                          Mehrtagestouren=
+=E2=80=9C</strong></h1>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r35-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:center"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r36-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <p
+style=3D"margin:0;text-align:justify"><br>
+                                                          </p>
+                                                          <p
+style=3D"margin:0;text-align:justify">Am <strong>22. Oktober 2026 um
+                                                          19:00 Uhr</stron=
+g>
+                                                          (Einlass ab
+                                                          18:00 Uhr)
+                                                          nimmt euch <stro=
+ng>Michael
+                                                          Fritsch</strong>
+                                                          in der
+                                                          Stadthalle mit
+                                                          auf seine
+                                                          sch=C3=B6nsten 2=
+-
+                                                          bis
+                                                          5-Tages-Touren
+                                                          durch die
+                                                          Alpen
+                                                          (Stubaier,
+                                                          Lechtaler,
+                                                          Allg=C3=A4u,
+                                                          Berchtesgadener,
+                                                          Karwendel,
+                                                          Verwall,
+                                                          Bayerische
+                                                          Voralpen).
+                                                          Freut euch auf
+                                                          spannende
+                                                          Geschichten
+                                                          und
+                                                          spektakul=C3=A4r=
+e
+                                                          Bilder =E2=80=93
+                                                          erg=C3=A4nzt dur=
+ch
+                                                          Eindr=C3=BCcke v=
+on
+                                                          MTB-Transalps
+                                                          und
+                                                          Mehrtages-Skitou=
+ren.</p>
+                                                          <p
+style=3D"margin:0;text-align:justify"><br>
+                                                          </p>
+                                                          <p
+style=3D"margin:0;text-align:justify">F=C3=BCr Getr=C3=A4nke vor Ort ist g=
+esorgt.</p>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r37-i">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r30-c"
+                                                        align=3D"center"
+style=3D"font-size: 0px; line-height: 0px; padding-top: 15px; padding-bott=
+om: 15px; valign: top"><img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/D5jP5eXSMM5O.jpeg?u=3D7xwQLFB=
+tniwQnZfP5ZkIOTIc5AzOTyi"
+                                                          width=3D"570"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%;" sib_img_id=3D"5"
+moz-do-not-send=3D"true"></td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r21-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r37-i">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r31-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r32-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r33-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:center;line-height:1"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r34-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <h3
+class=3D"default-heading3"
+style=3D"margin:0;color:#858588;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:24px;word-break:break-word"><span
+style=3D"color:rgb(0, 150, 65);font-size:18px"><strong>Bergmesse auf der
+                                                          Neulandh=C3=BCtt=
+e</strong></span></h3>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r35-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:center"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r36-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <p
+class=3D"default" style=3D"margin:0;text-align:left">Am <strong>11. Oktobe=
+r
+                                                          2026</strong>
+                                                          feiern wir
+                                                          wieder
+                                                          gemeinsam
+                                                          unsere
+                                                          traditionelle
+                                                          <strong>Bergmess=
+e
+                                                          auf der
+                                                          Neulandh=C3=BCtt=
+e</strong>.
+                                                          Wir freuen uns
+                                                          auf einen
+                                                          sch=C3=B6nen
+                                                          gemeinsamen
+                                                          Tag und hoffen
+                                                          auf bestes
+                                                          Herbstwetter.=C2=
+=A0</p>
+                                                          <p
+style=3D"margin:0;text-align:left"><span
+style=3D"color: rgb(65, 65, 65);font-family: ' Open Sans' font-size: 16px,=
+ arial; font-style: normal; font-variant-ligatures: normal; font-variant-c=
+aps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-al=
+ign: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing=
+: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-col=
+or: rgb(246, 246, 242); text-decoration-thickness: initial; text-decoratio=
+n-style: initial; text-decoration-color: initial; display: inline !importa=
+nt; float: none;">Alle
+                                                          Infos zur=C2=A0<=
+/span><strong>Anreise
+                                                          und zur H=C3=BCt=
+te</strong><span
+style=3D"color: rgb(65, 65, 65);font-family: ' Open Sans' font-size: 16px,=
+ arial; font-style: normal; font-variant-ligatures: normal; font-variant-c=
+aps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-al=
+ign: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing=
+: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-col=
+or: rgb(246, 246, 242); text-decoration-thickness: initial; text-decoratio=
+n-style: initial; text-decoration-color: initial; display: inline !importa=
+nt; float: none;">=C2=A0findet
+                                                          ihr auf
+                                                          unserer=C2=A0</s=
+pan><a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGLdaZWhm32m5tc1z=
+NLU/gs5afJTv8FJQ"
+style=3D"user-select:auto;color:rgb(115, 201, 219);text-decoration:underli=
+ne;font-family:' Open Sans' font-size: 16px, arial;font-style:normal;font-=
+variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-s=
+pacing:normal;orphans:2;text-align:left;text-indent:0px;text-transform:non=
+e;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:norm=
+al;background-color:rgb(246, 246, 242)"
+sib_link_id=3D"4" templating=3D"n" moz-do-not-send=3D"true">Homepage</a><s=
+pan
+style=3D"color: rgb(65, 65, 65);font-family: ' Open Sans' font-size: 16px,=
+ arial; font-style: normal; font-variant-ligatures: normal; font-variant-c=
+aps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-al=
+ign: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing=
+: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-col=
+or: rgb(246, 246, 242); text-decoration-thickness: initial; text-decoratio=
+n-style: initial; text-decoration-color: initial; display: inline !importa=
+nt; float: none;">.=C2=A0</span></p>
+                                                          <p
+style=3D"margin:0;text-align:left">Sollte die Bergmesse aufgrund von <stro=
+ng>Schlechtwetter
+                                                          nicht
+                                                          stattfinden
+                                                          k=C3=B6nnen</str=
+ong>,
+                                                          informieren
+                                                          wir euch
+                                                          kurzfristig
+                                                          ebenfalls auf
+                                                          der Homepage.=C2=
+=A0</p>
+                                                          <p
+class=3D"default" style=3D"margin:0;text-align:left"><br>
+                                                          </p>
+                                                          <p
+class=3D"default" style=3D"margin:0;text-align:left">Wer den <strong>Fahrd=
+ienst
+                                                          der Sektion</str=
+ong>
+                                                          nutzen m=C3=B6ch=
+te,
+                                                          meldet sich
+                                                          bitte bis <stron=
+g>4.
+                                                          Oktober bei
+                                                          Lena Fritsch
+                                                          (Tel. 08856
+                                                          908908)</strong>=
+.=C2=A0</p>
+                                                          <p
+class=3D"default" style=3D"margin:0;text-align:left">=C3=9Cber <strong>Kuc=
+henspenden</strong>
+                                                          f=C3=BCr unser
+                                                          Buffet freuen
+                                                          wir uns
+                                                          ebenfalls =E2=80=
+=93
+                                                          kurze
+                                                          R=C3=BCckmeldung
+                                                          bitte an <strong=
+>Helga
+                                                          Weikert</strong>=
+.</p>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"135"
+                                                          class=3D"r38-o"
+style=3D"table-layout: fixed; width: 135px">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+class=3D"r39-i nl2go-default-textstyle" align=3D"center" valign=3D"top"
+                                                          height=3D"14"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word"><!--[if mso]> <v:roundrect xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:w=3D"urn:schemas-microsoft-com:office:wor=
+d" href=3D"mailto:redacted-officer-1@example.invalid?subject=3DBergmesse" style=
+=3D"v-text-anchor:middle; height: 23px; width: 134px;" arcsize=3D"34%" fil=
+lcolor=3D"#009641" strokecolor=3D"#009641" strokeweight=3D"1px" data-btn=
+=3D"1"> <w:anchorlock> </w:anchorlock> <v:textbox inset=3D"0,0,0,0"> <div =
+style=3D"display:none;"> <center class=3D"default-button"><span>E-Mail an =
+Helga</span></center> </div> </v:textbox> </v:roundrect> <![endif]--><!--[=
+if !mso]><!-- --><a
+href=3D"mailto:redacted-officer-1@example.invalid?subject=3DBergmesse"
+                                                          data-btn=3D"1"
+style=3D"font-style:normal;font-weight:bold;line-height:1.15;text-decorati=
+on:none;word-break:break-word;word-wrap:break-word;display:block;-webkit-t=
+ext-size-adjust:none;border-style:solid;background-color:#009641;border-wi=
+dth:0px;border-color:#009641;border-radius:8px;padding-top:5px;padding-bot=
+tom:5px;font-size:12px;font-family:Open Sans, arial;color:#000;height:14px=
+;mso-hide:all;width:135px"
+class=3D"r40-r default-button" moz-do-not-send=3D"true"><span>E-Mail an
+                                                          Helga</span></a>=
+<!--<![endif]--></td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r21-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r41-i"
+style=3D"padding-top: 9px; padding-bottom: 9px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r31-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r32-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r33-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:center;line-height:1"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r34-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <h1
+class=3D"default-heading1"
+style=3D"margin:0;color:#009641;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:18px;word-break:break-word"><span
+style=3D"font-family: Tahoma, geneva, sans-serif, Arial; font-size: 18px;"=
+><strong>Jugendaustausch
+                                                          in Frankreich</s=
+trong></span></h1>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"370"
+                                                          class=3D"r17-o"
+style=3D"border-collapse: separate; border-radius: 8px; table-layout: fixe=
+d; width: 370px">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"font-size: 0px; line-height: 0px; padding-top: 2px; padding-botto=
+m: 2px; border-radius: 8px"
+                                                          class=3D"r42-i">=
+<img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/1jI7xaPVnWEM.jpeg?u=3D7xwQLFB=
+tniwQngWrEOhTYcmhuTjMmYy"
+                                                          width=3D"370"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%; border-radius: 8px;" sib_img_id=3D"6=
+"
+moz-do-not-send=3D"true"></td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td
+class=3D"r43-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;valign:top">
+                                                        <div>
+                                                          <p
+class=3D"default" id=3D"isPasted" style=3D"margin:0">Im August 2026 fand
+                                                          erstmalig ein
+Jugendaustausch statt. Es ging zum Radfahrverein V=C3=A9loxyg=C3=A8ne in
+                                                          Saint-R=C3=A9my-=
+l=C3=A8s-Chevreuse
+                                                          (Region
+                                                          =C3=8Ele-de-Fran=
+ce).
+                                                          Eindr=C3=BCcke v=
+om
+                                                          Austausch
+                                                          erhaltet ihr
+                                                          hier</p>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"197"
+                                                          class=3D"r38-o"
+style=3D"table-layout: fixed; width: 197px">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+class=3D"r39-i nl2go-default-textstyle" align=3D"center" valign=3D"top"
+                                                          height=3D"14"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word"><!--[if mso]> <v:roundrect xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:w=3D"urn:schemas-microsoft-com:office:wor=
+d" href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGSV2iLexDCGBi=
+ulxfvk/UsBy3Tt9BKgg" style=3D"v-text-anchor:middle; height: 23px; width: 1=
+96px;" arcsize=3D"34%" fillcolor=3D"#009641" strokecolor=3D"#009641" strok=
+eweight=3D"1px" data-btn=3D"2" sib_link_id=3D"5" templating=3D"n"> <w:anch=
+orlock> </w:anchorlock> <v:textbox inset=3D"0,0,0,0"> <div style=3D"displa=
+y:none;"> <center class=3D"default-button"><span>Berichte Jugendaustausch<=
+/span></center> </div> </v:textbox> </v:roundrect> <![endif]--><!--[if !ms=
+o]><!-- --><a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGSV2iLexDCGBiulx=
+fvk/UsBy3Tt9BKgg"
+target=3D"_blank" title=3D"Bericht Jugend &amp; Familie" data-btn=3D"2"
+style=3D"font-style:normal;font-weight:bold;line-height:1.15;text-decorati=
+on:none;word-break:break-word;word-wrap:break-word;display:block;-webkit-t=
+ext-size-adjust:none;border-style:solid;background-color:#009641;border-wi=
+dth:0px;border-color:#009641;border-radius:8px;padding-top:5px;padding-bot=
+tom:5px;font-size:12px;font-family:Open Sans, arial;color:#000;height:14px=
+;mso-hide:all;width:197px"
+class=3D"r40-r default-button" sib_link_id=3D"5" templating=3D"n"
+moz-do-not-send=3D"true"><span>Berichte Jugendaustausch</span></a><!--<![e=
+ndif]--></td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r44-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr class=3D"nl2go-responsive-hide">
+                              <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                            </tr>
+                            <tr>
+                              <td class=3D"r29-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"50%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r45-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"170"
+                                                          class=3D"r0-o"
+style=3D"border-collapse: separate; border-radius: 8px; table-layout: fixe=
+d; width: 170px">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"font-size: 0px; line-height: 0px; border-radius: 8px"
+                                                          class=3D"r46-i">=
+<img
+src=3D"https://ekb82.img.sp1-brevo.net/im/sh/OdpfBrvKeHMd.jpeg?u=3D7xwQLFB=
+tniwQnuFlW2bpsvktZ5DJNjU"
+                                                          width=3D"170"
+                                                          border=3D"0"
+style=3D"display: block; width: 100%; border-radius: 8px;" sib_img_id=3D"8=
+"
+moz-do-not-send=3D"true"></td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                      <th width=3D"50%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r47-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:left;line-height:1;padding-top:3px;padding-botto=
+m:3px"
+                                                          align=3D"left"
+                                                          valign=3D"top"
+class=3D"r48-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <h1
+class=3D"default-heading1"
+style=3D"margin:0;color:#009641;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:18px;word-break:break-word">Jugendangebot
+                                                          Bergsteigen</h1>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r35-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left"
+                                                          align=3D"left"
+                                                          valign=3D"top"
+class=3D"r25-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <p
+class=3D"default" id=3D"isPasted" style=3D"margin:0">Du hast Lust auf <str=
+ong
+                                                          id=3D"isPasted">=
+alpines
+                                                          Klettern oder
+                                                          Skibergsteigen
+                                                          im Winter</stron=
+g>?
+                                                          Dann ist unser
+                                                          Jugendangebot
+                                                          Bergsteigen
+                                                          genau das
+                                                          Richtige! Bei
+                                                          Interesse oder
+                                                          Fragen meldet
+                                                          euch gerne bei
+                                                          <strong>Marcus
+                                                          Fiehne.</strong>=
+</p>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"135"
+                                                          class=3D"r38-o"
+style=3D"table-layout: fixed; width: 135px">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+class=3D"r39-i nl2go-default-textstyle" align=3D"center" valign=3D"top"
+                                                          height=3D"14"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word"><!--[if mso]> <v:roundrect xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:w=3D"urn:schemas-microsoft-com:office:wor=
+d" href=3D"mailto:redacted-officer-2@example.invalid?subject=3DJugendangebot%20B=
+ergsteigen" style=3D"v-text-anchor:middle; height: 23px; width: 134px;" ar=
+csize=3D"34%" fillcolor=3D"#009641" strokecolor=3D"#009641" strokeweight=
+=3D"1px" data-btn=3D"3"> <w:anchorlock> </w:anchorlock> <v:textbox inset=
+=3D"0,0,0,0"> <div style=3D"display:none;"> <center class=3D"default-butto=
+n"><span>E-Mail an Marcus</span></center> </div> </v:textbox> </v:roundrec=
+t> <![endif]--><!--[if !mso]><!-- --><a
+href=3D"mailto:redacted-officer-2@example.invalid?subject=3DJugendangebot%20Berg=
+steigen"
+                                                          data-btn=3D"3"
+style=3D"font-style:normal;font-weight:bold;line-height:1.15;text-decorati=
+on:none;word-break:break-word;word-wrap:break-word;display:block;-webkit-t=
+ext-size-adjust:none;border-style:solid;background-color:#009641;border-wi=
+dth:0px;border-color:#009641;border-radius:8px;padding-top:5px;padding-bot=
+tom:5px;font-size:12px;font-family:Open Sans, arial;color:#000;height:14px=
+;mso-hide:all;width:135px"
+class=3D"r40-r default-button" moz-do-not-send=3D"true"><span>E-Mail an
+                                                          Marcus</span></a=
+><!--<![endif]--></td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r49-i" style=3D"padding-top: 5p=
+x">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td
+class=3D"r50-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;padding-top:5px;valign:top"=
+>
+                                                        <div>
+                                                          <h2
+class=3D"default-heading2"
+style=3D"margin:0;color:#858588;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:24px;word-break:break-word"><span
+style=3D"font-size: 18px; color: rgb(0, 150, 65);">Angebot f=C3=BCr Jugend
+                                                          &amp; Familie
+                                                          - sei dabei</spa=
+n></h2>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td
+class=3D"r51-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;padding-top:15px;padding-bo=
+ttom:15px;valign:top">
+                                                        <div>
+                                                          <p
+style=3D"margin:0">Um keinen Termin zu verpassen, melde dich gerne bei den
+                                                          Gruppenleitern
+                                                          und tragt euch
+                                                          ein in unsere
+                                                          Mailinglisten
+                                                          "Jugend und
+                                                          Familie".</p>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r37-i">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"135"
+                                                          class=3D"r38-o"
+style=3D"table-layout: fixed; width: 135px">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+class=3D"r39-i nl2go-default-textstyle" align=3D"center" valign=3D"top"
+                                                          height=3D"14"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word"><!--[if mso]> <v:roundrect xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:w=3D"urn:schemas-microsoft-com:office:wor=
+d" href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGZMUrAc8NLkHY=
+DVvyW0/7rLGMYhPnaFg" style=3D"v-text-anchor:middle; height: 23px; width: 1=
+34px;" arcsize=3D"34%" fillcolor=3D"#009641" strokecolor=3D"#009641" strok=
+eweight=3D"1px" data-btn=3D"4" sib_link_id=3D"6" templating=3D"n"> <w:anch=
+orlock> </w:anchorlock> <v:textbox inset=3D"0,0,0,0"> <div style=3D"displa=
+y:none;"> <center class=3D"default-button"><span>Mailingliste</span></cent=
+er> </div> </v:textbox> </v:roundrect> <![endif]--><!--[if !mso]><!-- --><=
+a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGZMUrAc8NLkHYDVv=
+yW0/7rLGMYhPnaFg"
+target=3D"_blank" title=3D"Mailingliste" data-btn=3D"4"
+style=3D"font-style:normal;font-weight:bold;line-height:1.15;text-decorati=
+on:none;word-break:break-word;word-wrap:break-word;display:block;-webkit-t=
+ext-size-adjust:none;border-style:solid;background-color:#009641;border-wi=
+dth:0px;border-color:#009641;border-radius:8px;padding-top:5px;padding-bot=
+tom:5px;font-size:12px;font-family:Open Sans, arial;color:#000;height:14px=
+;mso-hide:all;width:135px"
+class=3D"r40-r default-button" sib_link_id=3D"6" templating=3D"n"
+moz-do-not-send=3D"true"><span>Mailingliste</span></a><!--<![endif]--></td=
+>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r29-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td
+class=3D"r50-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;padding-top:5px;valign:top"=
+>
+                                                        <div>
+                                                          <h3
+class=3D"default-heading3"
+style=3D"margin:0;color:#858588;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:24px;word-break:break-word"><span
+style=3D"font-size: 18px; color: rgb(0, 150, 65);">Herbst- und
+                                                          Wintertermine
+                                                          im Ressort
+                                                          Jugend/
+                                                          Familie</span></=
+h3>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td
+class=3D"r51-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;padding-top:15px;padding-bo=
+ttom:15px;valign:top">
+                                                        <div>
+                                                          <p
+style=3D"margin:0">17.-18.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0Herbstzauber im Karwendel
+                                                          (Jugend)</p>
+                                                          <p
+style=3D"margin:0">24.-25.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0Familienwochenende auf der
+                                                          Neulandh=C3=BCtt=
+e=C2=A0</p>
+                                                          <p
+style=3D"margin:0">12.-13.12.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0Advent auf der Neulandh=C3=BCtte
+                                                          (Jugend)</p>
+                                                          <p
+style=3D"margin:0">13.12.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0Punschtour auf die
+                                                          Neulandh=C3=BCtt=
+e
+                                                          (alle
+                                                          Neul=C3=A4nder)<=
+/p>
+                                                          <p
+style=3D"margin:0">30.-31.01.2027 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0Winterwochenende auf der
+                                                          Seewaldh=C3=BCtt=
+e
+                                                          (Jugend)</p>
+                                                          <p
+style=3D"margin:0">30.-31.01.2027 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0Familienwochenende auf der
+                                                          Neulandh=C3=BCtt=
+e</p>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r21-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r29-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r31-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r32-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r33-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:center;line-height:1"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r34-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <h1
+class=3D"default-heading1" id=3D"isPasted"
+style=3D"margin:0;color:#009641;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:18px;word-break:break-word;text-align:left">Lust
+                                                          auf Mitmachen?</=
+h1>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r26-c"
+                                                        align=3D"left">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"100%"
+                                                          class=3D"r35-o"
+style=3D"table-layout: fixed; width: 100%">
+                                                          <tbody>
+                                                          <tr>
+                                                          <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:center"
+                                                          align=3D"center"
+                                                          valign=3D"top"
+class=3D"r36-i nl2go-default-textstyle">
+                                                          <div>
+                                                          <p
+style=3D"margin:0;text-align:justify">Du m=C3=B6chtest dich <strong>aktiv =
+bei
+                                                          den Kinder-
+                                                          und
+                                                          Familienangebote=
+n</strong>
+                                                          einbringen
+                                                          oder sogar ein
+                                                          Kletterangebot
+                                                          mitgestalten
+                                                          bzw. leiten?
+                                                          Dann melde
+                                                          dich gerne bei
+                                                          <strong>Marlene
+                                                          Fiehne</strong>.=
+</p>
+                                                          <p
+style=3D"margin:0;text-align:justify">Der DAV bietet daf=C3=BCr <strong>vi=
+elf=C3=A4ltige
+Ausbildungsm=C3=B6glichkeiten</strong> und unterst=C3=BCtzt euch bei der A=
+us=C3=BCbung
+                                                          eines
+                                                          gef=C3=B6rderten
+                                                          Ehrenamts. Wir
+                                                          freuen uns
+                                                          =C3=BCber jede
+                                                          Unterst=C3=BCtzu=
+ng!</p>
+                                                          </div>
+                                                          </td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td
+                                                          height=3D"15"
+style=3D"font-size: 15px; line-height: 15px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class=3D"r2-c"
+                                                        align=3D"center">
+                                                        <table
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=3D"presentation"
+                                                          width=3D"135"
+                                                          class=3D"r38-o"
+style=3D"table-layout: fixed; width: 135px">
+                                                          <tbody>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          <tr>
+                                                          <td
+class=3D"r39-i nl2go-default-textstyle" align=3D"center" valign=3D"top"
+                                                          height=3D"14"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word"><!--[if mso]> <v:roundrect xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:w=3D"urn:schemas-microsoft-com:office:wor=
+d" href=3D"mailto:redacted-officer-3@example.invalid?subject=3DIch%20m%C3%B6cht=
+e%20mitmachen" style=3D"v-text-anchor:middle; height: 23px; width: 134px;"=
+ arcsize=3D"34%" fillcolor=3D"#009641" strokecolor=3D"#009641" strokeweigh=
+t=3D"1px" data-btn=3D"5"> <w:anchorlock> </w:anchorlock> <v:textbox inset=
+=3D"0,0,0,0"> <div style=3D"display:none;"> <center class=3D"default-butto=
+n"><span>E-Mail an Marlene</span></center> </div> </v:textbox> </v:roundre=
+ct> <![endif]--><!--[if !mso]><!-- --><a
+href=3D"mailto:redacted-officer-3@example.invalid?subject=3DIch%20m%C3%B6chte%2=
+0mitmachen"
+                                                          data-btn=3D"5"
+style=3D"font-style:normal;font-weight:bold;line-height:1.15;text-decorati=
+on:none;word-break:break-word;word-wrap:break-word;display:block;-webkit-t=
+ext-size-adjust:none;border-style:solid;background-color:#009641;border-wi=
+dth:0px;border-color:#009641;border-radius:8px;padding-top:5px;padding-bot=
+tom:5px;font-size:12px;font-family:Open Sans, arial;color:#000;height:14px=
+;mso-hide:all;width:135px"
+class=3D"r40-r default-button" moz-do-not-send=3D"true"><span>E-Mail an
+                                                          Marlene</span></=
+a><!--<![endif]--></td>
+                                                          </tr>
+                                                          <tr
+class=3D"nl2go-responsive-hide">
+                                                          <td height=3D"5"
+style=3D"font-size: 5px; line-height: 5px;">=C2=AD</td>
+                                                          </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r0-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r29-i"
+style=3D"padding-top: 5px; padding-bottom: 5px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"100%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"top" class=3D"r4-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" class=3D"r5-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td valign=3D"top"
+                                                class=3D"r20-i"
+style=3D"padding-right: 15px; padding-left: 15px">
+                                                <table width=3D"100%"
+                                                  cellspacing=3D"0"
+                                                  cellpadding=3D"0"
+                                                  border=3D"0"
+                                                  role=3D"presentation">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td
+class=3D"r52-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;padding-top:15px;valign:top=
+">
+                                                        <div>
+                                                          <h2
+class=3D"default-heading2"
+style=3D"margin:0;color:#858588;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:24px;word-break:break-word"><span
+style=3D"font-size: 18px; color: rgb(0, 150, 65);">Termine der Sektion</sp=
+an></h2>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td
+class=3D"r51-c nl2go-default-textstyle" align=3D"left"
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left;padding-top:15px;padding-bo=
+ttom:15px;valign:top">
+                                                        <div>
+                                                          <p
+style=3D"margin:0">24.09.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 Stammtisch der Sektion im Caf=C3=A9
+                                                          Extra</p>
+                                                          <p
+style=3D"margin:0">10.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 Markt der M=C3=B6glichkeiten auf
+                                                          dem Stadtplatz</=
+p>
+                                                          <p
+style=3D"margin:0">11.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 Bergmesse auf der Neulandh=C3=BCtte</p>
+                                                          <p
+style=3D"margin:0">22.10.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 Vortrag von Michael Fritsch in
+                                                          der Stadthalle</=
+p>
+                                                          <p
+style=3D"margin:0">28.11.2026 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 Weihnachtsmarkt in Penzberg</p>
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table cellspacing=3D"0" cellpadding=3D"0"
+                          border=3D"0" role=3D"presentation" width=3D"100%=
+"
+                          align=3D"center" class=3D"r21-o"
+                          style=3D"table-layout: fixed; width: 100%">
+                          <tbody>
+                            <tr>
+                              <td class=3D"r53-i"
+style=3D"background-color: #414141; padding-top: 16px; padding-right: 32px=
+; padding-bottom: 16px; padding-left: 32px">
+                                <table width=3D"100%" cellspacing=3D"0"
+                                  cellpadding=3D"0" border=3D"0"
+                                  role=3D"presentation">
+                                  <tbody>
+                                    <tr>
+                                      <th width=3D"58.33%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"middle" class=3D"r54-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" align=3D"left"
+                                          class=3D"r27-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;line-he=
+ight:1.5;word-break:break-word;text-align:left"
+                                                align=3D"left"
+                                                valign=3D"top"
+class=3D"r25-i nl2go-default-textstyle">
+                                                <div>
+                                                  <h4
+class=3D"default-heading4"
+style=3D"margin:0;color:#858588;font-family:Tahoma,Geneva,sans-serif, Aria=
+l;font-size:18px;word-break:break-word"><span
+style=3D"color:#ffffff;font-size:12px;"><strong>DAV Sektion Neuland</stron=
+g></span></h4>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" align=3D"left"
+                                          class=3D"r27-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:left;line-height:1.2;padding-top:8px"
+                                                align=3D"left"
+                                                valign=3D"top"
+class=3D"r55-i nl2go-default-textstyle">
+                                                <div>
+                                                  <p style=3D"margin:0"><s=
+pan
+style=3D"color:#ffffff;font-size:12px;">Grube 51b</span></p>
+                                                  <p style=3D"margin:0"><s=
+pan
+style=3D"color:#ffffff;font-size:12px;">82377 Penzberg</span></p>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" align=3D"left"
+                                          class=3D"r27-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:left;line-height:1.2;padding-top:8px"
+                                                align=3D"left"
+                                                valign=3D"top"
+class=3D"r55-i nl2go-default-textstyle">
+                                                <div>
+                                                  <p style=3D"margin:0"><a
+href=3D"mailto:info@dav-neuland.de" target=3D"_blank"
+style=3D"color:#73c9db;text-decoration:underline" moz-do-not-send=3D"true"=
+><span
+style=3D"color:#73c9db;font-size:12px;">info@dav-neuland.de</span></a><spa=
+n
+style=3D"color:#73c9db;font-size:12px;"> =C2=A0</span><br>
+                                                    =C2=A0</p>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                      <th width=3D"41.67%"
+                                        style=3D"font-weight: normal"
+                                        valign=3D"middle" class=3D"r56-c">
+                                        <table cellspacing=3D"0"
+                                          cellpadding=3D"0" border=3D"0"
+                                          role=3D"presentation"
+                                          width=3D"100%" align=3D"left"
+                                          class=3D"r27-o"
+style=3D"table-layout: fixed; width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td
+style=3D"color:#414141;font-family:Open Sans, arial;font-size:16px;word-br=
+eak:break-word;text-align:right;line-height:1.1"
+                                                align=3D"right"
+                                                valign=3D"top"
+class=3D"r57-i nl2go-default-textstyle">
+                                                <div>
+                                                  <p style=3D"margin:0">=
+=C2=A0</p>
+                                                  <p style=3D"margin:0"><a
+href=3D"https://ekb82.r.sp1-brevo.net/mk/cl/f/sh/SMK1E8tHeGgDwzzZJXVENNWFu=
+H6G/fJwHG5veeBJP"
+                                                      title=3D"Impressum"
+                                                      target=3D"_blank"
+style=3D"color:#73c9db;text-decoration:underline" sib_link_id=3D"7"
+                                                      templating=3D"n"
+moz-do-not-send=3D"true"><span style=3D"font-size:12px;">Impressum</span><=
+/a></p>
+                                                  <p style=3D"margin:0">=
+=C2=A0</p>
+                                                  <p style=3D"margin:0"><a
+href=3D"mailto:info@dav-neuland.de?subject=3DAbmeldung%20Newsletter&amp;bo=
+dy=3DIch%20m%C3%B6chte%20den%20Newsletter%20des%20DAV%20Neuland%20nicht%20=
+l%C3%A4nger%20erhalten.%20Bitte%20tragt%20mich%20aus%20der%20Verteilerlist=
+e%20aus."
+                                                      target=3D"_blank"
+style=3D"color:#73c9db;text-decoration:underline" moz-do-not-send=3D"true"=
+><span
+style=3D"font-size:12px;"><u>Newsletter abbestellen</u></span></a></p>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div align=3D"center" style=3D"color: #727272; font-size: 10px;">K=
+licken
+          Sie <a style=3D"color:#01a4c6;" target=3D"_blank"
+href=3D"https://ekb82.r.sp1-brevo.net/mk/un/v2/sh/SMJz09a0vkbXq59BlcUVjtfw=
+irSy/3ARfk5eoChRS"
+            moz-do-not-send=3D"true">hier</a>, wenn Sie sich von unserem
+          Newsletter abmelden m=C3=B6chten.</div>
+        <div
+style=3D"font:normal 10px Arial; color:#ccc; text-align:center; margin:20p=
+x auto 5px; width:200px;">
+          <div style=3D"margin:10px auto 0px; width:200px;"> <a
+href=3D"https://ekb82.r.sp1-brevo.net/tracking/?utm_campaign=3Df773c847c77=
+ca136cfa772755f364ce6&amp;utm_medium=3Demail&amp;utm_source=3Dlogo_mailin"
+              moz-do-not-send=3D"true"> <img alt=3D"Mailin"
+src=3D"https://ekb82.r.sp1-brevo.net/public/images/logo_nb_en.png"
+                width=3D"129" height=3D"48" moz-do-not-send=3D"true"> </a>=
+ </div>
+        </div>
+      </blockquote>
+    </blockquote>
+    <pre class=3D"moz-signature"
+    signature-switch-id=3D"25badcf8-0100-4099-966f-f8ffdc4238c5" cols=3D"7=
+2">Redacted Member
+Student Angewante Informatik - dual B.Sc.
+Studentisches Mitglied im Fachbereichsrat &amp; Senat</pre>
+  </body>
+</html>
+
+--------------SRZf3ty41tjEJ5hhXxT0Tj70--
+
+------=_Part_2434110_861800691.1790757841705--
+

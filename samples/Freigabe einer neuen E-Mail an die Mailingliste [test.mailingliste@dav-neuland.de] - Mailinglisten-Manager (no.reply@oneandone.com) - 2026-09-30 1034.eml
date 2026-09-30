@@ -1,0 +1,161 @@
+Return-Path: <>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.helo=mout-bounce.kundenserver.de; dmarc=none header.from=oneandone.com;
+ iprev=pass policy.iprev=212.227.15.22
+Received: from mout-bounce.kundenserver.de ([203.0.113.1]) by
+ mx.kundenserver.de (mxeue103 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1MiLAG-1wXZXv31uQ-00hxht for <nico.meissner@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:34:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1790757293; x=1791362093; i=no.reply@oneandone.com;
+	bh=bKwwBcLQj5bkjiX7fZubq3qCjatXljfFdcaUybTXIWI=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=LacixS3iivGQhPvJsr5gPBCoJVwz1oJgLEXSc1pjHW8x9st7Arsmms11QQQchAi8
+	 SBgaUMSGFhD7bepOmYFARCgSxXcZPbDhbXfAFSPmHRRlTJ8WbDzoz5CbpPYOEw6qZ
+	 g8Bdd81YExqQmx7Lsf9Tvg2Fa/USftigmOMGpASEbmMUN29TarAKwyNvTzxg8hHFK
+	 SL+jYjRfvsR+BVjNR3SnIaLw6GeBIRchebbCvYrhO4VHTkgP6Z3+1SSmTpwNlMJEh
+	 O3zApX4gV2rIEsVrOy319oSnTgKs/iOPJNKOz8oNtnb5hy0Uduc1HlucCQXwb/TPP
+	 oUhudTKkxPha+5nNqw==
+Received: from [203.0.113.3] ([203.0.113.3]) by
+ systemmailsubmission-service-1and1-live-7f8596fc95-kfkmb (via HTTP); Wed,
+ 30 Sep 2026 08:34:53 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-6aaaddc1-f7f2-4e5e-8e0a-a3d88f604a1c-1790757293566@systemmailsubmission-service-1and1-live-7f8596fc95-kfkmb>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: nico.meissner@dav-neuland.de
+Subject: Freigabe einer neuen E-Mail an die Mailingliste
+ [test.mailingliste@dav-neuland.de]
+Content-Type: multipart/mixed;
+ boundary="----=_Part_2434279_1128585988.1790757293566"
+Date: Wed, 30 Sep 2026 08:34:53 +0000 (UTC)
+Auto-Submitted: auto-generated
+Envelope-To: <redacted@example.invalid>
+
+
+------=_Part_2434279_1128585988.1790757293566
+Content-Type: multipart/alternative;
+ boundary="----=_Part_2434280_1803404228.1790757293566"
+
+------=_Part_2434280_1803404228.1790757293566
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Eine E-Mail an die Mailingliste test.mailingliste@dav-neuland.de ben=C3=
+=B6tigt eine Freigabe
+durch Sie als Moderator:
+
+    Mailingliste: test.mailingliste@dav-neuland.de
+    Moderator: nico.meissner@dav-neuland.de
+    Absender: instagram@dav-neuland.de
+
+Sie k=C3=B6nnen die E-Mail in der Mailinglisten-Verwaltung in Ihrem=20
+1&1 Control-Center freigeben oder indem Sie auf den folgenden Link klicken:
+
+    https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de=
+/Mail/Confirm?lang=3Dde&id=3DEXAMPLE_TOKEN_REDACTED_DO_NOT_USE
+------=_Part_2434280_1803404228.1790757293566--
+
+------=_Part_2434279_1128585988.1790757293566
+Content-Type: message/rfc822
+
+Received: from mout.kundenserver.de ([203.0.113.4]) by
+ mx.kundenserver.de (mxeue101 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1MZ9nj-1xGUUG1cBt-00R3Wy for <test.mailingliste@dav-neuland.de>; Wed, 30
+ Sep 2026 10:34:53 +0200
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue009
+ [203.0.113.5]) with ESMTPSA (Nemesis) id 1Mt6wz-1ws5tk0UHp-00tyuM for
+ <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026 10:34:53 +0200
+MIME-Version: 1.0
+Message-ID: <979344816.578249.1790757292942@email.ionos.de>
+From: DAV Sektion Neuland <instagram@dav-neuland.de>
+To: "test.mailingliste@dav-neuland.de" <test.mailingliste@dav-neuland.de>
+Subject: Test from IONOS Webmail
+Content-Type: multipart/alternative;
+ boundary="----=_Part_578248_448328068.1790757292941"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dav-neuland.de;
+ s=s1-ionos; t=1790757293; x=1791362093; i=instagram@dav-neuland.de;
+ bh=c8Y0cNq2CbVQ4rBLqAqRyd6m0U32vzfVaibnpxiLxNI=;
+ h=X-UI-Sender-Class:Date:From:To:Message-ID:Subject:MIME-Version:
+ Content-Type:cc:content-transfer-encoding:content-type:date:from:
+ message-id:mime-version:reply-to:subject:to;
+ b=19vH+T/VQfIZVxpStzpvNWEeFRJ5hcGDR2G7i5jw/980ZnEYXexORnh5KoFklAE2
+ VKUCfY7c7ZPd3MvCe3lmvHCc9oZhdT9o32kDaS1AVLBhrae5BX3P6OaKGFz1bcQ73
+ OWsiReFOj1SjPzPmM421MaU6ungrwq3KaZEVrE1FxmYVOPwwd/6mPTNQBgeDt8f9L
+ Nfpai81+yJdIbs1N852fLQETECQmkLcH0jVXaLvP2rxTWXsYfJXskUwI83hR3/R/Z
+ tLrHUwIlt0p06psDdl/YMC3j8EnNH3LsDS8ds+jpg+NzhhJlF+/x8z+y2NAMLtEib
+ DBTSKLNqlvb8FSDa6g==
+Date: Wed, 30 Sep 2026 10:34:52 +0200 (CEST)
+Importance: Normal
+UI-OutboundReport: notjunk:1;M01:P0:vijD41FiSCE=;HLPebYKBVHV7bYy9X8RwWdfmgMx
+ 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
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+X-Priority: 3
+X-Mailer: Open-Xchange Mailer v8.46.152
+X-Originating-Client: open-xchange-appsuite
+X-Provags-ID: V03:K1:88gvsT9IpsxqLEPj6vGpOjD5/ajDPEaOL1QOMF4vfytqqbDmNSp
+ JAhBeg2w3AVnbpgwMiUaEv7byfyEnykcM2M9fnDor/E2320meXLtcOPKtoXL9ZmdVjxgRac
+ xLo6Dbe6CJVGpe9QLPynNrIsT3lbgtthJUqKclY/O/kTS6z2kkio9sHFw/f4eiJBJmNS++b
+ A52ifVb6mmo9cuPNl1iWA==
+X-Spam-Flag: NO
+
+------=_Part_578248_448328068.1790757292941
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Test from IONOS Webmail
+------=_Part_578248_448328068.1790757292941
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+ </head>
+ <body>
+  <div class="default-style" style="">Test from IONOS Webmail</div>
+ </body>
+</html>
+------=_Part_578248_448328068.1790757292941--
+
+------=_Part_2434279_1128585988.1790757293566--
+

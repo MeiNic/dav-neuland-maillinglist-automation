@@ -1,0 +1,103 @@
+Return-Path: <>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.helo=mout-bounce.kundenserver.de; dmarc=none header.from=oneandone.com;
+ iprev=pass policy.iprev=212.227.15.22
+Received: from mout-bounce.kundenserver.de ([203.0.113.1]) by
+ mx.kundenserver.de (mxeue103 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1N6a8u-1we7lR48Ss-0164Vc for <nico.meissner@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:45:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1790757927; x=1791362727; i=no.reply@oneandone.com;
+	bh=mQ/peVSZOYKyYcPZy2RneAsc8C7VDD00/QrEu+BvrpI=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=1K+imGwBd4LTZ4JbGzCYT7vUmBY9ISW6+pSqzm/MP4svqmNZ9vz94PPQrZG5DZT9
+	 Zf+vKsXqizwGiXMCwOQzu5nwvfKhUo8CT9EPwVB3PkRKN8i7OLqqXytrApqHY+HlP
+	 3CEfcOmr/03JJUDTZChHt3cuXX41GbKpaSimIqMVRjVlEKft9itAsJmspSQ0sHFrt
+	 JEGMsNWmi7AV/YFBkp7vnGMIIW8boXChxaP4rD7E0b6jN7vyaEpUFwCnmHUIVxm37
+	 CFRFyEMAMpivRSkiiPp51If0WrsLrcsiQVCSevdJHhNgnrtIHT9UNpfuUu22L1hxh
+	 y1LGqVkZF/XELuaiEA==
+Received: from [203.0.113.3] ([203.0.113.3]) by
+ systemmailsubmission-service-1and1-live-7f8596fc95-t8zk5 (via HTTP); Wed,
+ 30 Sep 2026 08:45:27 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-18ce7d82-1638-4586-a38a-97fd179f4a40-1790757927836@systemmailsubmission-service-1and1-live-7f8596fc95-t8zk5>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: nico.meissner@dav-neuland.de
+Subject: Freigabe einer neuen E-Mail an die Mailingliste
+ [test.mailingliste@dav-neuland.de]
+Content-Type: multipart/mixed;
+ boundary="----=_Part_2434150_1871676110.1790757927835"
+Date: Wed, 30 Sep 2026 08:45:27 +0000 (UTC)
+Auto-Submitted: auto-generated
+Envelope-To: <redacted@example.invalid>
+
+
+------=_Part_2434150_1871676110.1790757927835
+Content-Type: multipart/alternative;
+ boundary="----=_Part_2434151_1505455379.1790757927835"
+
+------=_Part_2434151_1505455379.1790757927835
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Eine E-Mail an die Mailingliste test.mailingliste@dav-neuland.de ben=C3=
+=B6tigt eine Freigabe
+durch Sie als Moderator:
+
+    Mailingliste: test.mailingliste@dav-neuland.de
+    Moderator: nico.meissner@dav-neuland.de
+    Absender: redacted-member@example.invalid
+
+Sie k=C3=B6nnen die E-Mail in der Mailinglisten-Verwaltung in Ihrem=20
+1&1 Control-Center freigeben oder indem Sie auf den folgenden Link klicken:
+
+    https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de=
+/Mail/Confirm?lang=3Dde&id=3DEXAMPLE_TOKEN_REDACTED_DO_NOT_USE
+------=_Part_2434151_1505455379.1790757927835--
+
+------=_Part_2434150_1871676110.1790757927835
+Content-Type: message/rfc822
+
+Received: from posthost-extern2.hs-worms.de ([203.0.113.10]) by
+ mx.kundenserver.de (mxeue101 [198.51.100.12]) with ESMTPS (Nemesis) id
+ 1MWgxi-1xE0kR2tVg-00TY3w for <test.mailingliste@dav-neuland.de>; Wed, 30
+ Sep 2026 10:45:27 +0200
+Received: from proxmox-gate.hs-worms.de (proxmox-gate.HS-Worms.de
+ [203.0.113.19]) by posthost-extern2.hs-worms.de (Postfix) with ESMTP id
+ 7F6E76005B for <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:45:27 +0200 (CEST)
+Received: from proxmox-gate.hs-worms.de (localhost.localdomain [127.0.0.1])
+ by proxmox-gate.hs-worms.de (Proxmox) with ESMTP id 73BA62C68B6 for
+ <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026 10:45:27 +0200 (CEST)
+Received: from smtp-extern.hs-worms.de (smtp-extern.hs-worms.de
+ [IPv6:2001:4c80:81:a000::5]) by proxmox-gate.hs-worms.de (Proxmox) with
+ ESMTPS id 4A5E82C6569 for <test.mailingliste@dav-neuland.de>; Wed, 30 Sep
+ 2026 10:45:27 +0200 (CEST)
+Received: from [192.0.2.158] (Client-181-158.EduRoam.HS-Worms.DE
+ [192.0.2.158]) by smtp-extern.hs-worms.de (Postfix) with ESMTPSA id
+ 457CD1A01B4 for <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:45:27 +0200 (CEST)
+MIME-Version: 1.0
+Message-ID: <redacted-msgid-3@example.invalid>
+From: Redacted Member <redacted-member@example.invalid>
+To: test.mailingliste@dav-neuland.de
+Subject: =?UTF-8?B?VW1sYXV0ZTogw4TDnMOW?=
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Wed, 30 Sep 2026 10:45:25 +0200
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE, en-US
+Content-Transfer-Encoding: quoted-printable
+
+=C3=84=C3=9C=C3=96
+
+Redacted Member
+Student Angewante Informatik - dual B.Sc.
+Studentisches Mitglied im Fachbereichsrat & Senat
+
+
+
+------=_Part_2434150_1871676110.1790757927835--
+

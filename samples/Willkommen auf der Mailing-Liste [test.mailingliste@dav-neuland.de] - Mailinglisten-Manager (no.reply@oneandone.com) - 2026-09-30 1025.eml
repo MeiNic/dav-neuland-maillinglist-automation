@@ -1,0 +1,57 @@
+Return-Path: <redacted@example.invalid>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.mailfrom=instagram@dav-neuland.de; dmarc=none header.from=oneandone.com
+ ; iprev=pass policy.iprev=212.227.17.13
+Received: from mout.kundenserver.de ([203.0.113.1]) by mx.kundenserver.de
+ (mxeue101 [203.0.113.2]) with ESMTPS (Nemesis) id 1M4LFH-1xC6bb1iQD-004yAi
+ for <nico.meissner@dav-neuland.de>; Wed, 30 Sep 2026 10:25:06 +0200
+UI-Loop: V01:9n6GK6iN/hk=:XvBiG8nMKk4h3fbatYvKxnnrCRNI6u8tgnIiqsew6SE=
+Received: from mout.kundenserver.de ([203.0.113.3]) by mx.kundenserver.de
+ (mxeue101 [203.0.113.2]) with ESMTPS (Nemesis) id 1MUm51-1xKs0u3dzN-00VSzb
+ for <instagram@dav-neuland.de>; Wed, 30 Sep 2026 10:25:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1790756705; x=1791361505; i=no.reply@oneandone.com;
+	bh=+dJO9+BvUbGgZJnKPeOBjQjyWNkrc84yrmGMsVHKsMo=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=OjXpKl2yYJQe4QKL5NfaQdajLB2r6C0+6KrC6gfSl/Bj/oaWFMTBLL6bCNSEK6cc
+	 d4e/AUG7na7qkmfQGoWYyIdpYEdRS91ngVB+NYwXildiEyjA/l8em8Y8xOhFfiQjR
+	 F+qLvXYOuJzIoUS+od5GMr9HJD7wovGHo0fvGWWrOWxqnXkvSibdJjA3RRKJj+XAI
+	 Z1wHFiC5RBqc1lmH5cHhWgWDHUX3WOTjcPpU/3tM4FcOEGaOu41fi/49pqJaf+G8A
+	 7EM3or7BGtRaDp4w6F5MnrbQm2pMpibN0iu0MUNXzVSjDEpcL9ubawvUMCYcu8Ipi
+	 yMgc5+XPlz/3e0kJBQ==
+Received: from [203.0.113.4] ([203.0.113.4]) by
+ systemmailsubmission-service-1and1-live-7f8596fc95-p4lpd (via HTTP); Wed,
+ 30 Sep 2026 08:25:05 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-f8616e5a-5eba-4229-98f1-283a6bbfcb17-1790756705718@systemmailsubmission-service-1and1-live-7f8596fc95-p4lpd>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: instagram@dav-neuland.de
+Subject: Willkommen auf der Mailing-Liste [test.mailingliste@dav-neuland.de]
+Content-Type: multipart/mixed;
+ boundary="----=_Part_2429939_682725185.1790756705717"
+Date: Wed, 30 Sep 2026 08:25:05 +0000 (UTC)
+Auto-Submitted: auto-generated
+Envelope-To: <redacted@example.invalid>
+
+
+------=_Part_2429939_682725185.1790756705717
+Content-Type: multipart/alternative;
+ boundary="----=_Part_2429940_725694510.1790756705717"
+
+------=_Part_2429940_725694510.1790756705717
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hallo,
+wir freuen uns, dass Sie sich in unsere Mailingliste eintragen m=C3=B6chte=
+n:
+>> Name der Mailingliste <<
+Viele Gr=C3=BC=C3=9Fe
+>> Geben Sie hier bitte Ihren Namen ein=2E <<
+------=_Part_2429940_725694510.1790756705717--
+
+------=_Part_2429939_682725185.1790756705717--
+

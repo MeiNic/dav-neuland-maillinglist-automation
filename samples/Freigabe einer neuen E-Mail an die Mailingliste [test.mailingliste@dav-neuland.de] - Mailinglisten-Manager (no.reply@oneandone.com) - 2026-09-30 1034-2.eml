@@ -1,0 +1,141 @@
+Return-Path: <>
+Authentication-Results: kundenserver.de; dkim=pass
+ header.i=no.reply@oneandone.com header.s=s1-ionos; spf=pass
+ smtp.helo=mout-bounce.kundenserver.de; dmarc=none header.from=oneandone.com;
+ iprev=pass policy.iprev=212.227.15.22
+Received: from mout-bounce.kundenserver.de ([203.0.113.1]) by
+ mx.kundenserver.de (mxeue002 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1ModcP-1wNPu51ter-00gY30 for <nico.meissner@dav-neuland.de>; Wed, 30 Sep 2026
+ 10:34:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oneandone.com;
+	s=s1-ionos; t=1790757240; x=1791362040; i=no.reply@oneandone.com;
+	bh=KWxYRrdq1I4wmD61bnwFzr5BhsBYccRU7tphmoaN4lI=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=F0P/hWbEaPSF2Nj0HkVul/n0MYGq6jtH5Z2qgeqYDkboay4ZryRXarbvhel2MDMW
+	 CJuYoNrYp5Hto0Vp1g/uElJ04yeNiYrNto4+eGXFqbp4lC/HLhqDGpcbwcIyQaKT5
+	 wjxBEw8DzUPYNtj+p81BwvzR8CUycfWzf2r9yMUbVcg4jOHXrYjy5Tk3Qf7CSG4zP
+	 lqSCdy2jn8friECHLBFHzn6fiWZtlRdF70PRC+IK9noFT21zYS1BeQoPFDPN3y2yR
+	 aqigaL4tiH5FepuRfOmW7m/OUSkikNCX+j0u2+sJv4GIDDwoPOAC9F0VhOuVq5/Wo
+	 Q+Y4h6iiGmS7zuiOgw==
+Received: from [203.0.113.3] ([203.0.113.3]) by
+ systemmailsubmission-service-1and1-live-7f8596fc95-p4lpd (via HTTP); Wed,
+ 30 Sep 2026 08:34:00 +0000
+MIME-Version: 1.0
+Message-ID: <trinity-sys-NET-3c2d06e0-a1d2-4bce-b7c0-ea9edb9923eb-1790757240302@systemmailsubmission-service-1and1-live-7f8596fc95-p4lpd>
+From: Mailinglisten-Manager <no.reply@oneandone.com>
+To: nico.meissner@dav-neuland.de
+Subject: Freigabe einer neuen E-Mail an die Mailingliste
+ [test.mailingliste@dav-neuland.de]
+Content-Type: multipart/mixed;
+ boundary="----=_Part_2429964_1930170715.1790757240301"
+Date: Wed, 30 Sep 2026 08:34:00 +0000 (UTC)
+Auto-Submitted: auto-generated
+Envelope-To: <redacted@example.invalid>
+
+
+------=_Part_2429964_1930170715.1790757240301
+Content-Type: multipart/alternative;
+ boundary="----=_Part_2429965_1301745118.1790757240301"
+
+------=_Part_2429965_1301745118.1790757240301
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Eine E-Mail an die Mailingliste test.mailingliste@dav-neuland.de ben=C3=
+=B6tigt eine Freigabe
+durch Sie als Moderator:
+
+    Mailingliste: test.mailingliste@dav-neuland.de
+    Moderator: nico.meissner@dav-neuland.de
+    Absender: instagram@dav-neuland.de
+
+Sie k=C3=B6nnen die E-Mail in der Mailinglisten-Verwaltung in Ihrem=20
+1&1 Control-Center freigeben oder indem Sie auf den folgenden Link klicken:
+
+    https://ml.kundenserver.de/MailingList/test.mailingliste@dav-neuland.de=
+/Mail/Confirm?lang=3Dde&id=3DEXAMPLE_TOKEN_REDACTED_DO_NOT_USE
+------=_Part_2429965_1301745118.1790757240301--
+
+------=_Part_2429964_1930170715.1790757240301
+Content-Type: message/rfc822
+
+Received: from mout.kundenserver.de ([203.0.113.4]) by mx.kundenserver.de
+ (mxeue002 [203.0.113.2]) with ESMTPS (Nemesis) id
+ 1MLjw8-1xTMc33mAi-00RIuy for <test.mailingliste@dav-neuland.de>; Wed, 30
+ Sep 2026 10:34:00 +0200
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue109
+ [203.0.113.5]) with ESMTPSA (Nemesis) id 1MZkxd-1xFwjQ2SL1-00LrMT for
+ <test.mailingliste@dav-neuland.de>; Wed, 30 Sep 2026 10:33:59 +0200
+MIME-Version: 1.0
+Message-ID: <92392425-1b13-4baf-b5fd-a5e5ffbdd282@dav-neuland.de>
+From: "instagram@dav-neuland.de" <instagram@dav-neuland.de>
+To: test.mailingliste@dav-neuland.de
+Subject: Testmail from Thunderbird
+Content-Type: text/plain; charset=UTF-8; format=flowed
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dav-neuland.de;
+ s=s1-ionos; t=1790757239; x=1791362039; i=instagram@dav-neuland.de;
+ bh=sjci9PDpRmrLLHPa7AzCku79X/44ZZPpn6/Zf7mDphw=;
+ h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Subject:
+ Content-Type:Content-Transfer-Encoding:cc:
+ content-transfer-encoding:content-type:date:from:message-id:
+ mime-version:reply-to:subject:to;
+ b=H0/gSP6a8086Q4q4lCbAVDSSBmh3H7Ywc9pytZXB7UQ4EX8IUhgyo1uokqS/DlVm
+ 1IEtPvysChaEHZkNjZfmBIYOjG62BMqNlQ6v3YqqWK69RLc+nOvFFZy37QsM8mGPn
+ rhM+46f04i6QDN9/ZneDkb5QPORn7GveUzShHeBbF/UqX9/IMknC96Od15Uq18D21
+ FmPenzDPM1xJegKucrwaDK8ZzM8bvffcbPzKMdwgbgxq4Cw7oIxx9Lc/AnS4X+9kk
+ NwVSGMBUTRcTol7LftQCHWp/c3wCgk/b+faJhgaVZGaFlqcvH1g3Fib270kL9WMgc
+ ciDttxhv0q4Td2QYaw==
+Date: Wed, 30 Sep 2026 10:33:57 +0200
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE, en-US
+Content-Transfer-Encoding: 7bit
+UI-OutboundReport: notjunk:1;M01:P0:zDAnNGdXW8U=;IotQlLOs/4mfqE0iXhwMK+xhmTG
+ 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
+ PONojRVOWnHTZ6lO56wEnlL65yC9tk=
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+X-Provags-ID: V03:K1:dBKq50Hg5y1N+P/EKvfzaG/LxyMFsbc4s6Z+Oueo3zhyqnBAGJV
+ 2VWdukUO4NFkIXisApCHcOKC9rNbCfAuKt4Z5XeKhfgadHI8Vk4j3C1Y+xqoCW6Ih7xhiTZ
+ jfTpj80EDlwQKEEFpU9oEeb6knDGBpQiFxC0TG90t5Y+Pg8s7/E3huqYZWHMEh8oZM41Gkz
+ 71fxlzskEPhdDk7MKXd6g==
+X-Spam-Flag: NO
+
+Testmail from Thunderbird
+
+
+------=_Part_2429964_1930170715.1790757240301--
+
