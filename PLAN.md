@@ -366,9 +366,12 @@ dav-mailinglist-moderation/
       class-log-config.php         # the slice of config the logger needs (interface)
       class-log-masker.php         # masks the confirm-link token, sensitive context keys
       class-log-rotator.php        # daily file naming + retention pruning
-    admin/                          # not yet built
-      class-admin-settings.php     # settings page, status panel, sanitization
-      class-list-repository.php    # CRUD over the dav_mlm_lists option
+    admin/
+      class-admin-settings.php     # settings page, status panel (not yet built), sanitize callback
+      class-list-repository.php    # read access to the dav_mlm_lists option (writes go through the settings API)
+      class-list-sanitizer.php     # validation/merge behind the sanitize callback
+      class-list-sanitize-result.php # lists to store + errors/warnings
+      class-admin-language.php     # English/German UI strings, per-user toggle (user meta)
     mail/
       mailbox/
         class-mailbox.php          # ext-imap wrapper (search, fetch FT_PEEK, move, folders)

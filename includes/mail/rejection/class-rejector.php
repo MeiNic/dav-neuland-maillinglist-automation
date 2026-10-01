@@ -3,9 +3,9 @@
  * Sends (or intentionally skips) the rejection mail for a post that
  * failed a list's regex check (PLAN.md §5b step 4j). `reject_mode =
  * silent` and the per-list templates come from the list's admin
- * configuration, not built yet (PLAN.md §5a) — the caller passes them in
- * directly rather than this class depending on that not-yet-existing
- * repository.
+ * configuration (Dav_Mlm_List_Repository, PLAN.md §5a) — the caller
+ * passes them in directly, so this class doesn't depend on how lists are
+ * stored.
  *
  * Loop/abuse guards run before anything is sent, so a reply never goes to
  * a bounce, another mailing list, or our own infrastructure — replying to
@@ -22,6 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class Dav_Mlm_Rejector {
+
+	/**
+	 * Every placeholder reject() substitutes; the admin page lists these
+	 * as help text and warns about any other `{{...}}` in a template.
+	 */
+	public const PLACEHOLDERS = array( '{{sender}}', '{{list}}', '{{original_subject}}' );
 
 	private string $mail_from;
 	private string $mail_from_name;

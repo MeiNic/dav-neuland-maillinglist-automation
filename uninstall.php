@@ -15,6 +15,9 @@ foreach ( array( 'dav_mlm_lists', 'dav_mlm_status', 'dav_mlm_attempts', 'dav_mlm
 	delete_option( $option );
 }
 
+// Each user's admin page language choice (Dav_Mlm_Admin_Language::USER_META).
+delete_metadata( 'user', 0, 'dav_mlm_admin_language', '', true );
+
 $transient_like = $wpdb->esc_like( '_transient_dav_mlm_' ) . '%';
 $timeout_like   = $wpdb->esc_like( '_transient_timeout_dav_mlm_' ) . '%';
 

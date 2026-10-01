@@ -14,6 +14,10 @@ if ( ! defined( 'DAY_IN_SECONDS' ) ) {
 	define( 'DAY_IN_SECONDS', 86400 );
 }
 
+if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
+	define( 'MINUTE_IN_SECONDS', 60 );
+}
+
 if ( ! function_exists( 'get_option' ) ) {
 	function get_option( string $name, $default = false ) {
 		return $GLOBALS['dav_mlm_test_options'][ $name ] ?? $default;
@@ -247,6 +251,61 @@ function dav_mlm_test_set_http_response( $response ): void {
 }
 
 /**
+ * The current user is allowed everything unless a test says otherwise
+ * (dav_mlm_test_set_user_can()).
+ */
+if ( ! function_exists( 'current_user_can' ) ) {
+	function current_user_can( string $capability, ...$args ): bool {
+		return $GLOBALS['dav_mlm_test_user_can'] ?? true;
+	}
+}
+
+function dav_mlm_test_set_user_can( bool $can ): void {
+	$GLOBALS['dav_mlm_test_user_can'] = $can;
+}
+
+if ( ! function_exists( 'get_current_user_id' ) ) {
+	function get_current_user_id(): int {
+		return 1;
+	}
+}
+
+if ( ! function_exists( 'get_user_meta' ) ) {
+	function get_user_meta( int $user_id, string $key = '', bool $single = false ) {
+		return $GLOBALS['dav_mlm_test_user_meta'][ $user_id ][ $key ] ?? ( $single ? '' : array() );
+	}
+}
+
+if ( ! function_exists( 'update_user_meta' ) ) {
+	function update_user_meta( int $user_id, string $key, $value ): bool {
+		$GLOBALS['dav_mlm_test_user_meta'][ $user_id ][ $key ] = $value;
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'get_user_locale' ) ) {
+	function get_user_locale(): string {
+		return $GLOBALS['dav_mlm_test_user_locale'] ?? 'en_US';
+	}
+}
+
+function dav_mlm_test_set_user_locale( string $locale ): void {
+	$GLOBALS['dav_mlm_test_user_locale'] = $locale;
+}
+
+if ( ! function_exists( 'add_settings_error' ) ) {
+	function add_settings_error( string $setting, string $code, string $message, string $type = 'error' ): void {
+		$GLOBALS['dav_mlm_test_settings_errors'][] = array(
+			'setting' => $setting,
+			'code'    => $code,
+			'message' => $message,
+			'type'    => $type,
+		);
+	}
+}
+
+/**
  * Resets the in-memory options/transients stores. Call from setUp() in
  * any test that uses these stubs, since $GLOBALS otherwise leaks state
  * between test methods in the same process.
@@ -261,4 +320,8 @@ function dav_mlm_test_reset_wp_state(): void {
 	$GLOBALS['dav_mlm_test_wp_mail_calls']          = array();
 	$GLOBALS['dav_mlm_test_wp_mail_result']         = null;
 	$GLOBALS['dav_mlm_test_wp_mail_results']        = array();
+	$GLOBALS['dav_mlm_test_user_can']               = null;
+	$GLOBALS['dav_mlm_test_settings_errors']        = array();
+	$GLOBALS['dav_mlm_test_user_meta']              = array();
+	$GLOBALS['dav_mlm_test_user_locale']            = null;
 }

@@ -28,11 +28,8 @@ foreach ( array( '/vendor/autoload.php', '/vendor-prefixed/autoload.php' ) as $a
 
 require_once DAV_MLM_PLUGIN_DIR . '/includes/autoload.php';
 
-add_action(
-	'admin_menu',
-	function (): void {
-		if ( class_exists( 'Dav_Mlm_Admin_Settings' ) ) {
-			( new \Dav_Mlm_Admin_Settings() )->register_menu();
-		}
-	}
-);
+register_activation_hook( __FILE__, array( \Dav_Mlm_Admin_Settings::class, 'activate' ) );
+
+if ( is_admin() ) {
+	( new \Dav_Mlm_Admin_Settings() )->register_hooks();
+}
