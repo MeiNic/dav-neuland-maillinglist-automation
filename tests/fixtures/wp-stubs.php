@@ -270,6 +270,21 @@ if ( ! function_exists( 'get_current_user_id' ) ) {
 	}
 }
 
+if ( ! function_exists( 'esc_html' ) ) {
+	function esc_html( $text ): string {
+		return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+/**
+ * The site timezone is UTC here, so wp_date() is just gmdate().
+ */
+if ( ! function_exists( 'wp_date' ) ) {
+	function wp_date( string $format, ?int $timestamp = null ): string {
+		return gmdate( $format, $timestamp ?? time() );
+	}
+}
+
 if ( ! function_exists( 'get_user_meta' ) ) {
 	function get_user_meta( int $user_id, string $key = '', bool $single = false ) {
 		return $GLOBALS['dav_mlm_test_user_meta'][ $user_id ][ $key ] ?? ( $single ? '' : array() );

@@ -1,7 +1,8 @@
 <?php
 /**
  * Settings → Mailinglist Moderation: add / edit / delete the per-list
- * configuration (PLAN.md §5a) stored in option `dav_mlm_lists`.
+ * configuration (PLAN.md §5a) stored in option `dav_mlm_lists`, plus the
+ * cron runner's status (Dav_Mlm_Status_Panel).
  *
  * Every save and delete is a POST to options.php for the registered
  * setting, so WordPress itself enforces the nonce (`dav_mlm-options`) and
@@ -33,6 +34,7 @@ final class Dav_Mlm_Admin_Settings {
 	private Dav_Mlm_List_Repository $repository;
 	private ?Dav_Mlm_List_Sanitizer $sanitizer;
 	private ?Dav_Mlm_Admin_Language $language;
+	private ?Dav_Mlm_Status_Panel $status_panel = null;
 
 	/**
 	 * The sanitizer and language default lazily: this object is built
@@ -154,6 +156,7 @@ final class Dav_Mlm_Admin_Settings {
 		$this->render_language_switch();
 
 		$this->render_config_notice();
+		$this->status_panel()->render_banner();
 
 		$stashed = $this->take_stashed_form();
 		$action  = $this->query_arg( 'action' );
@@ -167,6 +170,7 @@ final class Dav_Mlm_Admin_Settings {
 			$this->render_form( $list );
 		} else {
 			$this->render_overview();
+			$this->status_panel()->render();
 			$this->render_regex_tester();
 		}
 
@@ -526,6 +530,10 @@ final class Dav_Mlm_Admin_Settings {
 
 	private function sanitizer(): Dav_Mlm_List_Sanitizer {
 		return $this->sanitizer ??= new Dav_Mlm_List_Sanitizer( null, $this->language() );
+	}
+
+	private function status_panel(): Dav_Mlm_Status_Panel {
+		return $this->status_panel ??= new Dav_Mlm_Status_Panel( $this->language() );
 	}
 
 	private function t( string $text ): string {

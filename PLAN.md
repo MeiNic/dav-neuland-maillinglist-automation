@@ -177,7 +177,10 @@ A single WordPress plugin, `dav-mailinglist-moderation`, with two halves.
 - **Status panel** on the same page (read from option `dav_mlm_status`):
   last run time, last *successful* run time, counts of the last run,
   consecutive-failure counter, last N errors/warnings, and a warning
-  banner if the last successful run is older than e.g. 30 minutes.
+  banner once the last runs failed in a row (same threshold as the
+  failure alert mail, §5b step 6). Not based on how long ago the last
+  success or the last mail was: the lists only see one or two mails a
+  week, so quiet periods are normal.
 - IMAP / SMTP credentials and other deployment config are **not** stored
   in this UI → `wp-config.php` constants (§7), consistent with how WP
   treats DB credentials; keeps secrets out of the DB/admin UI.
@@ -367,7 +370,8 @@ dav-mailinglist-moderation/
       class-log-masker.php         # masks the confirm-link token, sensitive context keys
       class-log-rotator.php        # daily file naming + retention pruning
     admin/
-      class-admin-settings.php     # settings page, status panel (not yet built), sanitize callback
+      class-admin-settings.php     # settings page, sanitize callback
+      class-status-panel.php       # status panel + failing-runs banner (reads dav_mlm_status)
       class-list-repository.php    # read access to the dav_mlm_lists option (writes go through the settings API)
       class-list-sanitizer.php     # validation/merge behind the sanitize callback
       class-list-sanitize-result.php # lists to store + errors/warnings
@@ -401,7 +405,7 @@ dav-mailinglist-moderation/
       class-option-store.php       # get_option()/update_option() wrapper, always autoload=false
       class-attempts-store.php     # per-message failure counter (option dav_mlm_attempts)
       class-done-list.php          # bounded list of already-actioned Message-IDs (idempotency)
-      class-run-status.php         # last run / last success / counts / errors (admin status panel)
+      class-run-status.php         # last run / last success / counts / errors+warnings (admin status panel)
       class-rate-limiter.php       # per-sender rejection-mail rate limit (transients)
       class-alerter.php            # digest + throttled failure/recovered alerts (option dav_mlm_alerter_state)
       class-cron-runner.php        # orchestrates one run, used by bin/cron-runner.php (not yet built)

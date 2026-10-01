@@ -71,8 +71,15 @@ final class AdminLanguageTest extends TestCase {
 	}
 
 	public function test_german_entries_keep_the_same_sprintf_placeholders(): void {
+		$conversions = static function ( string $text ): array {
+			preg_match_all( '/%(?:\d+\$)?[sd]/', $text, $matches );
+			sort( $matches[0] );
+
+			return $matches[0];
+		};
+
 		foreach ( Dav_Mlm_Admin_Language::GERMAN as $english => $german ) {
-			self::assertSame( substr_count( $english, '%s' ), substr_count( $german, '%s' ), $english );
+			self::assertSame( $conversions( $english ), $conversions( $german ), $english );
 		}
 	}
 }

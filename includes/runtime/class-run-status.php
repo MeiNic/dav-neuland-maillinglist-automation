@@ -2,8 +2,9 @@
 /**
  * Run summary (option `dav_mlm_status`) shown on the admin status panel:
  * last run, last successful run, this run's counts, a consecutive-failure
- * counter (drives the alerter's escalation, issue #13), and the last N
- * errors (PLAN.md §5a, §5b step 5).
+ * counter (drives the alerter's escalation, issue #13, and the admin
+ * page's warning banner), and the last N errors and warnings (PLAN.md
+ * §5a, §5b step 5).
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Dav_Mlm_Run_Status {
 
-	public const MAX_ERRORS = 20;
+	public const MAX_MESSAGES = 20;
+
+	/**
+	 * The run summary's counters (PLAN.md §5b step 5), in display order.
+	 */
+	public const COUNT_KEYS = array( 'processed', 'approved', 'rejected', 'manual', 'suspicious', 'errored', 'skipped' );
+
+	public const LEVEL_ERROR   = 'error';
+	public const LEVEL_WARNING = 'warning';
 
 	private const OPTION = 'dav_mlm_status';
 
@@ -25,8 +34,9 @@ final class Dav_Mlm_Run_Status {
 	/**
 	 * @param array<string, int> $counts
 	 * @param string[]           $errors
+	 * @param string[]           $warnings
 	 */
-	public function record_run( bool $success, array $counts, array $errors = array(), ?DateTimeImmutable $time = null ): void {
+	public function record_run( bool $success, array $counts, array $errors = array(), array $warnings = array(), ?DateTimeImmutable $time = null ): void {
 		$status = $this->status();
 		$now    = ( $time ?? new DateTimeImmutable() )->format( DateTimeInterface::ATOM );
 
@@ -41,15 +51,18 @@ final class Dav_Mlm_Run_Status {
 
 		$status['counts'] = $counts;
 
-		foreach ( $errors as $message ) {
-			$status['errors'][] = array(
-				'time'    => $now,
-				'message' => $message,
-			);
+		foreach ( array( self::LEVEL_ERROR => $errors, self::LEVEL_WARNING => $warnings ) as $level => $messages ) {
+			foreach ( $messages as $message ) {
+				$status['messages'][] = array(
+					'time'    => $now,
+					'level'   => $level,
+					'message' => $message,
+				);
+			}
 		}
 
-		if ( count( $status['errors'] ) > self::MAX_ERRORS ) {
-			$status['errors'] = array_slice( $status['errors'], -self::MAX_ERRORS );
+		if ( count( $status['messages'] ) > self::MAX_MESSAGES ) {
+			$status['messages'] = array_slice( $status['messages'], -self::MAX_MESSAGES );
 		}
 
 		$this->options->set( self::OPTION, $status );
@@ -61,11 +74,13 @@ final class Dav_Mlm_Run_Status {
 	 *     last_successful_run: ?string,
 	 *     consecutive_failures: int,
 	 *     counts: array<string, int>,
-	 *     errors: array<int, array{time: string, message: string}>
+	 *     messages: array<int, array{time: string, level: string, message: string}>
 	 * }
 	 */
 	public function status(): array {
-		return $this->options->get( self::OPTION, $this->defaults() );
+		$stored = $this->options->get( self::OPTION, array() );
+
+		return array_merge( $this->defaults(), is_array( $stored ) ? $stored : array() );
 	}
 
 	public function consecutive_failures(): int {
@@ -78,7 +93,7 @@ final class Dav_Mlm_Run_Status {
 	 *     last_successful_run: ?string,
 	 *     consecutive_failures: int,
 	 *     counts: array<string, int>,
-	 *     errors: array<int, array{time: string, message: string}>
+	 *     messages: array<int, array{time: string, level: string, message: string}>
 	 * }
 	 */
 	private function defaults(): array {
@@ -87,7 +102,7 @@ final class Dav_Mlm_Run_Status {
 			'last_successful_run'  => null,
 			'consecutive_failures' => 0,
 			'counts'               => array(),
-			'errors'               => array(),
+			'messages'             => array(),
 		);
 	}
 }
