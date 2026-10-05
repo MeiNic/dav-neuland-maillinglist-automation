@@ -8,9 +8,9 @@
  *
  * Both kinds of mail are opt-in from the caller's side: this class never
  * reads IMAP state or Dav_Mlm_Run_Status itself, it just acts on the
- * `$new_items` / `$consecutive_failures` it's given, so it's exercised
- * the same way regardless of how the (not yet built) cron runner ends up
- * tracking those. Only the failure-alert throttle is this class's own
+ * `$new_items` / `$consecutive_failures` it's given (by
+ * Dav_Mlm_Cron_Runner), so it's exercised the same way regardless of how
+ * the runner tracks those. Only the failure-alert throttle is this class's own
  * state, kept in option `dav_mlm_alerter_state`: the last time a failure
  * alert was sent, so a still-broken run reminds at most once every 24h
  * instead of on every single run, and a null is what makes the next

@@ -102,7 +102,7 @@ final class MailboxTest extends TestCase {
 
 	public function test_interface_lists_all_six_target_folders(): void {
 		self::assertSame(
-			array( 'Approved', 'Rejected', 'Manual', 'Suspicious', 'Unrecognized', 'Error' ),
+			array( 'Approved', 'Rejected', 'Manual', 'Suspicious', 'Unrecognized', 'Error', 'Info' ),
 			Dav_Mlm_Mailbox_Interface::FOLDERS
 		);
 	}

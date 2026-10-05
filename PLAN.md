@@ -222,8 +222,12 @@ Steps per run:
 3. **Search** INBOX for `FROM "no.reply@oneandone.com"` (configurable,
    `DAV_MLM_NOTIFY_FROM`). No `UNSEEN` criterion — state is "still in
    INBOX" vs "moved to a folder".
-   - Messages from that sender whose subject does **not** match the
-     template prefix → move to `Unrecognized`, alert admin (IONOS may
+   - Known IONOS mails from that sender that aren't approval requests
+     ("Neuer Teilnehmer in die Mailingliste …", "Fehler bei der
+     Zustellung einer E-Mail an die Mailingliste …") → move to `Info`,
+     no alert.
+   - Any other message from that sender whose subject does **not** match
+     the template prefix → move to `Unrecognized`, alert admin (IONOS may
      have changed the template/language; otherwise we'd silently stop
      working).
    - Everything else in INBOX (bounces of our rejection mails, replies,
@@ -341,7 +345,8 @@ Steps per run:
 
 IMAP folder layout (prefix configurable, `DAV_MLM_FOLDER_PREFIX`,
 default `Moderation`): `Approved`, `Rejected`, `Manual`, `Suspicious`,
-`Unrecognized`, `Error`. Gives an audit trail and a clean inbox;
+`Unrecognized`, `Error`, `Info` (known IONOS mails that need no action).
+Gives an audit trail and a clean inbox;
 anything in `Manual` is handled by a human in the IONOS Control-Center
 (or by moving it back to INBOX after fixing the config).
 
@@ -408,9 +413,11 @@ dav-mailinglist-moderation/
       class-run-status.php         # last run / last success / counts / errors+warnings (admin status panel)
       class-rate-limiter.php       # per-sender rejection-mail rate limit (transients)
       class-alerter.php            # digest + throttled failure/recovered alerts (option dav_mlm_alerter_state)
-      class-cron-runner.php        # orchestrates one run, used by bin/cron-runner.php (not yet built)
-  bin/                              # not yet built
-    cron-runner.php                # CLI entrypoint: SAPI guard, bootstrap, parse flags, run
+      class-cron-runner.php        # orchestrates one run: per-message decisions, filing, summary, alerts
+      class-cron-command.php       # what bin/cron-runner.php runs after loading WP: flags, config, data dir, lock
+      class-run-lock.php           # flock() on DAV_MLM_DATA_DIR/cron.lock so runs never overlap
+  bin/
+    cron-runner.php                # CLI entrypoint: SAPI guard, WordPress bootstrap, hands over to the command
     .htaccess                      # Require all denied
   vendor/                          # committed, namespace-prefixed (see §9); + .htaccess deny
   composer.json / composer.lock    # zbateson/mail-mime-parser, phpmailer/dkimvalidator

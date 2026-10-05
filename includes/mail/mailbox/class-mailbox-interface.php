@@ -21,6 +21,7 @@ interface Dav_Mlm_Mailbox_Interface {
 	public const FOLDER_SUSPICIOUS   = 'Suspicious';
 	public const FOLDER_UNRECOGNIZED = 'Unrecognized';
 	public const FOLDER_ERROR        = 'Error';
+	public const FOLDER_INFO         = 'Info';
 
 	public const FOLDERS = array(
 		self::FOLDER_APPROVED,
@@ -29,6 +30,7 @@ interface Dav_Mlm_Mailbox_Interface {
 		self::FOLDER_SUSPICIOUS,
 		self::FOLDER_UNRECOGNIZED,
 		self::FOLDER_ERROR,
+		self::FOLDER_INFO,
 	);
 
 	/**

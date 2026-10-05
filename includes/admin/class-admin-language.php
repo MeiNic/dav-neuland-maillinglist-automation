@@ -99,6 +99,8 @@ final class Dav_Mlm_Admin_Language {
 		'Rejected'                                       => 'Abgelehnt',
 		'Manual review'                                  => 'Manuelle Prüfung',
 		'Suspicious'                                     => 'Verdächtig',
+		'Unrecognized'                                   => 'Nicht erkannt',
+		'Info mails'                                     => 'Info-Mails',
 		'Errored'                                        => 'Fehlerhaft',
 		'Skipped'                                        => 'Übersprungen',
 		'Recent errors and warnings'                     => 'Letzte Fehler und Warnungen',

@@ -65,13 +65,15 @@ final class Dav_Mlm_Status_Panel {
 			printf( '<p>%s</p>', esc_html( $this->t( 'No run recorded yet.' ) ) );
 		} else {
 			$labels = array(
-				'processed'  => $this->t( 'Processed' ),
-				'approved'   => $this->t( 'Approved' ),
-				'rejected'   => $this->t( 'Rejected' ),
-				'manual'     => $this->t( 'Manual review' ),
-				'suspicious' => $this->t( 'Suspicious' ),
-				'errored'    => $this->t( 'Errored' ),
-				'skipped'    => $this->t( 'Skipped' ),
+				'processed'     => $this->t( 'Processed' ),
+				'approved'      => $this->t( 'Approved' ),
+				'rejected'      => $this->t( 'Rejected' ),
+				'manual'        => $this->t( 'Manual review' ),
+				'suspicious'    => $this->t( 'Suspicious' ),
+				'unrecognized'  => $this->t( 'Unrecognized' ),
+				'informational' => $this->t( 'Info mails' ),
+				'errored'       => $this->t( 'Errored' ),
+				'skipped'       => $this->t( 'Skipped' ),
 			);
 
 			echo '<table class="widefat striped" style="width:auto"><thead><tr>';

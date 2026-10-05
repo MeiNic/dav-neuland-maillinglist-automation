@@ -17,8 +17,13 @@ final class Dav_Mlm_Run_Status {
 
 	/**
 	 * The run summary's counters (PLAN.md §5b step 5), in display order.
+	 * `approved` … `unrecognized` and `informational` (`Info`) count
+	 * messages filed in that folder;
+	 * `errored` counts transient failures (left in INBOX, or moved to
+	 * `Error` after the last attempt); `skipped` counts notifications a
+	 * `--message-id` run left alone.
 	 */
-	public const COUNT_KEYS = array( 'processed', 'approved', 'rejected', 'manual', 'suspicious', 'errored', 'skipped' );
+	public const COUNT_KEYS = array( 'processed', 'approved', 'rejected', 'manual', 'suspicious', 'unrecognized', 'informational', 'errored', 'skipped' );
 
 	public const LEVEL_ERROR   = 'error';
 	public const LEVEL_WARNING = 'warning';

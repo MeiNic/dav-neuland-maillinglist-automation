@@ -49,3 +49,17 @@ vendor/bin/phpunit
 first if `vendor/bin/phpunit` is missing.) Fixtures live in
 `tests/fixtures/` — see [samples/README.md](samples/README.md) for the
 redaction workflow before adding a real captured email there.
+
+## Running the moderation run by hand
+
+On the server (never the bare `php` there, see PLAN.md §2), from the
+plugin folder:
+
+```
+/usr/bin/php8.3-cli bin/cron-runner.php --dry-run --verbose
+```
+
+`--dry-run` decides and logs what it *would* do without touching the
+mailbox, sending anything, or changing any state; `--message-id=<id>`
+limits a run to one notification. The log is in `DAV_MLM_DATA_DIR`
+(`dav-mlm-YYYY-MM-DD.log`); `--help` lists all flags.

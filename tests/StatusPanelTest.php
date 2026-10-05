@@ -76,7 +76,7 @@ final class StatusPanelTest extends TestCase {
 		self::assertStringContainsString( '<th scope="row">Last run</th><td>2026-10-01 11:55 (5 min ago)</td>', $html );
 		self::assertStringContainsString( '<th scope="row">Last successful run</th><td>2026-10-01 09:00 (3 h ago)</td>', $html );
 		self::assertStringContainsString( '<th scope="row">Consecutive failed runs</th><td>2</td>', $html );
-		self::assertStringContainsString( '<td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>', $html );
+		self::assertStringContainsString( '<td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>', $html );
 	}
 
 	public function test_messages_are_listed_newest_first_with_their_level_and_escaped(): void {
