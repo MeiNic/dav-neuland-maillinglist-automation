@@ -82,7 +82,16 @@ moderator inbox); production uses a dedicated mailbox, see §3.
   - Residual threat: someone forging the `From:` of a member *who is
     allowed to post*. That is what the DKIM check (§5b step 4g) is for.
   - To verify during testing: does IONOS check membership against the
-    header `From:` or the envelope sender (`Return-Path`)? (§10 step 6)
+    header `From:` or the envelope sender (`Return-Path`)? (§10 step 6;
+    **still open** — see the 2026-10-05 note there and in §12.)
+  - Related finding (2026-10-05): IONOS's authenticated *submission*
+    server (`smtp.ionos.de:587`) refuses to let an authenticated user
+    forge either the envelope `MAIL FROM` or the header `From:` to an
+    address they don't own (554 "Unauthorized sender address" on a
+    forged header `From:`; 550 "Sender address is not allowed" on a
+    forged envelope). So the residual forgery threat can only arrive via
+    an *external* MTA straight to the inbound MX, not through IONOS's own
+    outbound path without the member's credentials.
 
 ## 4. Sample email structure (drives the parsing logic)
 
@@ -567,6 +576,44 @@ PHP 8.3 via Nix.
    different envelope/server (e.g. `swaks` from a machine not in the
    domain's SPF). Check whether IONOS forwards it to moderation and that
    the plugin puts it into `Manual` (DKIM fail).
+   - **Status 2026-10-05 — partially blocked.** Baseline (aligned
+     member post via IONOS submission) reaches moderation; its notif
+     shows `Absender:` = envelope = nested `From:`, and it is
+     DKIM-signed by IONOS (so it *passes*, not fails). The discriminating
+     mismatch (header `From:` = member, envelope = non-member) could
+     **not** be sent from the dev machine: outbound port 25 is blocked
+     (RST to the IONOS *and* Google MXes), and IONOS submission refuses
+     the mismatch (see §3). So the header-vs-envelope answer and a live
+     DKIM-fail sample are still pending a sending host with port 25 open.
+     Reproduce from such a host (VPS / relay that allows an arbitrary
+     `MAIL FROM`):
+     ```
+     swaks --server mx00.ionos.de:25 --ehlo test-spoof.invalid \
+       --from nonmember@example.com --to test.mailingliste@dav-neuland.de \
+       --h-From 'test-mail@dav-neuland.de' \
+       --header 'Subject: [MLMOD-SPOOF] header=member envelope=nonmember' \
+       --body 'spoofing test'
+     ```
+     Then: reaches moderation (`Absender: nonmember@example.com`, nested
+     `From: test-mail@…`) ⇒ IONOS keys membership on the **header
+     `From:`**; MX rejects with a 5xx ⇒ it keys on the **envelope
+     sender**. The plugin side is already confirmed (next bullet).
+   - **Deprioritized 2026-10-05.** Tried a throwaway cloud VPS too —
+     also blocks outbound port 25 by default, so three hosts in a row
+     (dev machine, IONOS webspace, a fresh Hetzner box) came up blocked.
+     Not worth more infra-hunting: step 7 above (`From:` vs `Absender:`)
+     already catches a header/envelope mismatch **independently of which
+     way IONOS itself gates membership**, so the open question doesn't
+     gate safety — only curiosity about IONOS's internals. Left open,
+     parked unless a port-25-capable host turns up incidentally.
+   - **Plugin side confirmed 2026-10-05.** With the runner in place
+     (c964deb), `class-cron-runner.php` files to `Manual` both when the
+     nested `From:` ≠ `Absender:` (step 7) and when a required DKIM check
+     does not pass (step 8), and never auto-rejects an unverifiable post.
+     Covered by passing PHPUnit tests: `…from_address_that_differs_from
+     _the_envelope_sender_goes_to_manual`, `…unsigned_post_goes_to_manual
+     _when_the_list_requires_dkim`, `…unsigned_post_from_an_outsider_is
+     _never_rejected…`, plus the DKIM tamper/alignment cases.
 7. **Live mailbox dry run**: `--dry-run` against `noreply@` for a few
    days of real traffic; review the log decisions.
 8. **Live end-to-end test**: enable live actions for
@@ -606,7 +653,14 @@ Decided (2026-09-28):
 
 Still open:
 - **Membership check basis**: does IONOS check list membership against
-  the header `From:` or the envelope sender? (Answered by §10 step 6.)
+  the header `From:` or the envelope sender? **Deprioritized 2026-10-05**
+  — needs a port-25-capable sending host, and three tried (dev machine,
+  IONOS webspace, a throwaway cloud VPS) all block it by default; not
+  worth further infra-hunting. Not a safety gap either way: the plugin
+  re-checks `From:` against `Absender:` itself (§5b step 7) and fails
+  closed to `Manual` on a mismatch *or* a DKIM failure, independently of
+  how IONOS's own gate works. Left open as a curiosity; revisit only if
+  a suitable host turns up incidentally (§10 step 6).
 - **Multipart DKIM reconstruction**: how far to go beyond single-part
   QP→8bit — decide after §10 step 4 shows how often it's needed.
 - **Default `dkim_policy` for lists with many non-DKIM senders** —
